@@ -18,7 +18,18 @@
 		5E294244195092FB003554FC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E294229195092FB003554FC /* Foundation.framework */; };
 		5E294245195092FB003554FC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E29422D195092FB003554FC /* UIKit.framework */; };
 		5E29424D195092FB003554FC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5E29424B195092FB003554FC /* InfoPlist.strings */; };
-		5E29424F195092FB003554FC /* SNSharerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E29424E195092FB003554FC /* SNSharerTests.m */; };
+		5E29425B19509374003554FC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E29425A19509374003554FC /* Main.storyboard */; };
+		5E29425E195093CD003554FC /* SNViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E29425D195093CD003554FC /* SNViewController.m */; };
+		5E2942601950980D003554FC /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E29425F1950980D003554FC /* Social.framework */; };
+		5E812FDD1952C02A00823A89 /* SNSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E812FDC1952C02A00823A89 /* SNSharer.m */; };
+		5E849DFF19580AFE0009011C /* SNFacebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E849DFE19580AFE0009011C /* SNFacebook.m */; };
+		5E849E021958245E0009011C /* SNSocialFramework.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E849E011958245E0009011C /* SNSocialFramework.m */; };
+		5E849E0619582A040009011C /* SNWebInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E849E0519582A040009011C /* SNWebInterface.m */; };
+		5E849E0919583D0C0009011C /* SNTwitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E849E0819583D0C0009011C /* SNTwitter.m */; };
+		5E849E0C19584B5F0009011C /* SNInstagram.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E849E0B19584B5F0009011C /* SNInstagram.m */; };
+		5E8670101954419600ABE58A /* SNEmail.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E86700F1954419600ABE58A /* SNEmail.m */; };
+		5E86701419544E8700ABE58A /* SNSms.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E86701319544E8700ABE58A /* SNSms.m */; };
+		5EDFB84E1951B519009D4FC4 /* TestSNSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EDFB84D1951B519009D4FC4 /* TestSNSProvider.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,7 +58,28 @@
 		5E294242195092FB003554FC /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		5E29424A195092FB003554FC /* SNSharerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SNSharerTests-Info.plist"; sourceTree = "<group>"; };
 		5E29424C195092FB003554FC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		5E29424E195092FB003554FC /* SNSharerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SNSharerTests.m; sourceTree = "<group>"; };
+		5E29425A19509374003554FC /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		5E29425C195093CD003554FC /* SNViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNViewController.h; sourceTree = "<group>"; };
+		5E29425D195093CD003554FC /* SNViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNViewController.m; sourceTree = "<group>"; };
+		5E29425F1950980D003554FC /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		5E812FDB1952C02A00823A89 /* SNSharer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNSharer.h; sourceTree = "<group>"; };
+		5E812FDC1952C02A00823A89 /* SNSharer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNSharer.m; sourceTree = "<group>"; };
+		5E849DFD19580AFE0009011C /* SNFacebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNFacebook.h; path = SNSharer/SNFacebook.h; sourceTree = "<group>"; };
+		5E849DFE19580AFE0009011C /* SNFacebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNFacebook.m; path = SNSharer/SNFacebook.m; sourceTree = "<group>"; };
+		5E849E001958245E0009011C /* SNSocialFramework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNSocialFramework.h; sourceTree = "<group>"; };
+		5E849E011958245E0009011C /* SNSocialFramework.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNSocialFramework.m; sourceTree = "<group>"; };
+		5E849E0419582A040009011C /* SNWebInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNWebInterface.h; sourceTree = "<group>"; };
+		5E849E0519582A040009011C /* SNWebInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNWebInterface.m; sourceTree = "<group>"; };
+		5E849E0719583D0C0009011C /* SNTwitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNTwitter.h; path = SNSharer/SNTwitter.h; sourceTree = "<group>"; };
+		5E849E0819583D0C0009011C /* SNTwitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNTwitter.m; path = SNSharer/SNTwitter.m; sourceTree = "<group>"; };
+		5E849E0A19584B5F0009011C /* SNInstagram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNInstagram.h; path = SNSharer/SNInstagram.h; sourceTree = "<group>"; };
+		5E849E0B19584B5F0009011C /* SNInstagram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNInstagram.m; path = SNSharer/SNInstagram.m; sourceTree = "<group>"; };
+		5E85A709195438B700299C75 /* SNServiceProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNServiceProtocol.h; path = SNSharer/SNServiceProtocol.h; sourceTree = "<group>"; };
+		5E86700E1954419600ABE58A /* SNEmail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNEmail.h; path = SNSharer/SNEmail.h; sourceTree = "<group>"; };
+		5E86700F1954419600ABE58A /* SNEmail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNEmail.m; path = SNSharer/SNEmail.m; sourceTree = "<group>"; };
+		5E86701219544E8700ABE58A /* SNSms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNSms.h; path = SNSharer/SNSms.h; sourceTree = "<group>"; };
+		5E86701319544E8700ABE58A /* SNSms.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNSms.m; path = SNSharer/SNSms.m; sourceTree = "<group>"; };
+		5EDFB84D1951B519009D4FC4 /* TestSNSProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestSNSProvider.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E2942601950980D003554FC /* Social.framework in Frameworks */,
 				5E29422C195092FB003554FC /* CoreGraphics.framework in Frameworks */,
 				5E29422E195092FB003554FC /* UIKit.framework in Frameworks */,
 				5E29422A195092FB003554FC /* Foundation.framework in Frameworks */,
@@ -77,6 +110,8 @@
 		5E29421D195092FB003554FC = {
 			isa = PBXGroup;
 			children = (
+				5E849E03195824770009011C /* Protocols */,
+				5E867011195441A200ABE58A /* Services */,
 				5E29422F195092FB003554FC /* SNSharer */,
 				5E294248195092FB003554FC /* SNSharerTests */,
 				5E294228195092FB003554FC /* Frameworks */,
@@ -96,6 +131,7 @@
 		5E294228195092FB003554FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5E29425F1950980D003554FC /* Social.framework */,
 				5E294229195092FB003554FC /* Foundation.framework */,
 				5E29422B195092FB003554FC /* CoreGraphics.framework */,
 				5E29422D195092FB003554FC /* UIKit.framework */,
@@ -107,9 +143,15 @@
 		5E29422F195092FB003554FC /* SNSharer */ = {
 			isa = PBXGroup;
 			children = (
-				5E294238195092FB003554FC /* SNSAppDelegate.h */,
-				5E294239195092FB003554FC /* SNSAppDelegate.m */,
-				5E29423B195092FB003554FC /* Images.xcassets */,
+				5E29425A19509374003554FC /* Main.storyboard */,
+				5E812FDB1952C02A00823A89 /* SNSharer.h */,
+				5E812FDC1952C02A00823A89 /* SNSharer.m */,
+				5E849E001958245E0009011C /* SNSocialFramework.h */,
+				5E849E011958245E0009011C /* SNSocialFramework.m */,
+				5E849E0419582A040009011C /* SNWebInterface.h */,
+				5E849E0519582A040009011C /* SNWebInterface.m */,
+				5E29425C195093CD003554FC /* SNViewController.h */,
+				5E29425D195093CD003554FC /* SNViewController.m */,
 				5E294230195092FB003554FC /* Supporting Files */,
 			);
 			path = SNSharer;
@@ -118,6 +160,9 @@
 		5E294230195092FB003554FC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5E29423B195092FB003554FC /* Images.xcassets */,
+				5E294238195092FB003554FC /* SNSAppDelegate.h */,
+				5E294239195092FB003554FC /* SNSAppDelegate.m */,
 				5E294231195092FB003554FC /* SNSharer-Info.plist */,
 				5E294232195092FB003554FC /* InfoPlist.strings */,
 				5E294235195092FB003554FC /* main.m */,
@@ -129,8 +174,8 @@
 		5E294248195092FB003554FC /* SNSharerTests */ = {
 			isa = PBXGroup;
 			children = (
-				5E29424E195092FB003554FC /* SNSharerTests.m */,
 				5E294249195092FB003554FC /* Supporting Files */,
+				5EDFB84D1951B519009D4FC4 /* TestSNSProvider.m */,
 			);
 			path = SNSharerTests;
 			sourceTree = "<group>";
@@ -142,6 +187,31 @@
 				5E29424B195092FB003554FC /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5E849E03195824770009011C /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				5E85A709195438B700299C75 /* SNServiceProtocol.h */,
+			);
+			name = Protocols;
+			sourceTree = "<group>";
+		};
+		5E867011195441A200ABE58A /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				5E86700E1954419600ABE58A /* SNEmail.h */,
+				5E86700F1954419600ABE58A /* SNEmail.m */,
+				5E86701219544E8700ABE58A /* SNSms.h */,
+				5E86701319544E8700ABE58A /* SNSms.m */,
+				5E849DFD19580AFE0009011C /* SNFacebook.h */,
+				5E849DFE19580AFE0009011C /* SNFacebook.m */,
+				5E849E0719583D0C0009011C /* SNTwitter.h */,
+				5E849E0819583D0C0009011C /* SNTwitter.m */,
+				5E849E0A19584B5F0009011C /* SNInstagram.h */,
+				5E849E0B19584B5F0009011C /* SNInstagram.m */,
+			);
+			name = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -192,6 +262,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = Rushad;
 				TargetAttributes = {
+					5E294225195092FB003554FC = {
+						DevelopmentTeam = 6C5B687R9E;
+					};
 					5E294240195092FB003554FC = {
 						TestTargetID = 5E294225195092FB003554FC;
 					};
@@ -220,6 +293,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E29425B19509374003554FC /* Main.storyboard in Resources */,
 				5E294234195092FB003554FC /* InfoPlist.strings in Resources */,
 				5E29423C195092FB003554FC /* Images.xcassets in Resources */,
 			);
@@ -240,8 +314,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E849E021958245E0009011C /* SNSocialFramework.m in Sources */,
+				5E86701419544E8700ABE58A /* SNSms.m in Sources */,
+				5E849E0919583D0C0009011C /* SNTwitter.m in Sources */,
+				5E849E0619582A040009011C /* SNWebInterface.m in Sources */,
+				5E849E0C19584B5F0009011C /* SNInstagram.m in Sources */,
+				5E8670101954419600ABE58A /* SNEmail.m in Sources */,
 				5E294236195092FB003554FC /* main.m in Sources */,
+				5E29425E195093CD003554FC /* SNViewController.m in Sources */,
+				5E849DFF19580AFE0009011C /* SNFacebook.m in Sources */,
 				5E29423A195092FB003554FC /* SNSAppDelegate.m in Sources */,
+				5E812FDD1952C02A00823A89 /* SNSharer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,7 +332,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5E29424F195092FB003554FC /* SNSharerTests.m in Sources */,
+				5EDFB84E1951B519009D4FC4 /* TestSNSProvider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -358,10 +441,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SNSharer/SNSharer-Prefix.pch";
 				INFOPLIST_FILE = "SNSharer/SNSharer-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -371,10 +458,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SNSharer/SNSharer-Prefix.pch";
 				INFOPLIST_FILE = "SNSharer/SNSharer-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -438,6 +529,7 @@
 				5E294254195092FB003554FC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5E294255195092FB003554FC /* Build configuration list for PBXNativeTarget "SNSharerTests" */ = {
 			isa = XCConfigurationList;
@@ -446,6 +538,7 @@
 				5E294257195092FB003554FC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

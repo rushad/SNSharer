@@ -1,18 +1,18 @@
 //
-//  SNSharerTests.m
-//  SNSharerTests
+//  TestSNSProvider.m
+//  SNSharer
 //
-//  Created by Rushad on 6/17/14.
+//  Created by Rushad on 6/18/14.
 //  Copyright (c) 2014 Rushad. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
 
-@interface SNSharerTests : XCTestCase
+@interface TestSNSProvider : XCTestCase
 
 @end
 
-@implementation SNSharerTests
+@implementation TestSNSProvider
 
 - (void)setUp
 {
