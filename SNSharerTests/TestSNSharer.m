@@ -1,18 +1,18 @@
 //
-//  TestSNSProvider.m
+//  TestSNSharer.m
 //  SNSharer
 //
-//  Created by Rushad on 6/18/14.
+//  Created by Rushad on 6/25/14.
 //  Copyright (c) 2014 Rushad. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
 
-@interface TestSNSProvider : XCTestCase
+@interface TestSNSharer : XCTestCase
 
 @end
 
-@implementation TestSNSProvider
+@implementation TestSNSharer
 
 - (void)setUp
 {
@@ -28,7 +28,7 @@
 
 - (void)testExample
 {
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+//    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
 }
 
 @end

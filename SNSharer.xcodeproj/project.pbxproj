@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5E27181F195B2EE0000D092D /* TestSNSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E27181E195B2EE0000D092D /* TestSNSharer.m */; };
 		5E29422A195092FB003554FC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E294229195092FB003554FC /* Foundation.framework */; };
 		5E29422C195092FB003554FC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E29422B195092FB003554FC /* CoreGraphics.framework */; };
 		5E29422E195092FB003554FC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E29422D195092FB003554FC /* UIKit.framework */; };
@@ -29,7 +30,6 @@
 		5E849E0C19584B5F0009011C /* SNInstagram.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E849E0B19584B5F0009011C /* SNInstagram.m */; };
 		5E8670101954419600ABE58A /* SNEmail.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E86700F1954419600ABE58A /* SNEmail.m */; };
 		5E86701419544E8700ABE58A /* SNSms.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E86701319544E8700ABE58A /* SNSms.m */; };
-		5EDFB84E1951B519009D4FC4 /* TestSNSProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EDFB84D1951B519009D4FC4 /* TestSNSProvider.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5E27181E195B2EE0000D092D /* TestSNSharer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestSNSharer.m; sourceTree = "<group>"; };
 		5E294226195092FB003554FC /* SNSharer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SNSharer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E294229195092FB003554FC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5E29422B195092FB003554FC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -79,7 +80,6 @@
 		5E86700F1954419600ABE58A /* SNEmail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNEmail.m; path = SNSharer/SNEmail.m; sourceTree = "<group>"; };
 		5E86701219544E8700ABE58A /* SNSms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNSms.h; path = SNSharer/SNSms.h; sourceTree = "<group>"; };
 		5E86701319544E8700ABE58A /* SNSms.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNSms.m; path = SNSharer/SNSms.m; sourceTree = "<group>"; };
-		5EDFB84D1951B519009D4FC4 /* TestSNSProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestSNSProvider.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,7 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				5E294249195092FB003554FC /* Supporting Files */,
-				5EDFB84D1951B519009D4FC4 /* TestSNSProvider.m */,
+				5E27181E195B2EE0000D092D /* TestSNSharer.m */,
 			);
 			path = SNSharerTests;
 			sourceTree = "<group>";
@@ -332,7 +332,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5EDFB84E1951B519009D4FC4 /* TestSNSProvider.m in Sources */,
+				5E27181F195B2EE0000D092D /* TestSNSharer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
