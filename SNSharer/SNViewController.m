@@ -12,11 +12,12 @@
 
 @interface SNViewController ()
 
-@property (nonatomic, strong) SNSharer* sharerEmail;
-@property (nonatomic, strong) SNSharer* sharerSMS;
-@property (nonatomic, strong) SNSharer* sharerFacebook;
-@property (nonatomic, strong) SNSharer* sharerTwitter;
-@property (nonatomic, strong) SNSharer* sharerInstagram;
+@property (strong, nonatomic) SNSharer* sharerEmail;
+@property (strong, nonatomic) SNSharer* sharerSMS;
+@property (strong, nonatomic) SNSharer* sharerFacebook;
+@property (strong, nonatomic) SNSharer* sharerTwitter;
+@property (strong, nonatomic) SNSharer* sharerInstagram;
+@property (strong, nonatomic) SNSharer* sharerGooglePlus;
 
 @property (weak, nonatomic) IBOutlet UITextField *urlView;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
@@ -27,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *shareViaFacebook;
 @property (weak, nonatomic) IBOutlet UIButton *shareViaTwitter;
 @property (weak, nonatomic) IBOutlet UIButton *shareViaInstagram;
+@property (weak, nonatomic) IBOutlet UIButton *shareViaGooglePlus;
 
 @end
 
@@ -41,12 +43,14 @@
     self.sharerFacebook = [[SNSharer alloc] initWithService:SERVICE_FACEBOOK parentViewController:self];
     self.sharerTwitter = [[SNSharer alloc] initWithService:SERVICE_TWITTER parentViewController:self];
     self.sharerInstagram = [[SNSharer alloc] initWithService:SERVICE_INSTAGRAM parentViewController:self];
+    self.sharerGooglePlus = [[SNSharer alloc] initWithService:SERVICE_GOOGLEPLUS parentViewController:self];
     
     self.shareViaEmail.enabled = (self.sharerEmail != nil);
     self.shareViaSMS.enabled = (self.sharerSMS != nil);
     self.shareViaFacebook.enabled = (self.sharerFacebook != nil);
     self.shareViaTwitter.enabled = (self.sharerTwitter != nil);
     self.shareViaInstagram.enabled = (self.sharerInstagram != nil);
+    self.shareViaGooglePlus.enabled = (self.sharerGooglePlus != nil);
 }
 
 - (IBAction)shareViaEmail:(id)sender
@@ -74,4 +78,8 @@
     [self.sharerInstagram shareText:self.textView.text url:self.urlView.text image:self.imageView.image];
 }
 
+- (IBAction)shareViaGooglePlus:(id)sender
+{
+    [self.sharerGooglePlus shareText:self.textView.text url:self.urlView.text image:self.imageView.image];
+}
 @end

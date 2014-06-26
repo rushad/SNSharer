@@ -56,6 +56,8 @@
     [UIImagePNGRepresentation(image) writeToFile:tempFileName atomically:YES];
 
     self.instagramController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:tempFileName]];
+    self.instagramController.UTI = @"com.instagram.exclusivegram";
+    
     NSString* body = text;
     if (url)
     {

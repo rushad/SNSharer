@@ -99,6 +99,16 @@
                                     <action selector="shareViaInstagram:" destination="dq8-Dw-6BP" eventType="touchUpInside" id="OtH-dx-nWt"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yEs-fs-jPo">
+                                <rect key="frame" x="166" y="96" width="140" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Share via Google+">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="shareViaGooglePlus:" destination="dq8-Dw-6BP" eventType="touchUpInside" id="xqM-CU-l20"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -106,6 +116,7 @@
                         <outlet property="imageView" destination="9Dn-WW-gRo" id="YRb-MG-Oqt"/>
                         <outlet property="shareViaEmail" destination="7j8-Fz-tdE" id="hvV-UO-TJD"/>
                         <outlet property="shareViaFacebook" destination="gCr-ZE-5QB" id="o1T-eW-JSV"/>
+                        <outlet property="shareViaGooglePlus" destination="yEs-fs-jPo" id="2Lf-Of-ruB"/>
                         <outlet property="shareViaInstagram" destination="Yo4-TU-2xD" id="eZA-pV-NCX"/>
                         <outlet property="shareViaSMS" destination="T9Z-7g-cAh" id="Vyj-d3-wJL"/>
                         <outlet property="shareViaTwitter" destination="mto-g9-scN" id="wby-4r-q30"/>
