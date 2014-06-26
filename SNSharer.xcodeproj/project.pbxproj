@@ -22,6 +22,9 @@
 		5E29425B19509374003554FC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E29425A19509374003554FC /* Main.storyboard */; };
 		5E29425E195093CD003554FC /* SNViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E29425D195093CD003554FC /* SNViewController.m */; };
 		5E2942601950980D003554FC /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E29425F1950980D003554FC /* Social.framework */; };
+		5E30FF61195C613B0032A96F /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5E30FF60195C613B0032A96F /* GooglePlus.bundle */; };
+		5E30FF63195C61640032A96F /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E30FF62195C61640032A96F /* GooglePlus.framework */; };
+		5E30FF65195C618A0032A96F /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E30FF64195C618A0032A96F /* GoogleOpenSource.framework */; };
 		5E812FDD1952C02A00823A89 /* SNSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E812FDC1952C02A00823A89 /* SNSharer.m */; };
 		5E849DFF19580AFE0009011C /* SNFacebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E849DFE19580AFE0009011C /* SNFacebook.m */; };
 		5E849E021958245E0009011C /* SNSocialFramework.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E849E011958245E0009011C /* SNSocialFramework.m */; };
@@ -31,8 +34,6 @@
 		5E8670101954419600ABE58A /* SNEmail.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E86700F1954419600ABE58A /* SNEmail.m */; };
 		5E86701419544E8700ABE58A /* SNSms.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E86701319544E8700ABE58A /* SNSms.m */; };
 		5E884CF6195C292900D21661 /* SNGooglePlus.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E884CF5195C292900D21661 /* SNGooglePlus.m */; };
-		5E884D00195C31B500D21661 /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E884CFF195C31B500D21661 /* GoogleOpenSource.framework */; };
-		5E884D02195C31C000D21661 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E884D01195C31C000D21661 /* GooglePlus.framework */; };
 		5E884D04195C354800D21661 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E884D03195C354800D21661 /* AddressBook.framework */; };
 		5E884D06195C357700D21661 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E884D05195C357700D21661 /* MediaPlayer.framework */; };
 		5E884D08195C358400D21661 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E884D07195C358400D21661 /* AssetsLibrary.framework */; };
@@ -40,7 +41,6 @@
 		5E884D0C195C35BF00D21661 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E884D0B195C35BF00D21661 /* CoreMotion.framework */; };
 		5E884D0E195C360A00D21661 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E884D0D195C360A00D21661 /* Security.framework */; };
 		5E884D10195C361A00D21661 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E884D0F195C361A00D21661 /* SystemConfiguration.framework */; };
-		5E8C04A5195C4DAD00E585A9 /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5E8C04A4195C4DAD00E585A9 /* GooglePlus.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +74,9 @@
 		5E29425C195093CD003554FC /* SNViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNViewController.h; sourceTree = "<group>"; };
 		5E29425D195093CD003554FC /* SNViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNViewController.m; sourceTree = "<group>"; };
 		5E29425F1950980D003554FC /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		5E30FF60195C613B0032A96F /* GooglePlus.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GooglePlus.bundle; path = Frameworks/GooglePlus/GooglePlus.bundle; sourceTree = "<group>"; };
+		5E30FF62195C61640032A96F /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GooglePlus.framework; path = Frameworks/GooglePlus/GooglePlus.framework; sourceTree = "<group>"; };
+		5E30FF64195C618A0032A96F /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleOpenSource.framework; path = Frameworks/GooglePlus/GoogleOpenSource.framework; sourceTree = "<group>"; };
 		5E812FDB1952C02A00823A89 /* SNSharer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNSharer.h; sourceTree = "<group>"; };
 		5E812FDC1952C02A00823A89 /* SNSharer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNSharer.m; sourceTree = "<group>"; };
 		5E849DFD19580AFE0009011C /* SNFacebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNFacebook.h; path = SNSharer/SNFacebook.h; sourceTree = "<group>"; };
@@ -93,8 +96,6 @@
 		5E86701319544E8700ABE58A /* SNSms.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNSms.m; path = SNSharer/SNSms.m; sourceTree = "<group>"; };
 		5E884CF4195C292900D21661 /* SNGooglePlus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNGooglePlus.h; path = SNSharer/SNGooglePlus.h; sourceTree = "<group>"; };
 		5E884CF5195C292900D21661 /* SNGooglePlus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNGooglePlus.m; path = SNSharer/SNGooglePlus.m; sourceTree = "<group>"; };
-		5E884CFF195C31B500D21661 /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleOpenSource.framework; path = Frameworks/GoogleOpenSource.framework; sourceTree = "<group>"; };
-		5E884D01195C31C000D21661 /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GooglePlus.framework; path = Frameworks/GooglePlus.framework; sourceTree = "<group>"; };
 		5E884D03195C354800D21661 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		5E884D05195C357700D21661 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		5E884D07195C358400D21661 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
@@ -102,7 +103,6 @@
 		5E884D0B195C35BF00D21661 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		5E884D0D195C360A00D21661 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		5E884D0F195C361A00D21661 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		5E8C04A4195C4DAD00E585A9 /* GooglePlus.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GooglePlus.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,13 +112,13 @@
 			files = (
 				5E884D10195C361A00D21661 /* SystemConfiguration.framework in Frameworks */,
 				5E884D0E195C360A00D21661 /* Security.framework in Frameworks */,
+				5E30FF65195C618A0032A96F /* GoogleOpenSource.framework in Frameworks */,
 				5E884D0C195C35BF00D21661 /* CoreMotion.framework in Frameworks */,
 				5E884D0A195C35A400D21661 /* CoreLocation.framework in Frameworks */,
 				5E884D08195C358400D21661 /* AssetsLibrary.framework in Frameworks */,
+				5E30FF63195C61640032A96F /* GooglePlus.framework in Frameworks */,
 				5E884D06195C357700D21661 /* MediaPlayer.framework in Frameworks */,
 				5E884D04195C354800D21661 /* AddressBook.framework in Frameworks */,
-				5E884D02195C31C000D21661 /* GooglePlus.framework in Frameworks */,
-				5E884D00195C31B500D21661 /* GoogleOpenSource.framework in Frameworks */,
 				5E2942601950980D003554FC /* Social.framework in Frameworks */,
 				5E29422C195092FB003554FC /* CoreGraphics.framework in Frameworks */,
 				5E29422E195092FB003554FC /* UIKit.framework in Frameworks */,
@@ -163,7 +163,7 @@
 		5E294228195092FB003554FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5E8C04A4195C4DAD00E585A9 /* GooglePlus.bundle */,
+				5E30FF5F195C611E0032A96F /* GooglePlus */,
 				5E884D0F195C361A00D21661 /* SystemConfiguration.framework */,
 				5E884D0D195C360A00D21661 /* Security.framework */,
 				5E884D0B195C35BF00D21661 /* CoreMotion.framework */,
@@ -171,8 +171,6 @@
 				5E884D07195C358400D21661 /* AssetsLibrary.framework */,
 				5E884D05195C357700D21661 /* MediaPlayer.framework */,
 				5E884D03195C354800D21661 /* AddressBook.framework */,
-				5E884D01195C31C000D21661 /* GooglePlus.framework */,
-				5E884CFF195C31B500D21661 /* GoogleOpenSource.framework */,
 				5E29425F1950980D003554FC /* Social.framework */,
 				5E294229195092FB003554FC /* Foundation.framework */,
 				5E29422B195092FB003554FC /* CoreGraphics.framework */,
@@ -229,6 +227,16 @@
 				5E29424B195092FB003554FC /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5E30FF5F195C611E0032A96F /* GooglePlus */ = {
+			isa = PBXGroup;
+			children = (
+				5E30FF64195C618A0032A96F /* GoogleOpenSource.framework */,
+				5E30FF62195C61640032A96F /* GooglePlus.framework */,
+				5E30FF60195C613B0032A96F /* GooglePlus.bundle */,
+			);
+			name = GooglePlus;
 			sourceTree = "<group>";
 		};
 		5E849E03195824770009011C /* Protocols */ = {
@@ -339,7 +347,7 @@
 			files = (
 				5E29425B19509374003554FC /* Main.storyboard in Resources */,
 				5E294234195092FB003554FC /* InfoPlist.strings in Resources */,
-				5E8C04A5195C4DAD00E585A9 /* GooglePlus.bundle in Resources */,
+				5E30FF61195C613B0032A96F /* GooglePlus.bundle in Resources */,
 				5E29423C195092FB003554FC /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -493,6 +501,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)/Frameworks/GooglePlus",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SNSharer/SNSharer-Prefix.pch";
@@ -516,6 +525,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)/Frameworks/GooglePlus",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SNSharer/SNSharer-Prefix.pch";
