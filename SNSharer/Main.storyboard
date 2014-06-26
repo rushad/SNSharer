@@ -75,7 +75,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="HelpBook" translatesAutoresizingMaskIntoConstraints="NO" id="9Dn-WW-gRo">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="TestImage" translatesAutoresizingMaskIntoConstraints="NO" id="9Dn-WW-gRo">
                                 <rect key="frame" x="13" y="332" width="285" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -119,7 +119,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="HelpBook" width="1034" height="1047"/>
+        <image name="TestImage" width="1034" height="1047"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
