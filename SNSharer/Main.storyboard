@@ -47,7 +47,7 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="http://example.com" borderStyle="roundedRect" placeholder="http://" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ig1-gl-816">
-                                <rect key="frame" x="15" y="163" width="280" height="30"/>
+                                <rect key="frame" x="13" y="299" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <accessibility key="accessibilityConfiguration" hint="" label="http://">
                                     <accessibilityTraits key="traits" none="YES"/>
@@ -56,27 +56,27 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="URL:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ryg-x8-jXH">
-                                <rect key="frame" x="15" y="134" width="39" height="21"/>
+                                <rect key="frame" x="13" y="270" width="39" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Testing" translatesAutoresizingMaskIntoConstraints="NO" id="XgB-Zb-p6x">
-                                <rect key="frame" x="15" y="230" width="280" height="94"/>
+                                <rect key="frame" x="13" y="366" width="280" height="94"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Comments:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TyG-qu-VQW">
-                                <rect key="frame" x="15" y="201" width="89" height="21"/>
+                                <rect key="frame" x="13" y="337" width="89" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="TestImage" translatesAutoresizingMaskIntoConstraints="NO" id="9Dn-WW-gRo">
-                                <rect key="frame" x="13" y="332" width="285" height="128"/>
+                                <rect key="frame" x="25" y="134" width="117" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mto-g9-scN">
@@ -109,6 +109,16 @@
                                     <action selector="shareViaGooglePlus:" destination="dq8-Dw-6BP" eventType="touchUpInside" id="xqM-CU-l20"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qEn-Sr-SDi">
+                                <rect key="frame" x="166" y="134" width="140" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Share via LinkedIn">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="shareViaLinkedIn:" destination="dq8-Dw-6BP" eventType="touchUpInside" id="Iei-GQ-RpM"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -118,6 +128,7 @@
                         <outlet property="shareViaFacebook" destination="gCr-ZE-5QB" id="o1T-eW-JSV"/>
                         <outlet property="shareViaGooglePlus" destination="yEs-fs-jPo" id="2Lf-Of-ruB"/>
                         <outlet property="shareViaInstagram" destination="Yo4-TU-2xD" id="eZA-pV-NCX"/>
+                        <outlet property="shareViaLinkedIn" destination="qEn-Sr-SDi" id="Qom-1o-DaQ"/>
                         <outlet property="shareViaSMS" destination="T9Z-7g-cAh" id="Vyj-d3-wJL"/>
                         <outlet property="shareViaTwitter" destination="mto-g9-scN" id="wby-4r-q30"/>
                         <outlet property="textView" destination="XgB-Zb-p6x" id="xvZ-Br-mrW"/>

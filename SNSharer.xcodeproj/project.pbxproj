@@ -26,14 +26,17 @@
 		5E30FF63195C61640032A96F /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E30FF62195C61640032A96F /* GooglePlus.framework */; };
 		5E30FF65195C618A0032A96F /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E30FF64195C618A0032A96F /* GoogleOpenSource.framework */; };
 		5E812FDD1952C02A00823A89 /* SNSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E812FDC1952C02A00823A89 /* SNSharer.m */; };
-		5E849DFF19580AFE0009011C /* SNFacebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E849DFE19580AFE0009011C /* SNFacebook.m */; };
+		5E83402C1962B49B00F9D9B9 /* OAuth10.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E83402B1962B49B00F9D9B9 /* OAuth10.m */; };
+		5E8340561962B5D800F9D9B9 /* SNEmail.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E8340491962B5D800F9D9B9 /* SNEmail.m */; };
+		5E8340571962B5D800F9D9B9 /* SNFacebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E83404B1962B5D800F9D9B9 /* SNFacebook.m */; };
+		5E8340581962B5D800F9D9B9 /* SNGooglePlus.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E83404D1962B5D800F9D9B9 /* SNGooglePlus.m */; };
+		5E8340591962B5D800F9D9B9 /* SNInstagram.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E83404F1962B5D800F9D9B9 /* SNInstagram.m */; };
+		5E83405A1962B5D800F9D9B9 /* SNLinkedIn.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E8340511962B5D800F9D9B9 /* SNLinkedIn.m */; };
+		5E83405B1962B5D800F9D9B9 /* SNSms.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E8340531962B5D800F9D9B9 /* SNSms.m */; };
+		5E83405C1962B5D800F9D9B9 /* SNTwitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E8340551962B5D800F9D9B9 /* SNTwitter.m */; };
+		5E8340601962F9C500F9D9B9 /* Base64Transcoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E83405E1962F9C500F9D9B9 /* Base64Transcoder.c */; };
 		5E849E021958245E0009011C /* SNSocialFramework.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E849E011958245E0009011C /* SNSocialFramework.m */; };
 		5E849E0619582A040009011C /* SNWebInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E849E0519582A040009011C /* SNWebInterface.m */; };
-		5E849E0919583D0C0009011C /* SNTwitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E849E0819583D0C0009011C /* SNTwitter.m */; };
-		5E849E0C19584B5F0009011C /* SNInstagram.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E849E0B19584B5F0009011C /* SNInstagram.m */; };
-		5E8670101954419600ABE58A /* SNEmail.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E86700F1954419600ABE58A /* SNEmail.m */; };
-		5E86701419544E8700ABE58A /* SNSms.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E86701319544E8700ABE58A /* SNSms.m */; };
-		5E884CF6195C292900D21661 /* SNGooglePlus.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E884CF5195C292900D21661 /* SNGooglePlus.m */; };
 		5E884D04195C354800D21661 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E884D03195C354800D21661 /* AddressBook.framework */; };
 		5E884D06195C357700D21661 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E884D05195C357700D21661 /* MediaPlayer.framework */; };
 		5E884D08195C358400D21661 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E884D07195C358400D21661 /* AssetsLibrary.framework */; };
@@ -79,23 +82,29 @@
 		5E30FF64195C618A0032A96F /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleOpenSource.framework; path = Frameworks/GooglePlus/GoogleOpenSource.framework; sourceTree = "<group>"; };
 		5E812FDB1952C02A00823A89 /* SNSharer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNSharer.h; sourceTree = "<group>"; };
 		5E812FDC1952C02A00823A89 /* SNSharer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNSharer.m; sourceTree = "<group>"; };
-		5E849DFD19580AFE0009011C /* SNFacebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNFacebook.h; path = SNSharer/SNFacebook.h; sourceTree = "<group>"; };
-		5E849DFE19580AFE0009011C /* SNFacebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNFacebook.m; path = SNSharer/SNFacebook.m; sourceTree = "<group>"; };
+		5E83402A1962B49B00F9D9B9 /* OAuth10.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OAuth10.h; path = SNSharer/OAuth1.0/OAuth10.h; sourceTree = "<group>"; };
+		5E83402B1962B49B00F9D9B9 /* OAuth10.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OAuth10.m; path = SNSharer/OAuth1.0/OAuth10.m; sourceTree = "<group>"; };
+		5E8340481962B5D800F9D9B9 /* SNEmail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNEmail.h; sourceTree = "<group>"; };
+		5E8340491962B5D800F9D9B9 /* SNEmail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNEmail.m; sourceTree = "<group>"; };
+		5E83404A1962B5D800F9D9B9 /* SNFacebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNFacebook.h; sourceTree = "<group>"; };
+		5E83404B1962B5D800F9D9B9 /* SNFacebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNFacebook.m; sourceTree = "<group>"; };
+		5E83404C1962B5D800F9D9B9 /* SNGooglePlus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNGooglePlus.h; sourceTree = "<group>"; };
+		5E83404D1962B5D800F9D9B9 /* SNGooglePlus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNGooglePlus.m; sourceTree = "<group>"; };
+		5E83404E1962B5D800F9D9B9 /* SNInstagram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNInstagram.h; sourceTree = "<group>"; };
+		5E83404F1962B5D800F9D9B9 /* SNInstagram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNInstagram.m; sourceTree = "<group>"; };
+		5E8340501962B5D800F9D9B9 /* SNLinkedIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNLinkedIn.h; sourceTree = "<group>"; };
+		5E8340511962B5D800F9D9B9 /* SNLinkedIn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNLinkedIn.m; sourceTree = "<group>"; };
+		5E8340521962B5D800F9D9B9 /* SNSms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNSms.h; sourceTree = "<group>"; };
+		5E8340531962B5D800F9D9B9 /* SNSms.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNSms.m; sourceTree = "<group>"; };
+		5E8340541962B5D800F9D9B9 /* SNTwitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNTwitter.h; sourceTree = "<group>"; };
+		5E8340551962B5D800F9D9B9 /* SNTwitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNTwitter.m; sourceTree = "<group>"; };
+		5E83405E1962F9C500F9D9B9 /* Base64Transcoder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Base64Transcoder.c; sourceTree = "<group>"; };
+		5E83405F1962F9C500F9D9B9 /* Base64Transcoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64Transcoder.h; sourceTree = "<group>"; };
 		5E849E001958245E0009011C /* SNSocialFramework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNSocialFramework.h; sourceTree = "<group>"; };
 		5E849E011958245E0009011C /* SNSocialFramework.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNSocialFramework.m; sourceTree = "<group>"; };
 		5E849E0419582A040009011C /* SNWebInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNWebInterface.h; sourceTree = "<group>"; };
 		5E849E0519582A040009011C /* SNWebInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNWebInterface.m; sourceTree = "<group>"; };
-		5E849E0719583D0C0009011C /* SNTwitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNTwitter.h; path = SNSharer/SNTwitter.h; sourceTree = "<group>"; };
-		5E849E0819583D0C0009011C /* SNTwitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNTwitter.m; path = SNSharer/SNTwitter.m; sourceTree = "<group>"; };
-		5E849E0A19584B5F0009011C /* SNInstagram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNInstagram.h; path = SNSharer/SNInstagram.h; sourceTree = "<group>"; };
-		5E849E0B19584B5F0009011C /* SNInstagram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNInstagram.m; path = SNSharer/SNInstagram.m; sourceTree = "<group>"; };
 		5E85A709195438B700299C75 /* SNServiceProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNServiceProtocol.h; path = SNSharer/SNServiceProtocol.h; sourceTree = "<group>"; };
-		5E86700E1954419600ABE58A /* SNEmail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNEmail.h; path = SNSharer/SNEmail.h; sourceTree = "<group>"; };
-		5E86700F1954419600ABE58A /* SNEmail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNEmail.m; path = SNSharer/SNEmail.m; sourceTree = "<group>"; };
-		5E86701219544E8700ABE58A /* SNSms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNSms.h; path = SNSharer/SNSms.h; sourceTree = "<group>"; };
-		5E86701319544E8700ABE58A /* SNSms.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNSms.m; path = SNSharer/SNSms.m; sourceTree = "<group>"; };
-		5E884CF4195C292900D21661 /* SNGooglePlus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNGooglePlus.h; path = SNSharer/SNGooglePlus.h; sourceTree = "<group>"; };
-		5E884CF5195C292900D21661 /* SNGooglePlus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNGooglePlus.m; path = SNSharer/SNGooglePlus.m; sourceTree = "<group>"; };
 		5E884D03195C354800D21661 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		5E884D05195C357700D21661 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		5E884D07195C358400D21661 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
@@ -142,8 +151,9 @@
 		5E29421D195092FB003554FC = {
 			isa = PBXGroup;
 			children = (
+				5E83402D1962B4A100F9D9B9 /* OAuth10 */,
 				5E849E03195824770009011C /* Protocols */,
-				5E867011195441A200ABE58A /* Services */,
+				5E8340471962B5D800F9D9B9 /* Services */,
 				5E29422F195092FB003554FC /* SNSharer */,
 				5E294248195092FB003554FC /* SNSharerTests */,
 				5E294228195092FB003554FC /* Frameworks */,
@@ -239,31 +249,54 @@
 			name = GooglePlus;
 			sourceTree = "<group>";
 		};
+		5E83402D1962B4A100F9D9B9 /* OAuth10 */ = {
+			isa = PBXGroup;
+			children = (
+				5E83405D1962F9C500F9D9B9 /* Base64 */,
+				5E83402A1962B49B00F9D9B9 /* OAuth10.h */,
+				5E83402B1962B49B00F9D9B9 /* OAuth10.m */,
+			);
+			name = OAuth10;
+			sourceTree = "<group>";
+		};
+		5E8340471962B5D800F9D9B9 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				5E8340481962B5D800F9D9B9 /* SNEmail.h */,
+				5E8340491962B5D800F9D9B9 /* SNEmail.m */,
+				5E83404A1962B5D800F9D9B9 /* SNFacebook.h */,
+				5E83404B1962B5D800F9D9B9 /* SNFacebook.m */,
+				5E83404C1962B5D800F9D9B9 /* SNGooglePlus.h */,
+				5E83404D1962B5D800F9D9B9 /* SNGooglePlus.m */,
+				5E83404E1962B5D800F9D9B9 /* SNInstagram.h */,
+				5E83404F1962B5D800F9D9B9 /* SNInstagram.m */,
+				5E8340501962B5D800F9D9B9 /* SNLinkedIn.h */,
+				5E8340511962B5D800F9D9B9 /* SNLinkedIn.m */,
+				5E8340521962B5D800F9D9B9 /* SNSms.h */,
+				5E8340531962B5D800F9D9B9 /* SNSms.m */,
+				5E8340541962B5D800F9D9B9 /* SNTwitter.h */,
+				5E8340551962B5D800F9D9B9 /* SNTwitter.m */,
+			);
+			name = Services;
+			path = SNSharer/Services;
+			sourceTree = "<group>";
+		};
+		5E83405D1962F9C500F9D9B9 /* Base64 */ = {
+			isa = PBXGroup;
+			children = (
+				5E83405E1962F9C500F9D9B9 /* Base64Transcoder.c */,
+				5E83405F1962F9C500F9D9B9 /* Base64Transcoder.h */,
+			);
+			name = Base64;
+			path = SNSharer/OAuth1.0/Base64;
+			sourceTree = "<group>";
+		};
 		5E849E03195824770009011C /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
 				5E85A709195438B700299C75 /* SNServiceProtocol.h */,
 			);
 			name = Protocols;
-			sourceTree = "<group>";
-		};
-		5E867011195441A200ABE58A /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				5E86700E1954419600ABE58A /* SNEmail.h */,
-				5E86700F1954419600ABE58A /* SNEmail.m */,
-				5E86701219544E8700ABE58A /* SNSms.h */,
-				5E86701319544E8700ABE58A /* SNSms.m */,
-				5E849DFD19580AFE0009011C /* SNFacebook.h */,
-				5E849DFE19580AFE0009011C /* SNFacebook.m */,
-				5E849E0719583D0C0009011C /* SNTwitter.h */,
-				5E849E0819583D0C0009011C /* SNTwitter.m */,
-				5E849E0A19584B5F0009011C /* SNInstagram.h */,
-				5E849E0B19584B5F0009011C /* SNInstagram.m */,
-				5E884CF4195C292900D21661 /* SNGooglePlus.h */,
-				5E884CF5195C292900D21661 /* SNGooglePlus.m */,
-			);
-			name = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -328,6 +361,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				English,
 			);
 			mainGroup = 5E29421D195092FB003554FC;
 			productRefGroup = 5E294227195092FB003554FC /* Products */;
@@ -367,18 +401,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E83405C1962B5D800F9D9B9 /* SNTwitter.m in Sources */,
 				5E849E021958245E0009011C /* SNSocialFramework.m in Sources */,
-				5E86701419544E8700ABE58A /* SNSms.m in Sources */,
-				5E849E0919583D0C0009011C /* SNTwitter.m in Sources */,
 				5E849E0619582A040009011C /* SNWebInterface.m in Sources */,
-				5E849E0C19584B5F0009011C /* SNInstagram.m in Sources */,
-				5E8670101954419600ABE58A /* SNEmail.m in Sources */,
 				5E294236195092FB003554FC /* main.m in Sources */,
+				5E83405B1962B5D800F9D9B9 /* SNSms.m in Sources */,
 				5E29425E195093CD003554FC /* SNViewController.m in Sources */,
-				5E849DFF19580AFE0009011C /* SNFacebook.m in Sources */,
+				5E8340591962B5D800F9D9B9 /* SNInstagram.m in Sources */,
 				5E29423A195092FB003554FC /* SNSAppDelegate.m in Sources */,
+				5E83405A1962B5D800F9D9B9 /* SNLinkedIn.m in Sources */,
+				5E8340571962B5D800F9D9B9 /* SNFacebook.m in Sources */,
+				5E8340561962B5D800F9D9B9 /* SNEmail.m in Sources */,
+				5E8340581962B5D800F9D9B9 /* SNGooglePlus.m in Sources */,
+				5E83402C1962B49B00F9D9B9 /* OAuth10.m in Sources */,
+				5E8340601962F9C500F9D9B9 /* Base64Transcoder.c in Sources */,
 				5E812FDD1952C02A00823A89 /* SNSharer.m in Sources */,
-				5E884CF6195C292900D21661 /* SNGooglePlus.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,6 +13,7 @@
 #import "SNFacebook.h"
 #import "SNGooglePlus.h"
 #import "SNInstagram.h"
+#import "SNLinkedIn.h"
 #import "SNSms.h"
 #import "SNTwitter.h"
 
@@ -51,6 +52,9 @@
                 break;
             case SERVICE_GOOGLEPLUS:
                 _service = [[SNGooglePlus alloc] initWithParentViewController:parentViewController];
+                break;
+            case SERVICE_LINKEDIN:
+                _service = [[SNLinkedIn alloc] initWithParentViewController:parentViewController];
                 break;
         }
         if (!_service)

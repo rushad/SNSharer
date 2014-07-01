@@ -15,7 +15,8 @@ typedef NS_ENUM(NSUInteger, ShareService)
     SERVICE_FACEBOOK,
     SERVICE_TWITTER,
     SERVICE_INSTAGRAM,
-    SERVICE_GOOGLEPLUS
+    SERVICE_GOOGLEPLUS,
+    SERVICE_LINKEDIN
 };
 
 @interface SNSharer : NSObject

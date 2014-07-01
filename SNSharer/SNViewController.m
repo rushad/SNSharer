@@ -18,6 +18,7 @@
 @property (strong, nonatomic) SNSharer* sharerTwitter;
 @property (strong, nonatomic) SNSharer* sharerInstagram;
 @property (strong, nonatomic) SNSharer* sharerGooglePlus;
+@property (strong, nonatomic) SNSharer* sharerLinkedIn;
 
 @property (weak, nonatomic) IBOutlet UITextField *urlView;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
@@ -29,6 +30,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *shareViaTwitter;
 @property (weak, nonatomic) IBOutlet UIButton *shareViaInstagram;
 @property (weak, nonatomic) IBOutlet UIButton *shareViaGooglePlus;
+@property (weak, nonatomic) IBOutlet UIButton *shareViaLinkedIn;
 
 @end
 
@@ -44,6 +46,7 @@
     self.sharerTwitter = [[SNSharer alloc] initWithService:SERVICE_TWITTER parentViewController:self];
     self.sharerInstagram = [[SNSharer alloc] initWithService:SERVICE_INSTAGRAM parentViewController:self];
     self.sharerGooglePlus = [[SNSharer alloc] initWithService:SERVICE_GOOGLEPLUS parentViewController:self];
+    self.sharerLinkedIn = [[SNSharer alloc] initWithService:SERVICE_LINKEDIN parentViewController:self];
     
     self.shareViaEmail.enabled = (self.sharerEmail != nil);
     self.shareViaSMS.enabled = (self.sharerSMS != nil);
@@ -51,35 +54,47 @@
     self.shareViaTwitter.enabled = (self.sharerTwitter != nil);
     self.shareViaInstagram.enabled = (self.sharerInstagram != nil);
     self.shareViaGooglePlus.enabled = (self.sharerGooglePlus != nil);
+    self.shareViaLinkedIn.enabled = (self.sharerLinkedIn != nil);
+}
+
+- (void)share:(SNSharer*)sharer
+{
+    [sharer shareText:self.textView.text url:self.urlView.text image:self.imageView.image];
 }
 
 - (IBAction)shareViaEmail:(id)sender
 {
-    [self.sharerEmail shareText:self.textView.text url:self.urlView.text image:self.imageView.image];
+    [self share:self.sharerEmail];
 }
 
 - (IBAction)shareViaSMS:(id)sender
 {
-    [self.sharerSMS shareText:self.textView.text url:self.urlView.text image:nil];
+    [self share:self.sharerSMS];
 }
 
 - (IBAction)shareViaFacebook:(id)sender
 {
-    [self.sharerFacebook shareText:self.textView.text url:self.urlView.text image:self.imageView.image];
+    [self share:self.sharerFacebook];
 }
 
 - (IBAction)shareViaTwitter:(id)sender
 {
-    [self.sharerTwitter shareText:self.textView.text url:self.urlView.text image:self.imageView.image];
+    [self share:self.sharerTwitter];
 }
 
 - (IBAction)shareViaInstagram:(id)sender
 {
-    [self.sharerInstagram shareText:self.textView.text url:self.urlView.text image:self.imageView.image];
+    [self share:self.sharerInstagram];
 }
 
 - (IBAction)shareViaGooglePlus:(id)sender
 {
-    [self.sharerGooglePlus shareText:self.textView.text url:self.urlView.text image:self.imageView.image];
+    [self share:self.sharerGooglePlus];
 }
+
+- (IBAction)shareViaLinkedIn:(id)sender
+{
+    [self share:self.sharerLinkedIn];
+}
+
 @end
