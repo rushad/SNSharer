@@ -44,6 +44,7 @@
 		5E884D0C195C35BF00D21661 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E884D0B195C35BF00D21661 /* CoreMotion.framework */; };
 		5E884D0E195C360A00D21661 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E884D0D195C360A00D21661 /* Security.framework */; };
 		5E884D10195C361A00D21661 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E884D0F195C361A00D21661 /* SystemConfiguration.framework */; };
+		5E89E7E2196409CB00610CB1 /* TestOAuth10.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E89E7E1196409CB00610CB1 /* TestOAuth10.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,6 +113,7 @@
 		5E884D0B195C35BF00D21661 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		5E884D0D195C360A00D21661 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		5E884D0F195C361A00D21661 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		5E89E7E1196409CB00610CB1 /* TestOAuth10.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestOAuth10.m; path = SNSharer/OAuth1.0/TestOAuth10.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -255,6 +257,7 @@
 				5E83405D1962F9C500F9D9B9 /* Base64 */,
 				5E83402A1962B49B00F9D9B9 /* OAuth10.h */,
 				5E83402B1962B49B00F9D9B9 /* OAuth10.m */,
+				5E89E7E1196409CB00610CB1 /* TestOAuth10.m */,
 			);
 			name = OAuth10;
 			sourceTree = "<group>";
@@ -423,6 +426,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E89E7E2196409CB00610CB1 /* TestOAuth10.m in Sources */,
 				5E27181F195B2EE0000D092D /* TestSNSharer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

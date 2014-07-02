@@ -19,7 +19,7 @@
 @implementation SNLinkedIn
 
 static NSString* const urlRequestToken = @"https://api.linkedin.com/uas/oauth/requestToken";
-static NSString* const urlAuthorize = @"https//www.linkedin.com/uas/oauth/authenticate";
+static NSString* const urlAuthorize = @"https://www.linkedin.com/uas/oauth/authenticate";
 static NSString* const urlAccessToken = @"https://api.linkedin.com/uas/oauth/accessToken";
 static NSString* const APIKey = @"77o77yemk1co4x";
 static NSString* const secretKey = @"UKLNKYM7kslt9STZ";
@@ -61,8 +61,11 @@ static NSString* const secretKey = @"UKLNKYM7kslt9STZ";
                                                  authorizeURL:urlAuthorize
                                                accessTokenURL:urlAccessToken
                                                   consumerKey:APIKey
-                                                    signature:secretKey];
-    [oauth authorize];
+                                                    signature:secretKey
+                                         parentViewController:self.parentViewController];
+    if ([oauth authorize])
+    {
+    }
 }
 
 @end

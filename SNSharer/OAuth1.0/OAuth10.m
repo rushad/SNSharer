@@ -19,6 +19,10 @@
 @property (strong, nonatomic) NSString* urlAccessToken;
 @property (strong, nonatomic) NSString* consumerKey;
 @property (strong, nonatomic) NSString* signature;
+@property (strong, nonatomic) NSString* authToken;
+@property (strong, nonatomic) NSString* authTokenSecret;
+
+@property (weak, nonatomic) UIViewController* parentViewController;
 
 @end
 
@@ -29,6 +33,7 @@
                          accessTokenURL:(NSString *)urlAccesToken
                             consumerKey:(NSString *)consumerKey
                               signature:(NSString *)signature
+                   parentViewController:(UIViewController *)parentViewController
 {
     self = [super init];
     if (self)
@@ -38,25 +43,49 @@
         _urlAccessToken = urlAccesToken;
         _consumerKey = consumerKey;
         _signature = signature;
+        _parentViewController = parentViewController;
     }
     return self;
 }
 
-+ (NSString*)URLEncodeString:(NSString*)src
++ (NSString*)URLEncodeString:(NSString*)string
 {
     NSString *res = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
-                                                                           (CFStringRef)src,
+                                                                           (CFStringRef)string,
                                                                            NULL,
 																		   CFSTR("!*'();:@&=+$,/?%#[]"),
                                                                            kCFStringEncodingUTF8));
     return res;
 }
 
-- (NSString*)signText:(NSString*)text
-           withSecret:(NSString*)secret
++ (NSString*)signatureBaseStringUrl:(NSString*)url parameters:(NSDictionary*)parameters
 {
-    unsigned char sha1[CC_SHA1_DIGEST_LENGTH];
+    NSMutableArray* arrayParameters = [[NSMutableArray alloc] init];
 
+    for (NSString* parameterName in [[parameters allKeys] sortedArrayUsingSelector:@selector(compare:)])
+    {
+        NSMutableString* strParameter = [NSMutableString stringWithString:parameterName];
+        [strParameter appendString:@"="];
+        [strParameter appendString:[parameters valueForKey:parameterName]];
+        [arrayParameters addObject:strParameter];
+    }
+
+    NSString* res = [NSString stringWithFormat:@"%@&%@&%@", @"GET", [OAuth10 URLEncodeString:url],
+                     [OAuth10 URLEncodeString:[arrayParameters componentsJoinedByString:@"&"]]];
+                     
+    return res;
+}
+
++ (NSString*)signText:(NSString*)text
+       consumerSecret:(NSString*)consumerSecret
+          tokenSecret:(NSString*)tokenSecret
+{
+    NSString* secret = [NSString stringWithFormat:@"%@&%@",
+                        [OAuth10 URLEncodeString:consumerSecret],
+                        [OAuth10 URLEncodeString:tokenSecret]];
+    
+    unsigned char sha1[CC_SHA1_DIGEST_LENGTH];
+    
     NSData* bufSecret = [secret dataUsingEncoding:NSUTF8StringEncoding];
     NSData* bufText = [text dataUsingEncoding:NSUTF8StringEncoding];
     
@@ -68,32 +97,116 @@
     
     Base64EncodeData(sha1, CC_SHA1_DIGEST_LENGTH, base64, &resultLen);
     
-    NSData* data = [NSData dataWithBytes:base64 length:resultLen];
-    
-    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSString* sign = [[NSString alloc] initWithData:[NSData dataWithBytes:base64 length:resultLen] encoding:NSUTF8StringEncoding];
+
+    return sign;
 }
 
-- (NSString*)signatureBaseStringUrl:(NSString*)url parameters:(NSDictionary*)parameters
++ (NSString*)stringOfParameters:(NSDictionary*)parameters
 {
     NSMutableArray* arrayParameters = [[NSMutableArray alloc] init];
-    for (NSString* parameterName in [[parameters allKeys] sortedArrayUsingSelector:@selector(compare:)])
+    
+    for (NSString* parameterName in [parameters allKeys])
     {
-        NSMutableString* strParameter = [NSMutableString stringWithString:[self.class URLEncodeString:parameterName]];
-        [strParameter appendString:@"="];
-        [strParameter appendString:[self.class URLEncodeString:[parameters valueForKey:parameterName]]];
+        NSString* value = [parameters valueForKey:parameterName];
+        NSString* strParameter = [NSString stringWithFormat:@"%@=%@", parameterName, value];
         [arrayParameters addObject:strParameter];
     }
-    NSLog(@"%@", [arrayParameters componentsJoinedByString:@"&"]);
-    return @"test";
+    
+    return [arrayParameters componentsJoinedByString:@"&"];
 }
 
-- (void)authorize
++ (NSDictionary*)dictionaryFromURLParametersString:(NSString*)string
 {
-    NSDictionary* parameters = @{ @"oauth_consumer_key" : self.consumerKey,
-                                  @"oauth_timestamp" : @"123 test&ing?",
-                                  @"oauth_signature_method" : @"HMAC_SHA1" };
-    NSLog(@"%@", [self signatureBaseStringUrl:[self urlRequestToken]
-                                   parameters:parameters]);
+    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] init];
+
+    NSArray* arrayParameters = [string componentsSeparatedByString:@"&"];
+    
+    for (NSString* strParameter in arrayParameters)
+    {
+        NSArray* parameter = [strParameter componentsSeparatedByString:@"="];
+        [parameters setValue:parameter[1] forKey:parameter[0]];
+    }
+    
+    return parameters;
+}
+
+- (NSString*)timestamp
+{
+    return [NSString stringWithFormat:@"%ld", time(0)];
+}
+
+- (NSString*)nonce
+{
+    return [NSString stringWithFormat:@"%ld", random()];
+}
+
+- (BOOL)getAuthToken
+{
+    NSDictionary* queryParameters = @{ @"oauth_consumer_key" : self.consumerKey,
+                                  @"oauth_signature_method" : @"HMAC-SHA1",
+                                  @"oauth_callback" : @"oob",
+                                  @"oauth_timestamp" : [self timestamp],
+                                  @"oauth_nonce" : [self nonce] };
+    
+    NSString* signatureBaseString = [self.class signatureBaseStringUrl:[self urlRequestToken]
+                                                            parameters:queryParameters];
+    
+    NSString* sign = [self.class signText:signatureBaseString
+                           consumerSecret:self.signature
+                              tokenSecret:@""];
+    
+    NSString* queryRequestToken = [NSString stringWithFormat:@"%@?%@&oauth_signature=%@",
+                                   [self urlRequestToken], [self.class stringOfParameters:queryParameters], sign];
+    
+    NSString* response = [NSString stringWithContentsOfURL:[NSURL URLWithString:queryRequestToken] encoding:NSUTF8StringEncoding error:nil];
+    
+    NSDictionary* responseParameters = [self.class dictionaryFromURLParametersString:response];
+
+    self.authToken = [responseParameters valueForKey:@"oauth_token"];
+    self.authTokenSecret = [responseParameters valueForKey:@"oauth_token_secret"];
+
+    return (self.authToken && self.authTokenSecret);
+}
+
+- (BOOL)authorize
+{
+    if (![self getAuthToken])
+    {
+        return NO;
+    }
+    
+    NSString* strUrl = [self.urlAutorize stringByAppendingString:[NSString stringWithFormat:@"?oauth_token=%@", self.authToken]];
+    
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
+    [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:strUrl]]];
+    
+    UIViewController* webController = [[UIViewController alloc] init];
+    webController.view = webView;
+    webController.navigationItem.title = @"LinkedIn";
+    
+    UIViewController* rootController = [[UIViewController alloc] init];
+    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:rootController];
+    [navigationController pushViewController:webController animated:YES];
+    navigationController.delegate = self;
+    
+    [self.parentViewController presentViewController:navigationController animated:YES completion:nil];
+
+
+    return YES;
+}
+
+#pragma mark - Delegates
+
+- (void)navigationController:(UINavigationController *)navigationController
+      willShowViewController:(UIViewController *)viewController
+                    animated:(BOOL)animated
+{
+    NSLog(@"qwe");
+    if (![viewController.view isKindOfClass:[UIWebView class]])
+    {
+        [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 @end

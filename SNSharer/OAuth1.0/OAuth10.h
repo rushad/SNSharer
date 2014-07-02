@@ -8,14 +8,28 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OAuth10 : NSObject
+@interface OAuth10 : NSObject<UINavigationControllerDelegate>
 
 - (instancetype)initWithRequestTokenURL:(NSString*)urlRequestToken
                            authorizeURL:(NSString*)urlAuthorize
                          accessTokenURL:(NSString*)urlAccesToken
                             consumerKey:(NSString*)consumerKey
-                              signature:(NSString*)signature;
+                              signature:(NSString*)signature
+                   parentViewController:(UIViewController*)parentViewController;
 
-- (void)authorize;
+- (BOOL)authorize;
+
++ (NSString*)URLEncodeString:(NSString*)string;
+
++ (NSString*)signatureBaseStringUrl:(NSString*)url
+                         parameters:(NSDictionary*)parameters;
+
++ (NSString*)signText:(NSString*)text
+       consumerSecret:(NSString*)consumerSecret
+          tokenSecret:(NSString*)tokenSecret;
+
++ (NSString*)stringOfParameters:(NSDictionary*)parameters;
+
++ (NSDictionary*)dictionaryFromURLParametersString:(NSString*)string;
 
 @end
