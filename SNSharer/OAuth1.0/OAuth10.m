@@ -12,7 +12,7 @@
 
 #import <CommonCrypto/CommonHMAC.h>
 
-@interface OAuth10()
+@interface OAuth10()<UINavigationControllerDelegate>
 
 @property (strong, nonatomic) NSString* urlRequestToken;
 @property (strong, nonatomic) NSString* urlAutorize;
@@ -166,6 +166,10 @@
     self.authToken = [responseParameters valueForKey:@"oauth_token"];
     self.authTokenSecret = [responseParameters valueForKey:@"oauth_token_secret"];
 
+    if (!self.authToken)
+    {
+        NSLog(@"Request auth token error: %@", response);
+    }
     return (self.authToken && self.authTokenSecret);
 }
 
@@ -202,7 +206,6 @@
       willShowViewController:(UIViewController *)viewController
                     animated:(BOOL)animated
 {
-    NSLog(@"qwe");
     if (![viewController.view isKindOfClass:[UIWebView class]])
     {
         [self.parentViewController dismissViewControllerAnimated:YES completion:nil];

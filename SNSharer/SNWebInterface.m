@@ -12,7 +12,7 @@
 
 @property (strong, nonatomic) NSString* serviceName;
 @property (strong, nonatomic) NSString* urlTemplate;
-@property (strong, nonatomic) UIViewController* parentViewController;
+@property (weak, nonatomic) UIViewController* parentViewController;
 
 @end
 

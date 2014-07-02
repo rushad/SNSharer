@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OAuth10 : NSObject<UINavigationControllerDelegate>
+@interface OAuth10 : NSObject
 
 - (instancetype)initWithRequestTokenURL:(NSString*)urlRequestToken
                            authorizeURL:(NSString*)urlAuthorize

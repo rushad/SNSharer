@@ -13,6 +13,7 @@
 @interface SNLinkedIn()
 
 @property (strong, nonatomic) UIViewController* parentViewController;
+@property (strong, nonatomic) OAuth10* oauth;
 
 @end
 
@@ -57,13 +58,13 @@ static NSString* const secretKey = @"UKLNKYM7kslt9STZ";
               url:(NSString*)url
             image:(UIImage*)image
 {
-    OAuth10* oauth = [[OAuth10 alloc] initWithRequestTokenURL:urlRequestToken
+    self.oauth = [[OAuth10 alloc] initWithRequestTokenURL:urlRequestToken
                                                  authorizeURL:urlAuthorize
                                                accessTokenURL:urlAccessToken
                                                   consumerKey:APIKey
                                                     signature:secretKey
                                          parentViewController:self.parentViewController];
-    if ([oauth authorize])
+    if ([self.oauth authorize])
     {
     }
 }
