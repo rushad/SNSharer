@@ -8,16 +8,30 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol OAuth10Delegate
+
+- (void)accessGranted;
+- (void)accessRefused;
+
+@end
+
 @interface OAuth10 : NSObject
+
+@property (weak, nonatomic) id<OAuth10Delegate> delegate;
 
 - (instancetype)initWithRequestTokenURL:(NSString*)urlRequestToken
                            authorizeURL:(NSString*)urlAuthorize
                          accessTokenURL:(NSString*)urlAccesToken
+                           submittedURL:(NSString*)urlSubmitted
+                   jsGettingAccessToken:(NSString*)jsGettingAccessToken
                             consumerKey:(NSString*)consumerKey
                               signature:(NSString*)signature
                    parentViewController:(UIViewController*)parentViewController;
 
-- (BOOL)authorize;
+- (void)authorize;
+
+- (NSString*)getResourceByRequest:(NSString*)urlRequest
+                       parameters:(NSDictionary*)parameters;
 
 + (NSString*)URLEncodeString:(NSString*)string;
 

@@ -34,6 +34,11 @@
                             consumerSecret:@"kd94hf93k423kf44"
                             tokenSecret:@"pfkkdhi9sl3r4s00"];
     XCTAssertEqualObjects(@"tR3+Ty81lMeYAr/Fid0kMTYa/WM=", sign);
+    
+    NSString* sign2 = [OAuth10 signText:@"GET&http%3A%2F%2Fapi.linkedin.com%2Fv1%2Fpeople%2F~&oauth_consumer_key%3D77o77yemk1co4x%26oauth_nonce%3D1234%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D1404387601%26oauth_version%3D1.0"
+                         consumerSecret:@"UKLNKYM7kslt9STZ"
+                            tokenSecret:@""];
+    XCTAssertEqualObjects(@"PQeLk8YW6C/T9152gaw0Ld/iQlE=", sign2);
 }
 
 - (void)testSignatureBaseString

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol SNServiceProtocol <NSObject>
+@protocol SNServiceProtocol
 
 - (instancetype)init __attribute__((unavailable("Must use initWithParentViewController: instead.")));
 - (instancetype)initWithParentViewController:(UIViewController*)parentViewController;

@@ -10,10 +10,13 @@
 
 #import "OAuth10.h"
 
-@interface SNLinkedIn()
+@interface SNLinkedIn()<OAuth10Delegate>
 
 @property (strong, nonatomic) UIViewController* parentViewController;
 @property (strong, nonatomic) OAuth10* oauth;
+
+@property (strong, nonatomic) NSString* text;
+@property (strong, nonatomic) NSString* url;
 
 @end
 
@@ -22,6 +25,8 @@
 static NSString* const urlRequestToken = @"https://api.linkedin.com/uas/oauth/requestToken";
 static NSString* const urlAuthorize = @"https://www.linkedin.com/uas/oauth/authenticate";
 static NSString* const urlAccessToken = @"https://api.linkedin.com/uas/oauth/accessToken";
+static NSString* const urlSubmitted = @"/uas/oauth/authorize/submit";
+static NSString* const jsGettingAccessToken = @"document.getElementsByClassName('access-code')[0].innerHTML";
 static NSString* const APIKey = @"77o77yemk1co4x";
 static NSString* const secretKey = @"UKLNKYM7kslt9STZ";
 
@@ -51,7 +56,7 @@ static NSString* const secretKey = @"UKLNKYM7kslt9STZ";
 
 - (BOOL)isImageSupported
 {
-    return true;
+    return false;
 }
 
 - (void)shareText:(NSString*)text
@@ -59,14 +64,34 @@ static NSString* const secretKey = @"UKLNKYM7kslt9STZ";
             image:(UIImage*)image
 {
     self.oauth = [[OAuth10 alloc] initWithRequestTokenURL:urlRequestToken
-                                                 authorizeURL:urlAuthorize
-                                               accessTokenURL:urlAccessToken
-                                                  consumerKey:APIKey
-                                                    signature:secretKey
-                                         parentViewController:self.parentViewController];
-    if ([self.oauth authorize])
-    {
-    }
+                                             authorizeURL:urlAuthorize
+                                           accessTokenURL:urlAccessToken
+                                             submittedURL:urlSubmitted
+                                     jsGettingAccessToken:jsGettingAccessToken
+                                              consumerKey:APIKey
+                                                signature:secretKey
+                                     parentViewController:self.parentViewController];
+    self.oauth.delegate = self;
+    
+    self.text = text;
+    self.url = url;
+    
+    [self.oauth authorize];
+}
+
+#pragma mark - OAuthDelegate
+
+- (void)accessGranted
+{
+    NSString* res = [self.oauth getResourceByRequest:@"http://api.linkedin.com/v1/people/~/shares"
+                                          parameters:@{ @"comment" : self.text,
+                                                        @"submitted-url" : self.url } ];
+    NSLog(@"Response: %@", res);
+}
+
+- (void)accessRefused
+{
+    NSLog(@"Access refused");
 }
 
 @end

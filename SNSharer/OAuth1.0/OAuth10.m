@@ -12,15 +12,21 @@
 
 #import <CommonCrypto/CommonHMAC.h>
 
-@interface OAuth10()<UINavigationControllerDelegate>
+@interface OAuth10()<UIWebViewDelegate, UINavigationControllerDelegate>
 
 @property (strong, nonatomic) NSString* urlRequestToken;
 @property (strong, nonatomic) NSString* urlAutorize;
 @property (strong, nonatomic) NSString* urlAccessToken;
+@property (strong, nonatomic) NSString* urlSubmitted;
+@property (strong, nonatomic) NSString* jsGettingAccessToken;
 @property (strong, nonatomic) NSString* consumerKey;
 @property (strong, nonatomic) NSString* signature;
-@property (strong, nonatomic) NSString* authToken;
-@property (strong, nonatomic) NSString* authTokenSecret;
+
+@property (strong, nonatomic) NSString* requestToken;
+@property (strong, nonatomic) NSString* requestTokenSecret;
+@property (strong, nonatomic) NSString* verifier;
+@property (strong, nonatomic) NSString* accessToken;
+@property (strong, nonatomic) NSString* accessTokenSecret;
 
 @property (weak, nonatomic) UIViewController* parentViewController;
 
@@ -28,12 +34,14 @@
 
 @implementation OAuth10
 
-- (instancetype)initWithRequestTokenURL:(NSString *)urlRequestToken
-                           authorizeURL:(NSString *)urlAuthorize
-                         accessTokenURL:(NSString *)urlAccesToken
-                            consumerKey:(NSString *)consumerKey
-                              signature:(NSString *)signature
-                   parentViewController:(UIViewController *)parentViewController
+- (instancetype)initWithRequestTokenURL:(NSString*)urlRequestToken
+                           authorizeURL:(NSString*)urlAuthorize
+                         accessTokenURL:(NSString*)urlAccesToken
+                           submittedURL:(NSString*)urlSubmitted
+                   jsGettingAccessToken:(NSString*)jsGettingAccessToken
+                            consumerKey:(NSString*)consumerKey
+                              signature:(NSString*)signature
+                   parentViewController:(UIViewController*)parentViewController
 {
     self = [super init];
     if (self)
@@ -41,6 +49,8 @@
         _urlRequestToken = urlRequestToken;
         _urlAutorize = urlAuthorize;
         _urlAccessToken = urlAccesToken;
+        _urlSubmitted = urlSubmitted;
+        _jsGettingAccessToken = jsGettingAccessToken;
         _consumerKey = consumerKey;
         _signature = signature;
         _parentViewController = parentViewController;
@@ -106,7 +116,7 @@
 {
     NSMutableArray* arrayParameters = [[NSMutableArray alloc] init];
     
-    for (NSString* parameterName in [parameters allKeys])
+    for (NSString* parameterName in [[parameters allKeys] sortedArrayUsingSelector:@selector(compare:)])
     {
         NSString* value = [parameters valueForKey:parameterName];
         NSString* strParameter = [NSString stringWithFormat:@"%@=%@", parameterName, value];
@@ -149,7 +159,7 @@
                                   @"oauth_timestamp" : [self timestamp],
                                   @"oauth_nonce" : [self nonce] };
     
-    NSString* signatureBaseString = [self.class signatureBaseStringUrl:[self urlRequestToken]
+    NSString* signatureBaseString = [self.class signatureBaseStringUrl:self.urlRequestToken
                                                             parameters:queryParameters];
     
     NSString* sign = [self.class signText:signatureBaseString
@@ -157,37 +167,29 @@
                               tokenSecret:@""];
     
     NSString* queryRequestToken = [NSString stringWithFormat:@"%@?%@&oauth_signature=%@",
-                                   [self urlRequestToken], [self.class stringOfParameters:queryParameters], sign];
+                                   self.urlRequestToken, [self.class stringOfParameters:queryParameters], [self.class URLEncodeString:sign]];
     
     NSString* response = [NSString stringWithContentsOfURL:[NSURL URLWithString:queryRequestToken] encoding:NSUTF8StringEncoding error:nil];
     
     NSDictionary* responseParameters = [self.class dictionaryFromURLParametersString:response];
 
-    self.authToken = [responseParameters valueForKey:@"oauth_token"];
-    self.authTokenSecret = [responseParameters valueForKey:@"oauth_token_secret"];
+    self.requestToken = [responseParameters valueForKey:@"oauth_token"];
+    self.requestTokenSecret = [responseParameters valueForKey:@"oauth_token_secret"];
 
-    if (!self.authToken)
-    {
-        NSLog(@"Request auth token error: %@", response);
-    }
-    return (self.authToken && self.authTokenSecret);
+    return (self.requestToken && self.requestTokenSecret);
 }
 
-- (BOOL)authorize
+- (void)getVerifier
 {
-    if (![self getAuthToken])
-    {
-        return NO;
-    }
-    
-    NSString* strUrl = [self.urlAutorize stringByAppendingString:[NSString stringWithFormat:@"?oauth_token=%@", self.authToken]];
+    NSString* strUrl = [self.urlAutorize stringByAppendingString:[NSString stringWithFormat:@"?oauth_token=%@", self.requestToken]];
     
     UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
     [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:strUrl]]];
+    webView.delegate = self;
     
     UIViewController* webController = [[UIViewController alloc] init];
     webController.view = webView;
-    webController.navigationItem.title = @"LinkedIn";
+    webController.navigationItem.title = @"Authorization";
     
     UIViewController* rootController = [[UIViewController alloc] init];
     UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:rootController];
@@ -195,15 +197,116 @@
     navigationController.delegate = self;
     
     [self.parentViewController presentViewController:navigationController animated:YES completion:nil];
-
-
-    return YES;
 }
 
-#pragma mark - Delegates
+- (void)retrieveAccessToken
+{
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithDictionary:
+                                        @{ @"oauth_consumer_key" : self.consumerKey,
+                                           @"oauth_token" : self.requestToken,
+                                           @"oauth_signature_method" : @"HMAC-SHA1",
+                                           @"oauth_timestamp" : [self timestamp],
+                                           @"oauth_nonce" : [self nonce],
+                                           @"oauth_verifier" : self.verifier } ];
+    
+    NSString* signatureBaseString = [self.class signatureBaseStringUrl:self.urlAccessToken
+                                                            parameters:parameters];
+    
+    NSString* sign = [self.class signText:signatureBaseString
+                           consumerSecret:self.signature
+                              tokenSecret:self.requestTokenSecret];
+    
+    [parameters setValue:[self.class URLEncodeString:sign] forKey:@"oauth_signature"];
+    
+    NSString* queryAccessToken = [NSString stringWithFormat:@"%@?%@",
+                                   self.urlAccessToken, [self.class stringOfParameters:parameters]];
+    
+    NSString* response = [NSString stringWithContentsOfURL:[NSURL URLWithString:queryAccessToken] encoding:NSUTF8StringEncoding error:nil];
+    
+    NSDictionary* responseParameters = [self.class dictionaryFromURLParametersString:response];
+    
+    self.accessToken = [responseParameters valueForKey:@"oauth_token"];
+    self.accessTokenSecret = [responseParameters valueForKey:@"oauth_token_secret"];
+}
 
-- (void)navigationController:(UINavigationController *)navigationController
-      willShowViewController:(UIViewController *)viewController
+- (void)authorize
+{
+    if ([self getAuthToken])
+    {
+        [self getVerifier];
+    }
+}
+
+- (NSString*)getResourceByRequest:(NSString*)urlRequest
+                       parameters:(NSDictionary*)requestParameters
+{
+    if (![self.accessToken length])
+        return nil;
+    
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithDictionary:
+                                        @{ @"oauth_consumer_key" : self.consumerKey,
+                                           @"oauth_token" : self.accessToken,
+                                           @"oauth_signature_method" : @"HMAC-SHA1",
+                                           @"oauth_version" : @"1.0",
+                                           @"oauth_timestamp" : [self timestamp],
+                                           @"oauth_nonce" : [self nonce] } ];
+
+    for (NSString* key in requestParameters)
+    {
+        [parameters setValue:[self.class URLEncodeString:[requestParameters valueForKey:key]] forKey:key];
+    }
+    
+    
+    NSString* signatureBaseString = [self.class signatureBaseStringUrl:urlRequest
+                                                            parameters:parameters];
+    
+    NSLog(@"signatureBaseString: %@", signatureBaseString);
+    
+    NSString* sign = [self.class signText:signatureBaseString
+                           consumerSecret:self.signature
+                              tokenSecret:self.accessTokenSecret];
+    
+    [parameters setValue:[self.class URLEncodeString:sign] forKey:@"oauth_signature"];
+    
+    NSString* queryRequestToken = [NSString stringWithFormat:@"%@?%@",
+                                   urlRequest, [self.class stringOfParameters:parameters]];
+    
+    NSLog(@"query: %@", queryRequestToken);
+    
+    NSString* response = [NSString stringWithContentsOfURL:[NSURL URLWithString:queryRequestToken] encoding:NSUTF8StringEncoding error:nil];
+
+    return response;
+}
+
+#pragma mark - UIWebViewDelegate
+
+- (void)webViewDidFinishLoad:(UIWebView*)webView
+{
+//    NSLog(@"UIWebView finished loading: %@", webView.request.URL.path);
+    if ([webView.request.URL.path isEqualToString:self.urlSubmitted])
+    {
+        self.verifier = [webView stringByEvaluatingJavaScriptFromString:self.jsGettingAccessToken];
+        if ([self.verifier length])
+        {
+            [self retrieveAccessToken];
+        }
+        if ([self.accessToken length])
+        {
+            [self.delegate accessGranted];
+        }
+        else
+        {
+            [self.delegate accessRefused];
+        }
+        
+        [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
+#pragma mark - UINavigationControllerDelegate
+
+- (void)navigationController:(UINavigationController*)navigationController
+      willShowViewController:(UIViewController*)viewController
                     animated:(BOOL)animated
 {
     if (![viewController.view isKindOfClass:[UIWebView class]])
