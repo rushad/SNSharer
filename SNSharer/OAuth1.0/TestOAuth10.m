@@ -31,21 +31,20 @@
 - (void)testSignText
 {
     NSString* sign = [OAuth10 signText:@"GET&http%3A%2F%2Fphotos.example.net%2Fphotos&file%3Dvacation.jpg%26oauth_consumer_key%3Ddpf43f3p2l4k3l03%26oauth_nonce%3Dkllo9940pd9333jh%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D1191242096%26oauth_token%3Dnnch734d00sl2jdk%26oauth_version%3D1.0%26size%3Doriginal"
-                            consumerSecret:@"kd94hf93k423kf44"
-                            tokenSecret:@"pfkkdhi9sl3r4s00"];
-    XCTAssertEqualObjects(@"tR3+Ty81lMeYAr/Fid0kMTYa/WM=", sign);
+                        consumerSecret:@"kd94hf93k423kf44"
+                           tokenSecret:@"pfkkdhi9sl3r4s00"];
     
-    NSString* sign2 = [OAuth10 signText:@"GET&http%3A%2F%2Fapi.linkedin.com%2Fv1%2Fpeople%2F~&oauth_consumer_key%3D77o77yemk1co4x%26oauth_nonce%3D1234%26oauth_signature_method%3DHMAC-SHA1%26oauth_timestamp%3D1404387601%26oauth_version%3D1.0"
-                         consumerSecret:@"UKLNKYM7kslt9STZ"
-                            tokenSecret:@""];
-    XCTAssertEqualObjects(@"PQeLk8YW6C/T9152gaw0Ld/iQlE=", sign2);
+    XCTAssertEqualObjects(@"tR3+Ty81lMeYAr/Fid0kMTYa/WM=", sign);
 }
 
 - (void)testSignatureBaseString
 {
     NSDictionary* parameters = @{ @"key1" : @"value1",
                                   @"key2" : @"value2" };
-    NSString* res = [OAuth10 signatureBaseStringUrl:@"http://example.com/query" parameters:parameters];
+    
+    NSString* res = [OAuth10 signatureBaseStringMethod:@"GET"
+                                                   url:@"http://example.com/query"
+                                            parameters:parameters];
     
     XCTAssertEqualObjects(@"GET&http%3A%2F%2Fexample.com%2Fquery&key1%3Dvalue1%26key2%3Dvalue2", res);
 }
@@ -54,6 +53,7 @@
 {
     NSDictionary* parameters = @{ @"key1" : @"value1",
                                   @"key2" : @"value2" };
+    
     NSString* string = [OAuth10 stringOfParameters:parameters];
     
     XCTAssertEqualObjects(@"key1=value1&key2=value2", string);
@@ -62,6 +62,7 @@
 - (void)testDictionaryFromURLParametersString
 {
     NSDictionary* dict = [OAuth10 dictionaryFromURLParametersString:@"key1=value1&key2=value2"];
+    
     XCTAssertEqualObjects(@"value2", [dict valueForKey:@"key2"]);
 }
 

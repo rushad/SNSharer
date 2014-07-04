@@ -46,7 +46,7 @@
                                     <action selector="shareViaSMS:" destination="dq8-Dw-6BP" eventType="touchUpInside" id="QT0-gY-BEM"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="http://example.com" borderStyle="roundedRect" placeholder="http://" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ig1-gl-816">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="http://helpbook.com" borderStyle="roundedRect" placeholder="http://" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ig1-gl-816">
                                 <rect key="frame" x="13" y="299" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <accessibility key="accessibilityConfiguration" hint="" label="http://">

@@ -8,16 +8,20 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol OAuth10Delegate
+@protocol OAuth10Delegate<NSObject>
 
 - (void)accessGranted;
-- (void)accessRefused;
+
+@optional
+- (void)accessDenied;
 
 @end
 
 @interface OAuth10 : NSObject
 
 @property (weak, nonatomic) id<OAuth10Delegate> delegate;
+
+#pragma mark - Initializer
 
 - (instancetype)initWithRequestTokenURL:(NSString*)urlRequestToken
                            authorizeURL:(NSString*)urlAuthorize
@@ -28,15 +32,26 @@
                               signature:(NSString*)signature
                    parentViewController:(UIViewController*)parentViewController;
 
+#pragma mark - Public interface
+
 - (void)authorize;
 
-- (NSString*)getResourceByRequest:(NSString*)urlRequest
-                       parameters:(NSDictionary*)parameters;
+- (void)getResourceByQuery:(NSString*)urlQuery
+                parameters:(NSDictionary*)parameters
+                 onSuccess:(void (^)(NSString* body))onSuccessBlock;
+
+- (void)postResourceByQuery:(NSString*)urlQuery
+           headerParameters:(NSDictionary*)headerParameters
+                       body:(NSString*)body
+                  onSuccess:(void (^)(NSString* body))onSuccessBlock;
+
+#pragma mark - Class methods (are public for unit testing)
 
 + (NSString*)URLEncodeString:(NSString*)string;
 
-+ (NSString*)signatureBaseStringUrl:(NSString*)url
-                         parameters:(NSDictionary*)parameters;
++ (NSString*)signatureBaseStringMethod:(NSString*)method
+                                   url:(NSString*)url
+                            parameters:(NSDictionary*)parameters;
 
 + (NSString*)signText:(NSString*)text
        consumerSecret:(NSString*)consumerSecret

@@ -27,6 +27,7 @@ static NSString* const urlAuthorize = @"https://www.linkedin.com/uas/oauth/authe
 static NSString* const urlAccessToken = @"https://api.linkedin.com/uas/oauth/accessToken";
 static NSString* const urlSubmitted = @"/uas/oauth/authorize/submit";
 static NSString* const jsGettingAccessToken = @"document.getElementsByClassName('access-code')[0].innerHTML";
+
 static NSString* const APIKey = @"77o77yemk1co4x";
 static NSString* const secretKey = @"UKLNKYM7kslt9STZ";
 
@@ -75,23 +76,54 @@ static NSString* const secretKey = @"UKLNKYM7kslt9STZ";
     
     self.text = text;
     self.url = url;
-    
+
     [self.oauth authorize];
+}
+
+- (void)share
+{
+    NSString* xmlShare = [NSString stringWithFormat:
+                            @"<share>"
+                             "  <comment></comment>"
+                             "  <content>"
+                             "    <title></title>"
+                             "    <description>%@</description>"
+                             "    <submitted-url>%@</submitted-url>"
+                             "    <submitted-image-url></submitted-image-url>"
+                             "  </content>"
+                             "  <visibility>"
+                             "    <code>anyone</code>"
+                             "  </visibility>"
+                             "</share>",
+                            self.text, self.url];
+
+    [self.oauth postResourceByQuery:@"http://api.linkedin.com/v1/people/~/shares"
+                   headerParameters:@{ @"Content-Type" : @"text/xml" }
+                               body:xmlShare
+                          onSuccess:nil];/*^(NSString* body)
+                                          {
+                                              NSLog(@"LinkedIn response:\r\n%@", body);
+                                          }];*/
 }
 
 #pragma mark - OAuthDelegate
 
 - (void)accessGranted
 {
-    NSString* res = [self.oauth getResourceByRequest:@"http://api.linkedin.com/v1/people/~/shares"
-                                          parameters:@{ @"comment" : self.text,
-                                                        @"submitted-url" : self.url } ];
-    NSLog(@"Response: %@", res);
+/*
+    [self.oauth getResourceByQuery:@"http://api.linkedin.com/v1/people/~"
+                        parameters:nil
+                         onSuccess:^(NSString* body)
+                                    {
+                                        NSLog(@"Body:\r\n%@", body);
+                                    }];
+*/
+    [self share];
 }
-
-- (void)accessRefused
+/*
+- (void)accessDenied
 {
-    NSLog(@"Access refused");
+    NSLog(@"LinkedIn: access denied");
 }
-
+*/
 @end

@@ -34,6 +34,8 @@
 
 @implementation OAuth10
 
+#pragma mark - Initializer
+
 - (instancetype)initWithRequestTokenURL:(NSString*)urlRequestToken
                            authorizeURL:(NSString*)urlAuthorize
                          accessTokenURL:(NSString*)urlAccesToken
@@ -58,6 +60,8 @@
     return self;
 }
 
+#pragma mark - Class methods
+
 + (NSString*)URLEncodeString:(NSString*)string
 {
     NSString *res = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
@@ -68,7 +72,9 @@
     return res;
 }
 
-+ (NSString*)signatureBaseStringUrl:(NSString*)url parameters:(NSDictionary*)parameters
++ (NSString*)signatureBaseStringMethod:(NSString*)method
+                                   url:(NSString*)url
+                            parameters:(NSDictionary*)parameters;
 {
     NSMutableArray* arrayParameters = [[NSMutableArray alloc] init];
 
@@ -80,7 +86,7 @@
         [arrayParameters addObject:strParameter];
     }
 
-    NSString* res = [NSString stringWithFormat:@"%@&%@&%@", @"GET", [OAuth10 URLEncodeString:url],
+    NSString* res = [NSString stringWithFormat:@"%@&%@&%@", method, [OAuth10 URLEncodeString:url],
                      [OAuth10 URLEncodeString:[arrayParameters componentsJoinedByString:@"&"]]];
                      
     return res;
@@ -141,6 +147,8 @@
     return parameters;
 }
 
+#pragma mark - Private methods
+
 - (NSString*)timestamp
 {
     return [NSString stringWithFormat:@"%ld", time(0)];
@@ -151,7 +159,7 @@
     return [NSString stringWithFormat:@"%ld", random()];
 }
 
-- (BOOL)getAuthToken
+- (void)getAuthToken
 {
     NSDictionary* queryParameters = @{ @"oauth_consumer_key" : self.consumerKey,
                                   @"oauth_signature_method" : @"HMAC-SHA1",
@@ -159,8 +167,9 @@
                                   @"oauth_timestamp" : [self timestamp],
                                   @"oauth_nonce" : [self nonce] };
     
-    NSString* signatureBaseString = [self.class signatureBaseStringUrl:self.urlRequestToken
-                                                            parameters:queryParameters];
+    NSString* signatureBaseString = [self.class signatureBaseStringMethod:@"GET"
+                                                                      url:self.urlRequestToken
+                                                               parameters:queryParameters];
     
     NSString* sign = [self.class signText:signatureBaseString
                            consumerSecret:self.signature
@@ -169,14 +178,24 @@
     NSString* queryRequestToken = [NSString stringWithFormat:@"%@?%@&oauth_signature=%@",
                                    self.urlRequestToken, [self.class stringOfParameters:queryParameters], [self.class URLEncodeString:sign]];
     
-    NSString* response = [NSString stringWithContentsOfURL:[NSURL URLWithString:queryRequestToken] encoding:NSUTF8StringEncoding error:nil];
-    
-    NSDictionary* responseParameters = [self.class dictionaryFromURLParametersString:response];
-
-    self.requestToken = [responseParameters valueForKey:@"oauth_token"];
-    self.requestTokenSecret = [responseParameters valueForKey:@"oauth_token_secret"];
-
-    return (self.requestToken && self.requestTokenSecret);
+    [self getQuery:queryRequestToken
+        completion:^(NSURLResponse* response, NSData* body, NSError* error)
+                   {
+                       NSString* strBody = [[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding];
+                       NSDictionary* responseParameters = [self.class dictionaryFromURLParametersString:strBody];
+            
+                       self.requestToken = [responseParameters valueForKey:@"oauth_token"];
+                       self.requestTokenSecret = [responseParameters valueForKey:@"oauth_token_secret"];
+            
+                       if (self.requestToken && self.requestTokenSecret)
+                       {
+                           [self getVerifier];
+                       }
+                       else
+                       {
+                           [self accessDenied];
+                       }
+                   }];
 }
 
 - (void)getVerifier
@@ -209,8 +228,9 @@
                                            @"oauth_nonce" : [self nonce],
                                            @"oauth_verifier" : self.verifier } ];
     
-    NSString* signatureBaseString = [self.class signatureBaseStringUrl:self.urlAccessToken
-                                                            parameters:parameters];
+    NSString* signatureBaseString = [self.class signatureBaseStringMethod:@"GET"
+                                                                      url:self.urlAccessToken
+                                                               parameters:parameters];
     
     NSString* sign = [self.class signText:signatureBaseString
                            consumerSecret:self.signature
@@ -220,28 +240,74 @@
     
     NSString* queryAccessToken = [NSString stringWithFormat:@"%@?%@",
                                    self.urlAccessToken, [self.class stringOfParameters:parameters]];
-    
-    NSString* response = [NSString stringWithContentsOfURL:[NSURL URLWithString:queryAccessToken] encoding:NSUTF8StringEncoding error:nil];
-    
-    NSDictionary* responseParameters = [self.class dictionaryFromURLParametersString:response];
-    
-    self.accessToken = [responseParameters valueForKey:@"oauth_token"];
-    self.accessTokenSecret = [responseParameters valueForKey:@"oauth_token_secret"];
+
+    [self getQuery:queryAccessToken
+        completion:^(NSURLResponse* response, NSData* body, NSError* error)
+                   {
+                       NSString* strBody = [[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding];
+                       NSDictionary* responseParameters = [self.class dictionaryFromURLParametersString:strBody];
+         
+                       self.accessToken = [responseParameters valueForKey:@"oauth_token"];
+                       self.accessTokenSecret = [responseParameters valueForKey:@"oauth_token_secret"];
+         
+                       if (self.accessToken && self.accessTokenSecret)
+                       {
+                           [self.delegate accessGranted];
+                       }
+                       else
+                       {
+                           [self accessDenied];
+                       }
+                   }];
 }
 
-- (void)authorize
+- (void)getQuery:(NSString*)query
+      completion:(void (^)(NSURLResponse*, NSData*, NSError*))handler
 {
-    if ([self getAuthToken])
+    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:query]];
+    request.HTTPMethod = @"GET";
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:handler];
+}
+
+- (void)postQuery:(NSString*)query
+ headerParameters:(NSDictionary*)headerParameters
+             body:(NSString*)body
+       completion:(void (^)(NSURLResponse*, NSData*, NSError*))handler
+{
+    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:query]];
+    request.HTTPMethod = @"POST";
+    request.HTTPBody = [body dataUsingEncoding:NSUTF8StringEncoding];
+    
+    for (NSString* key in headerParameters)
     {
-        [self getVerifier];
+        [request setValue:[headerParameters valueForKey:key] forHTTPHeaderField:key];
+    }
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:handler];
+}
+
+- (void)accessDenied
+{
+    if ([self.delegate respondsToSelector:@selector(accessDenied)])
+    {
+        [self.delegate accessDenied];
     }
 }
 
-- (NSString*)getResourceByRequest:(NSString*)urlRequest
-                       parameters:(NSDictionary*)requestParameters
+#pragma mark - Public methods
+
+- (void)authorize
+{
+    [self getAuthToken];
+}
+
+- (void)getResourceByQuery:(NSString*)urlQuery
+                parameters:(NSDictionary*)requestParameters
+                 onSuccess:(void (^)(NSString *))onSuccessBlock
 {
     if (![self.accessToken length])
-        return nil;
+        return;
     
     NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithDictionary:
                                         @{ @"oauth_consumer_key" : self.consumerKey,
@@ -257,10 +323,9 @@
     }
     
     
-    NSString* signatureBaseString = [self.class signatureBaseStringUrl:urlRequest
-                                                            parameters:parameters];
-    
-    NSLog(@"signatureBaseString: %@", signatureBaseString);
+    NSString* signatureBaseString = [self.class signatureBaseStringMethod:@"GET"
+                                                                      url:urlQuery
+                                                               parameters:parameters];
     
     NSString* sign = [self.class signText:signatureBaseString
                            consumerSecret:self.signature
@@ -268,39 +333,95 @@
     
     [parameters setValue:[self.class URLEncodeString:sign] forKey:@"oauth_signature"];
     
-    NSString* queryRequestToken = [NSString stringWithFormat:@"%@?%@",
-                                   urlRequest, [self.class stringOfParameters:parameters]];
-    
-    NSLog(@"query: %@", queryRequestToken);
-    
-    NSString* response = [NSString stringWithContentsOfURL:[NSURL URLWithString:queryRequestToken] encoding:NSUTF8StringEncoding error:nil];
+    NSString* query = [NSString stringWithFormat:@"%@?%@",
+                                   urlQuery, [self.class stringOfParameters:parameters]];
 
-    return response;
+    [self getQuery:query
+        completion:^(NSURLResponse* response, NSData* body, NSError* error)
+                   {
+                       if (onSuccessBlock)
+                       {
+                           onSuccessBlock([[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding]);
+                       }
+                   }];
+}
+
+- (void)postResourceByQuery:(NSString*)urlQuery
+           headerParameters:(NSDictionary*)headerParameters
+                       body:(NSString*)body
+                  onSuccess:(void (^)(NSString *))onSuccessBlock
+{
+    if (![self.accessToken length])
+        return;
+    
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithDictionary:
+                                       @{ @"oauth_consumer_key" : self.consumerKey,
+                                          @"oauth_token" : self.accessToken,
+                                          @"oauth_signature_method" : @"HMAC-SHA1",
+                                          @"oauth_version" : @"1.0",
+                                          @"oauth_timestamp" : [self timestamp],
+                                          @"oauth_nonce" : [self nonce] } ];
+
+    NSString* signatureBaseString = [self.class signatureBaseStringMethod:@"POST"
+                                                                      url:urlQuery
+                                                               parameters:parameters];
+    
+    NSString* sign = [self.class signText:signatureBaseString
+                           consumerSecret:self.signature
+                              tokenSecret:self.accessTokenSecret];
+    
+    [parameters setValue:[self.class URLEncodeString:sign] forKey:@"oauth_signature"];
+    
+    NSString* query = [NSString stringWithFormat:@"%@?%@",
+                       urlQuery, [self.class stringOfParameters:parameters]];
+    
+    [self postQuery:query
+   headerParameters:headerParameters
+               body:body
+         completion:^(NSURLResponse* response, NSData* body, NSError* error)
+                    {
+                        if (onSuccessBlock)
+                        {
+                            onSuccessBlock([[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding]);
+                        }
+                    }];
 }
 
 #pragma mark - UIWebViewDelegate
 
 - (void)webViewDidFinishLoad:(UIWebView*)webView
 {
-//    NSLog(@"UIWebView finished loading: %@", webView.request.URL.path);
+//    NSLog(@"UIWebView finished loading: %@", webView.request.URL.absoluteString);
     if ([webView.request.URL.path isEqualToString:self.urlSubmitted])
     {
         self.verifier = [webView stringByEvaluatingJavaScriptFromString:self.jsGettingAccessToken];
         if ([self.verifier length])
         {
             [self retrieveAccessToken];
-        }
-        if ([self.accessToken length])
-        {
-            [self.delegate accessGranted];
+            [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
         }
         else
         {
-            [self.delegate accessRefused];
+            [self accessDenied];
         }
-        
-        [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
     }
+}
+
+// **** has to be refactored
+- (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    NSString* verifierPath = @"/uas/oauth/";
+    NSString* path = request.URL.path;
+    if (path &&
+        ![path isEqualToString:@"/uas/oauth/authenticate"] &&
+        [[path substringToIndex:[verifierPath length]] isEqualToString:verifierPath])
+    {
+        self.verifier = [path substringFromIndex:[verifierPath length]];
+        [self retrieveAccessToken];
+        [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
+        return NO;
+    }
+    return YES;
 }
 
 #pragma mark - UINavigationControllerDelegate
