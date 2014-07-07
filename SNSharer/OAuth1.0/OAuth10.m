@@ -141,7 +141,8 @@
     for (NSString* strParameter in arrayParameters)
     {
         NSArray* parameter = [strParameter componentsSeparatedByString:@"="];
-        [parameters setValue:parameter[1] forKey:parameter[0]];
+        if ([parameter count] > 1)
+            [parameters setValue:parameter[1] forKey:parameter[0]];
     }
     
     return parameters;
@@ -215,7 +216,7 @@
     [navigationController pushViewController:webController animated:YES];
     navigationController.delegate = self;
     
-    [self.parentViewController presentViewController:navigationController animated:YES completion:nil];
+    [self.parentViewController presentViewController:navigationController animated:NO completion:nil];
 }
 
 - (void)retrieveAccessToken
@@ -407,6 +408,12 @@
     }
 }
 
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+//    NSLog(@"Error: %@", error.description);
+    [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
+}
+/*
 // **** has to be refactored
 - (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
@@ -423,7 +430,7 @@
     }
     return YES;
 }
-
+*/
 #pragma mark - UINavigationControllerDelegate
 
 - (void)navigationController:(UINavigationController*)navigationController

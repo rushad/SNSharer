@@ -37,6 +37,8 @@
 		5E8340601962F9C500F9D9B9 /* Base64Transcoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E83405E1962F9C500F9D9B9 /* Base64Transcoder.c */; };
 		5E849E021958245E0009011C /* SNSocialFramework.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E849E011958245E0009011C /* SNSocialFramework.m */; };
 		5E849E0619582A040009011C /* SNWebInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E849E0519582A040009011C /* SNWebInterface.m */; };
+		5E86283D196AA0AD00AD5FBF /* OAuth20.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E86283C196AA0AD00AD5FBF /* OAuth20.m */; };
+		5E862840196AA5A100AD5FBF /* TestOAuth20.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E86283F196AA5A100AD5FBF /* TestOAuth20.m */; };
 		5E884D04195C354800D21661 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E884D03195C354800D21661 /* AddressBook.framework */; };
 		5E884D06195C357700D21661 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E884D05195C357700D21661 /* MediaPlayer.framework */; };
 		5E884D08195C358400D21661 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E884D07195C358400D21661 /* AssetsLibrary.framework */; };
@@ -106,6 +108,9 @@
 		5E849E0419582A040009011C /* SNWebInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNWebInterface.h; sourceTree = "<group>"; };
 		5E849E0519582A040009011C /* SNWebInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNWebInterface.m; sourceTree = "<group>"; };
 		5E85A709195438B700299C75 /* SNServiceProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNServiceProtocol.h; path = SNSharer/SNServiceProtocol.h; sourceTree = "<group>"; };
+		5E86283B196AA0AD00AD5FBF /* OAuth20.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OAuth20.h; path = SNSharer/OAuth2.0/OAuth20.h; sourceTree = "<group>"; };
+		5E86283C196AA0AD00AD5FBF /* OAuth20.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OAuth20.m; path = SNSharer/OAuth2.0/OAuth20.m; sourceTree = "<group>"; };
+		5E86283F196AA5A100AD5FBF /* TestOAuth20.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestOAuth20.m; path = SNSharer/OAuth2.0/TestOAuth20.m; sourceTree = "<group>"; };
 		5E884D03195C354800D21661 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		5E884D05195C357700D21661 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		5E884D07195C358400D21661 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
@@ -154,6 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				5E83402D1962B4A100F9D9B9 /* OAuth10 */,
+				5E86283E196AA0B500AD5FBF /* OAuth20 */,
 				5E849E03195824770009011C /* Protocols */,
 				5E8340471962B5D800F9D9B9 /* Services */,
 				5E29422F195092FB003554FC /* SNSharer */,
@@ -302,6 +308,16 @@
 			name = Protocols;
 			sourceTree = "<group>";
 		};
+		5E86283E196AA0B500AD5FBF /* OAuth20 */ = {
+			isa = PBXGroup;
+			children = (
+				5E86283B196AA0AD00AD5FBF /* OAuth20.h */,
+				5E86283C196AA0AD00AD5FBF /* OAuth20.m */,
+				5E86283F196AA5A100AD5FBF /* TestOAuth20.m */,
+			);
+			name = OAuth20;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -411,6 +427,7 @@
 				5E83405B1962B5D800F9D9B9 /* SNSms.m in Sources */,
 				5E29425E195093CD003554FC /* SNViewController.m in Sources */,
 				5E8340591962B5D800F9D9B9 /* SNInstagram.m in Sources */,
+				5E86283D196AA0AD00AD5FBF /* OAuth20.m in Sources */,
 				5E29423A195092FB003554FC /* SNSAppDelegate.m in Sources */,
 				5E83405A1962B5D800F9D9B9 /* SNLinkedIn.m in Sources */,
 				5E8340571962B5D800F9D9B9 /* SNFacebook.m in Sources */,
@@ -427,6 +444,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E89E7E2196409CB00610CB1 /* TestOAuth10.m in Sources */,
+				5E862840196AA5A100AD5FBF /* TestOAuth20.m in Sources */,
 				5E27181F195B2EE0000D092D /* TestSNSharer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
