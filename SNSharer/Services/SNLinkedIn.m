@@ -21,13 +21,7 @@
 @end
 
 @implementation SNLinkedIn
-/*
-static NSString* const urlRequestToken = @"https://api.linkedin.com/uas/oauth/requestToken";
-static NSString* const urlAuthorize = @"https://www.linkedin.com/uas/oauth/authenticate";
-static NSString* const urlAccessToken = @"https://api.linkedin.com/uas/oauth/accessToken";
-static NSString* const urlSubmitted = @"/uas/oauth/authorize/submit";
-static NSString* const jsGettingAccessToken = @"document.getElementsByClassName('access-code')[0].innerHTML";
-*/
+
 static NSString* const urlAuthorization = @"https://www.linkedin.com/uas/oauth2/authorization";
 static NSString* const urlAccessToken = @"https://www.linkedin.com/uas/oauth2/accessToken";
 static NSString* const urlRedirect = @"http://helpbook.com";
@@ -68,16 +62,6 @@ static NSString* const secretKey = @"UKLNKYM7kslt9STZ";
               url:(NSString*)url
             image:(UIImage*)image
 {
-/*
-    self.oauth = [[OAuth10 alloc] initWithRequestTokenURL:urlRequestToken
-                                             authorizeURL:urlAuthorize
-                                           accessTokenURL:urlAccessToken
-                                             submittedURL:urlSubmitted
-                                     jsGettingAccessToken:jsGettingAccessToken
-                                              consumerKey:APIKey
-                                                signature:secretKey
-                                     parentViewController:self.parentViewController];
-*/
     self.oauth = [[OAuth20 alloc] initWithAuthorizationURL:urlAuthorization
                                             accessTokenURL:urlAccessToken
                                                redirectURL:urlRedirect
@@ -109,27 +93,33 @@ static NSString* const secretKey = @"UKLNKYM7kslt9STZ";
                              "</share>",
                             self.text, self.url];
 
-    [self.oauth postResourceByQuery:@"http://api.linkedin.com/v1/people/~/shares"
+    [self.oauth postResourceByQuery:@"https://api.linkedin.com/v1/people/~/shares"
                    headerParameters:@{ @"Content-Type" : @"text/xml" }
                                body:xmlShare
-                          onSuccess:nil];/*^(NSString* body)
+                          onSuccess:^(NSString* body)
                                           {
-                                              NSLog(@"LinkedIn response:\r\n%@", body);
-                                          }];*/
+                                              UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"LinkedIn"
+                                                                                              message:@"You shared info successfully!"
+                                                                                             delegate:nil
+                                                                                    cancelButtonTitle:@"OK"
+                                                                                    otherButtonTitles:nil];
+                                              [alert show];
+                                          }];
 }
 
 #pragma mark - OAuthDelegate
 
 - (void)accessGranted
 {
-    [self.oauth getResourceByQuery:@"http://api.linkedin.com/v1/people/~"
+/*
+    [self.oauth getResourceByQuery:@"https://api.linkedin.com/v1/people/~"
                         parameters:nil
                          onSuccess:^(NSString* body)
                                     {
                                         NSLog(@"Body:\r\n%@", body);
                                     }];
-
-//    [self share];
+*/
+    [self share];
 }
 /*
 - (void)accessDenied

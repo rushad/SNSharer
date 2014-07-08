@@ -52,6 +52,6 @@
 
 + (NSString*)getPathOfUrl:(NSString*)url;
 
-//+ (NSDictionary*)getParametersOfUrl:(NSString*)url;
++ (NSDictionary*)getParametersOfUrl:(NSString*)url;
 
 @end

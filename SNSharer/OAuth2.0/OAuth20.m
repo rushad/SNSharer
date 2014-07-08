@@ -21,6 +21,11 @@
 
 @property (weak, nonatomic) UIViewController* parentViewController;
 
+@property (strong, nonatomic) NSString* scope;
+@property (strong, nonatomic) NSString* state;
+
+@property (strong, nonatomic) UINavigationController* navigationController;
+
 @end
 
 @implementation OAuth20
@@ -85,12 +90,20 @@
     return res;
 }
 
-/*
-+ (NSDictionary*)dictionaryFromURLParametersString:(NSString*)string
++ (NSDictionary*)getParametersOfUrl:(NSString *)url
 {
+    if (!url)
+        return nil;
+    
+    NSArray* urlComponents = [url componentsSeparatedByString:@"?"];
+    if (urlComponents.count != 2)
+        return nil;
+    
+    NSString* strParameters = urlComponents[1];
+
     NSMutableDictionary* parameters = [[NSMutableDictionary alloc] init];
     
-    NSArray* arrayParameters = [string componentsSeparatedByString:@"&"];
+    NSArray* arrayParameters = [strParameters componentsSeparatedByString:@"&"];
     
     for (NSString* strParameter in arrayParameters)
     {
@@ -99,9 +112,9 @@
             [parameters setValue:parameter[1] forKey:parameter[0]];
     }
     
-    return parameters;
+    return [NSDictionary dictionaryWithDictionary:parameters];
 }
-*/
+
 #pragma mark - Private methods
 
 - (void)getQuery:(NSString*)query
@@ -113,21 +126,34 @@
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:handler];
 }
 
+- (void)postQuery:(NSString*)query
+ headerParameters:(NSDictionary*)headerParameters
+             body:(NSString*)body
+       completion:(void (^)(NSURLResponse*, NSData*, NSError*))handler
+{
+    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:query]];
+    request.HTTPMethod = @"POST";
+    request.HTTPBody = [body dataUsingEncoding:NSUTF8StringEncoding];
+    
+    for (NSString* key in headerParameters)
+    {
+        [request setValue:[headerParameters valueForKey:key] forHTTPHeaderField:key];
+    }
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:handler];
+}
 
-#pragma mark - Public methods
-
-- (void)authorizeWithScope:(NSString*)scope
-                     state:(NSString*)state
+- (void)startRetrievingAuthCode
 {
     NSDictionary* parameters = @{ @"response_type" : @"code",
                                   @"client_id" : [OAuth20 URLEncodeString:self.apiKey],
-                                  @"scope" : [OAuth20 URLEncodeString:scope],
-                                  @"state" : [OAuth20 URLEncodeString:state],
+                                  @"scope" : [OAuth20 URLEncodeString:self.scope],
+                                  @"state" : [OAuth20 URLEncodeString:self.state],
                                   @"redirect_uri" : [OAuth20 URLEncodeString:self.urlRedirect] };
     
     NSString* query = [NSString stringWithFormat:@"%@?%@",
                        self.urlAuthorization, [self.class stringOfParameters:parameters]];
-
+    
     UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
     [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:query]]];
     webView.delegate = self;
@@ -137,18 +163,87 @@
     webController.navigationItem.title = @"Authorization";
     
     UIViewController* rootController = [[UIViewController alloc] init];
-    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:rootController];
-    [navigationController pushViewController:webController animated:YES];
-    navigationController.delegate = self;
+    self.navigationController = [[UINavigationController alloc] initWithRootViewController:rootController];
+    [self.navigationController pushViewController:webController animated:YES];
+    self.navigationController.delegate = self;
     
-    [self.parentViewController presentViewController:navigationController animated:NO completion:nil];
+    self.parentViewController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    [self.navigationController.view setHidden:YES];
+    [self.parentViewController presentViewController:self.navigationController animated:NO completion:nil];
+}
+
+- (void)startRetrievingAccessTokenWithAuthCode:(NSString*)authCode
+{
+    NSDictionary* parameters = @{ @"grant_type" : @"authorization_code",
+                                  @"code" : authCode,
+                                  @"redirect_uri" : [OAuth20 URLEncodeString:self.urlRedirect],
+                                  @"client_id" : [OAuth20 URLEncodeString:self.apiKey],
+                                  @"client_secret" : [OAuth20 URLEncodeString:self.secretKey] };
+
+    NSString* query = [NSString stringWithFormat:@"%@?%@",
+                       self.urlAccessToken, [self.class stringOfParameters:parameters]];
+
+    [self getQuery:query
+        completion:^(NSURLResponse* response, NSData* body, NSError* error)
+                    {
+                        NSDictionary* json = [NSJSONSerialization JSONObjectWithData:body options:0 error:nil];
+                        self.accessToken = [json valueForKey:@"access_token"];
+                        if ([self.accessToken length])
+                        {
+                            [self.delegate accessGranted];
+                        }
+                        else
+                        {
+                            [self accessDenied];
+                        }
+                    }];
+}
+
+- (void)accessDenied
+{
+    if ([self.delegate respondsToSelector:@selector(accessDenied)])
+    {
+        [self.delegate accessDenied];
+    }
+}
+
+#pragma mark - Public methods
+
+- (void)authorizeWithScope:(NSString*)scope
+                     state:(NSString*)state
+{
+    self.scope = scope;
+    self.state = state;
+    
+    [self startRetrievingAuthCode];
 }
 
 - (void)getResourceByQuery:(NSString*)urlQuery
-                parameters:(NSDictionary*)parameters
+                parameters:(NSDictionary*)requestParameters
                  onSuccess:(void (^)(NSString* body))onSuccessBlock
 {
+    if (![self.accessToken length])
+        return;
     
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithDictionary:
+                                       @{ @"oauth2_access_token" : self.accessToken }];
+    
+    for (NSString* key in requestParameters)
+    {
+        [parameters setValue:[self.class URLEncodeString:[requestParameters valueForKey:key]] forKey:key];
+    }
+    
+    NSString* query = [NSString stringWithFormat:@"%@?%@",
+                       urlQuery, [self.class stringOfParameters:parameters]];
+    
+    [self getQuery:query
+        completion:^(NSURLResponse* response, NSData* body, NSError* error)
+     {
+         if (onSuccessBlock)
+         {
+             onSuccessBlock([[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding]);
+         }
+     }];
 }
 
 - (void)postResourceByQuery:(NSString*)urlQuery
@@ -156,7 +251,25 @@
                        body:(NSString*)body
                   onSuccess:(void (^)(NSString* body))onSuccessBlock
 {
+    if (![self.accessToken length])
+        return;
     
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithDictionary:
+                                       @{ @"oauth2_access_token" : self.accessToken }];
+    
+    NSString* query = [NSString stringWithFormat:@"%@?%@",
+                       urlQuery, [self.class stringOfParameters:parameters]];
+    
+    [self postQuery:query
+   headerParameters:headerParameters
+               body:body
+         completion:^(NSURLResponse* response, NSData* body, NSError* error)
+     {
+         if (onSuccessBlock)
+         {
+             onSuccessBlock([[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding]);
+         }
+     }];
 }
 
 #pragma mark - UIWebViewDelegate
@@ -164,16 +277,32 @@
 - (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     NSString* url = request.URL.absoluteString;
-    
+
     if ([[self.class getPathOfUrl:url] isEqualToString:[self.class getPathOfUrl:self.urlRedirect]])
     {
-        NSLog(@"%@", url);
-//        NSLog(@"%@", [self.class dictionaryFromURLParametersString:parameters]);
         [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
+        
+        NSDictionary* parameters = [self.class getParametersOfUrl:url];
+        NSString* state = [parameters valueForKey:@"state"];
+        NSString* authCode = [parameters valueForKey:@"code"];
+        
+        if ([state isEqualToString:self.state] && [authCode length])
+        {
+            [self startRetrievingAccessTokenWithAuthCode:authCode];
+        }
+        else
+        {
+            [self accessDenied];
+        }
         return NO;
     }
     
     return YES;
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    self.navigationController.view.hidden = NO;
 }
 
 #pragma mark - UINavigationControllerDelegate
@@ -187,6 +316,5 @@
         [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
     }
 }
-
 
 @end

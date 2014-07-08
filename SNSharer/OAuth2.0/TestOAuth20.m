@@ -41,14 +41,25 @@
 - (void)testGetPathOfUrl
 {
     XCTAssertNil([OAuth20 getPathOfUrl:nil]);
+    
     XCTAssertEqualObjects(@"http://example.com/query", [OAuth20 getPathOfUrl:@"http://example.com/query?par1=val1&par1=val2"]);
+    
     XCTAssertEqualObjects(@"http://example.com", [OAuth20 getPathOfUrl:@"http://example.com/?par1=val1&par1=val2"]);
 }
-/*
+
 - (void)testGetParametersOfUrl
 {
-    NSDictionary* model =
-+ (NSDictionary*)getParametersOfUrl:(NSString*)url
+    XCTAssertNil([OAuth20 getParametersOfUrl:nil]);
+    
+    XCTAssertNil([OAuth20 getParametersOfUrl:@""]);
+    
+    XCTAssertNil([OAuth20 getParametersOfUrl:@"http://example.com/query"]);
+
+    NSDictionary* model = @{ @"key1" : @"val1",
+                             @"key2" : @"val2" };
+    NSDictionary* parameters = [OAuth20 getParametersOfUrl:@"http://example.com/query?key1=val1&key2=val2"];
+    
+    XCTAssertEqualObjects(model, parameters);
 }
-*/
+
 @end
