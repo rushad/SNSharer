@@ -6,8 +6,9 @@
 //  Copyright (c) 2014 Rushad. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "SNServiceProtocol.h"
 
+#import <Foundation/Foundation.h>
 #import <Social/Social.h>
 
 @interface SNSocialFramework : NSObject
@@ -15,6 +16,7 @@
 + (UIViewController*)composeViewControllerForService:(NSString*)service
                                                 text:(NSString*)text
                                                  url:(NSString*)url
-                                               image:(UIImage*)image;
+                                               image:(UIImage*)image
+                                   completionHandler:(void (^)(SNShareResult result, NSString* error))handler;
 
 @end

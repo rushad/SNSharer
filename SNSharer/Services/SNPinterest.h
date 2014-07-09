@@ -1,8 +1,8 @@
 //
-//  SNLinkedIn.h
+//  SNPinterest.h
 //  SNSharer
 //
-//  Created by Rushad on 7/1/14.
+//  Created by Rushad on 7/9/14.
 //  Copyright (c) 2014 Rushad. All rights reserved.
 //
 
@@ -10,6 +10,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SNLinkedIn : NSObject<SNServiceProtocol>
+@interface SNPinterest : NSObject<SNServiceProtocol>
 
 @end

@@ -6,10 +6,12 @@
 //  Copyright (c) 2014 Rushad. All rights reserved.
 //
 
-#include "SNServiceProtocol.h"
+#import "SNServiceProtocol.h"
 
 #import <Foundation/Foundation.h>
 
-@interface SNSms : NSObject<SNServiceProtocol>
+@interface SNSms : NSObject<SNServiceProtocol2>
+
+- (instancetype)initWithParentViewController:(UIViewController*)parentViewController;
 
 @end

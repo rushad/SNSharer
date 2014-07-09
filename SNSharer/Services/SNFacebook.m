@@ -14,7 +14,6 @@
 @interface SNFacebook()
 
 @property (strong, nonatomic) UIViewController* parentViewController;
-@property (nonatomic, readonly) BOOL nativeSupport;
 @property (strong, nonatomic) SNWebInterface* webInterface;
 
 @end
@@ -29,48 +28,56 @@
     if (self)
     {
         _parentViewController = parentViewController;
-        _nativeSupport = ([SLComposeViewController class] && [SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]);
     }
     return self;
 }
 
 #pragma mark - SNServiceProtocol
 
-- (BOOL)isTextSupported
-{
-    return self.nativeSupport;
-}
-
-- (BOOL)isUrlSupported
++ (BOOL)isAvailable
 {
     return true;
 }
 
-- (BOOL)isImageSupported
++ (BOOL)canShareLocalImage
 {
-    return self.nativeSupport;
+    return true;
 }
 
-- (void)shareText:(NSString*)text
-              url:(NSString*)url
-            image:(UIImage*)image
+- (void)shareWithTitle:(NSString*)title
+                  text:(NSString*)text
+                   url:(NSString*)url
+                 image:(UIImage*)image
+     completionHandler:(void (^)(SNShareResult, NSString *))handler
 {
-    if (self.nativeSupport)
+    if ([SLComposeViewController class] && [SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
     {
         UIViewController* composer = [SNSocialFramework composeViewControllerForService:SLServiceTypeFacebook
                                                                                    text:text
                                                                                     url:url
-                                                                                  image:image];
+                                                                                  image:image
+                                                                      completionHandler:handler];
+        
         [self.parentViewController presentViewController:composer animated:YES completion:nil];
     }
     else
     {
         self.webInterface = [[SNWebInterface alloc] initWithServiceName:@"Facebook"
-                                                                       urlTemplate:@"http://www.facebook.com/sharer.php?t=%@&u=%@"
-                                                              parentViewController:self.parentViewController];
+                                                            urlTemplate:@"http://www.facebook.com/sharer.php?t=%@&u=%@"
+                                                   parentViewController:self.parentViewController
+                                                      completionHandler:handler];
+        
         [self.webInterface shareText:text
                                  url:url];
     }
+}
+
+- (void)shareWithTitle:(NSString*)title
+                  text:(NSString*)text
+                   url:(NSString*)url
+              imageUrl:(NSString*)imageUrl
+     completionHandler:(void (^)(SNShareResult, NSString *))handler
+{
 }
 
 @end

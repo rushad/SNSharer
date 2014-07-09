@@ -9,13 +9,11 @@
 #import "SNSharer.h"
 
 #import "SNServiceProtocol.h"
-#import "SNEmail.h"
-#import "SNFacebook.h"
 #import "SNGooglePlus.h"
 #import "SNInstagram.h"
 #import "SNLinkedIn.h"
-#import "SNSms.h"
-#import "SNTwitter.h"
+#import "SNPinterest.h"
+#import "SNVKontakte.h"
 
 @interface SNSharer()
 
@@ -35,18 +33,6 @@
     {
         switch (idService)
         {
-            case SERVICE_EMAIL:
-                _service = [[SNEmail alloc] initWithParentViewController:parentViewController];
-                break;
-            case SERVICE_SMS:
-                _service = [[SNSms alloc] initWithParentViewController:parentViewController];
-                break;
-            case SERVICE_FACEBOOK:
-                _service = [[SNFacebook alloc] initWithParentViewController:parentViewController];
-                break;
-            case SERVICE_TWITTER:
-                _service = [[SNTwitter alloc] initWithParentViewController:parentViewController];
-                break;
             case SERVICE_INSTAGRAM:
                 _service = [[SNInstagram alloc] initWithParentViewController:parentViewController];
                 break;
@@ -55,6 +41,14 @@
                 break;
             case SERVICE_LINKEDIN:
                 _service = [[SNLinkedIn alloc] initWithParentViewController:parentViewController];
+                break;
+            case SERVICE_PINTEREST:
+                _service = [[SNPinterest alloc] initWithParentViewController:parentViewController];
+                break;
+            case SERVICE_VKONTAKTE:
+                _service = [[SNVKontakte alloc] initWithParentViewController:parentViewController];
+                break;
+            default:
                 break;
         }
         if (!_service)

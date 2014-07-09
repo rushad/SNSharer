@@ -8,17 +8,25 @@
 
 #import "SNViewController.h"
 
+#import "SNServiceProtocol.h"
+
 #import "SNSharer.h"
+
+#import "Services/SNEmail.h"
+#import "Services/SNFacebook.h"
+#import "Services/SNSms.h"
+#import "Services/SNTwitter.h"
 
 @interface SNViewController ()
 
-@property (strong, nonatomic) SNSharer* sharerEmail;
-@property (strong, nonatomic) SNSharer* sharerSMS;
-@property (strong, nonatomic) SNSharer* sharerFacebook;
-@property (strong, nonatomic) SNSharer* sharerTwitter;
+@property (strong, nonatomic) id<SNServiceProtocol2> sharerEmail;
+@property (strong, nonatomic) id<SNServiceProtocol2> sharerSMS;
+@property (strong, nonatomic) id<SNServiceProtocol2> sharerFacebook;
+@property (strong, nonatomic) id<SNServiceProtocol2> sharerTwitter;
 @property (strong, nonatomic) SNSharer* sharerInstagram;
 @property (strong, nonatomic) SNSharer* sharerGooglePlus;
 @property (strong, nonatomic) SNSharer* sharerLinkedIn;
+@property (strong, nonatomic) SNSharer* sharerPinterest;
 
 @property (weak, nonatomic) IBOutlet UITextField *urlView;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
@@ -31,6 +39,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *shareViaInstagram;
 @property (weak, nonatomic) IBOutlet UIButton *shareViaGooglePlus;
 @property (weak, nonatomic) IBOutlet UIButton *shareViaLinkedIn;
+@property (weak, nonatomic) IBOutlet UIButton *shareViaPinterest;
+
+@property (nonatomic, copy) void (^completionHandler)(SNShareResult result, NSString* error);
 
 @end
 
@@ -39,22 +50,64 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.sharerEmail = [[SNSharer alloc] initWithService:SERVICE_EMAIL parentViewController:self];
-    self.sharerSMS = [[SNSharer alloc] initWithService:SERVICE_SMS parentViewController:self];
-    self.sharerFacebook = [[SNSharer alloc] initWithService:SERVICE_FACEBOOK parentViewController:self];
-    self.sharerTwitter = [[SNSharer alloc] initWithService:SERVICE_TWITTER parentViewController:self];
+
+    self.shareViaEmail.enabled = [SNEmail isAvailable];
+    self.shareViaSMS.enabled = [SNSms isAvailable];
+    self.shareViaFacebook.enabled = [SNFacebook isAvailable];
+    self.shareViaTwitter.enabled = [SNTwitter isAvailable];
+
+    self.sharerEmail = [[SNEmail alloc] initWithParentViewController:self];
+    self.sharerSMS = [[SNSms alloc] initWithParentViewController:self];
+    self.sharerFacebook = [[SNFacebook alloc] initWithParentViewController:self];
+    self.sharerTwitter = [[SNTwitter alloc] initWithParentViewController:self];
+
     self.sharerInstagram = [[SNSharer alloc] initWithService:SERVICE_INSTAGRAM parentViewController:self];
     self.sharerGooglePlus = [[SNSharer alloc] initWithService:SERVICE_GOOGLEPLUS parentViewController:self];
     self.sharerLinkedIn = [[SNSharer alloc] initWithService:SERVICE_LINKEDIN parentViewController:self];
+    self.sharerPinterest = [[SNSharer alloc] initWithService:SERVICE_PINTEREST parentViewController:self];
     
-    self.shareViaEmail.enabled = (self.sharerEmail != nil);
-    self.shareViaSMS.enabled = (self.sharerSMS != nil);
-    self.shareViaFacebook.enabled = (self.sharerFacebook != nil);
-    self.shareViaTwitter.enabled = (self.sharerTwitter != nil);
     self.shareViaInstagram.enabled = (self.sharerInstagram != nil);
     self.shareViaGooglePlus.enabled = (self.sharerGooglePlus != nil);
     self.shareViaLinkedIn.enabled = (self.sharerLinkedIn != nil);
+    self.shareViaPinterest.enabled = (self.sharerPinterest != nil);
+
+    self.completionHandler = ^(SNShareResult result, NSString* error)
+    {
+        switch(result)
+        {
+            case SNShareResultDone:
+            {
+                [[[UIAlertView alloc] initWithTitle:@"Done"
+                                            message:@"You shared info successfully"
+                                           delegate:nil
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil] show];
+                break;
+            }
+            case SNShareResultCancelled:
+            {
+                [[[UIAlertView alloc] initWithTitle:@"Cancelled"
+                                            message:@"You cancelled sharing"
+                                           delegate:nil
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil] show];
+                break;
+            }
+            case SNShareResultFailed:
+            {
+                [[[UIAlertView alloc] initWithTitle:@"Failed"
+                                            message:@"Sharing failed"
+                                           delegate:nil
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil] show];
+                
+                break;
+            }
+            default:
+                NSLog(@"Unknown sharing result");
+                break;
+        }
+    };
 }
 
 - (void)share:(SNSharer*)sharer
@@ -64,22 +117,38 @@
 
 - (IBAction)shareViaEmail:(id)sender
 {
-    [self share:self.sharerEmail];
+    [self.sharerEmail shareWithTitle:@"Title"
+                                text:self.textView.text
+                                 url:self.urlView.text
+                               image:self.imageView.image
+                   completionHandler:self.completionHandler];
 }
 
 - (IBAction)shareViaSMS:(id)sender
 {
-    [self share:self.sharerSMS];
+    [self.sharerSMS shareWithTitle:nil
+                              text:self.textView.text
+                               url:self.urlView.text
+                             image:self.imageView.image
+                 completionHandler:self.completionHandler];
 }
 
 - (IBAction)shareViaFacebook:(id)sender
 {
-    [self share:self.sharerFacebook];
+    [self.sharerFacebook shareWithTitle:nil
+                                   text:self.textView.text
+                                    url:self.urlView.text
+                                  image:self.imageView.image
+                      completionHandler:self.completionHandler];
 }
 
 - (IBAction)shareViaTwitter:(id)sender
 {
-    [self share:self.sharerTwitter];
+    [self.sharerTwitter shareWithTitle:nil
+                                   text:self.textView.text
+                                    url:self.urlView.text
+                                  image:self.imageView.image
+                      completionHandler:self.completionHandler];
 }
 
 - (IBAction)shareViaInstagram:(id)sender
@@ -95,6 +164,11 @@
 - (IBAction)shareViaLinkedIn:(id)sender
 {
     [self share:self.sharerLinkedIn];
+}
+
+- (IBAction)shareViaPinterest:(id)sender
+{
+    [self share:self.sharerPinterest];
 }
 
 @end

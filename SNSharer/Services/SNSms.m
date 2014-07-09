@@ -14,6 +14,8 @@
 
 @property (strong, nonatomic) UIViewController* parentViewController;
 
+@property (nonatomic, copy) void (^shareCompletionHandler)(SNShareResult result, NSString* error);
+
 @end
 
 @implementation SNSms
@@ -35,25 +37,24 @@
 
 #pragma mark - SNServiceProtocol
 
-- (BOOL)isTextSupported
++ (BOOL)isAvailable
+{
+    return [MFMessageComposeViewController canSendText];
+}
+
++ (BOOL)canShareLocalImage
 {
     return true;
 }
 
-- (BOOL)isUrlSupported
+- (void)shareWithTitle:(NSString*)title
+                  text:(NSString*)text
+                   url:(NSString*)url
+                 image:(UIImage*)image
+     completionHandler:(void (^)(SNShareResult result, NSString* error))handler
 {
-    return true;
-}
-
-- (BOOL)isImageSupported
-{
-    return [MFMessageComposeViewController canSendAttachments];
-}
-
-- (void)shareText:(NSString*)text
-              url:(NSString*)url
-            image:(UIImage*)image
-{
+    self.shareCompletionHandler = handler;
+    
     MFMessageComposeViewController* smsComposer = [[MFMessageComposeViewController alloc] init];
     smsComposer.messageComposeDelegate = self;
     
@@ -68,7 +69,14 @@
     [smsComposer addAttachmentData:UIImagePNGRepresentation(image) typeIdentifier:@"public.png" filename:@"attachment.png"];
     
     [self.parentViewController presentViewController:smsComposer animated:YES completion:nil];
-    
+}
+
+- (void)shareWithTitle:(NSString*)title
+                  text:(NSString*)text
+                   url:(NSString*)url
+              imageUrl:(NSString*)imageUrl
+     completionHandler:(void (^)(SNShareResult, NSString *))handler
+{
 }
 
 #pragma mark - Delegates
@@ -77,6 +85,18 @@
                  didFinishWithResult:(MessageComposeResult)result
 {
     [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
+    switch(result)
+    {
+        case MessageComposeResultSent:
+            self.shareCompletionHandler(SNShareResultDone, nil);
+            break;
+        case MessageComposeResultCancelled:
+            self.shareCompletionHandler(SNShareResultCancelled, nil);
+            break;
+        case MessageComposeResultFailed:
+            self.shareCompletionHandler(SNShareResultFailed, nil);
+            break;
+    }
 }
 
 @end

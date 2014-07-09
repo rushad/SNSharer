@@ -8,11 +8,14 @@
 
 #import "SNEmail.h"
 
+#import <AddressBook/AddressBook.h>
 #import <MessageUI/MessageUI.h>
 
 @interface SNEmail()<MFMailComposeViewControllerDelegate>
 
 @property (strong, nonatomic) UIViewController* parentViewController;
+
+@property (nonatomic, copy) void (^shareCompletionHandler)(SNShareResult result, NSString* error);
 
 @end
 
@@ -35,25 +38,24 @@
 
 #pragma mark - SNServiceProtocol
 
-- (BOOL)isTextSupported
++ (BOOL)isAvailable
+{
+    return [MFMailComposeViewController canSendMail];
+}
+
++ (BOOL)canShareLocalImage
 {
     return true;
 }
 
-- (BOOL)isUrlSupported
+- (void)shareWithTitle:(NSString*)title
+                  text:(NSString*)text
+                   url:(NSString*)url
+                 image:(UIImage*)image
+     completionHandler:(void (^)(SNShareResult result, NSString* error))handler
 {
-    return true;
-}
-
-- (BOOL)isImageSupported
-{
-    return true;
-}
-
-- (void)shareText:(NSString*)text
-              url:(NSString*)url
-            image:(UIImage*)image
-{
+    self.shareCompletionHandler = handler;
+    
     MFMailComposeViewController* mailComposer = [[MFMailComposeViewController alloc] init];
     mailComposer.mailComposeDelegate = self;
     
@@ -63,21 +65,41 @@
         body = [body stringByAppendingString:@"\r\n"];
         body = [body stringByAppendingString:url];
     }
-    [mailComposer setSubject:nil];
+    [mailComposer setSubject:title];
     [mailComposer setMessageBody:body isHTML:NO];
     [mailComposer addAttachmentData:UIImagePNGRepresentation(image) mimeType:@"image/png" fileName:@"attachment.png"];
     
     [self.parentViewController presentViewController:mailComposer animated:YES completion:nil];
-    
+}
+
+- (void)shareWithTitle:(NSString*)title
+                  text:(NSString*)text
+                   url:(NSString*)url
+              imageUrl:(NSString*)imageUrl
+     completionHandler:(void (^)(SNShareResult, NSString *))handler
+{
 }
 
 #pragma mark - Delegates
 
-- (void)mailComposeController:(MFMailComposeViewController *)controller
+- (void)mailComposeController:(MFMailComposeViewController*)controller
           didFinishWithResult:(MFMailComposeResult)result
-                        error:(NSError *)error
+                        error:(NSError*)error
 {
     [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
+    switch(result)
+    {
+        case MFMailComposeResultSent:
+            self.shareCompletionHandler(SNShareResultDone, nil);
+            break;
+        case MFMailComposeResultSaved:
+        case MFMailComposeResultCancelled:
+            self.shareCompletionHandler(SNShareResultCancelled, error.description);
+            break;
+        case MFMailComposeResultFailed:
+            self.shareCompletionHandler(SNShareResultFailed, error.description);
+            break;
+    }
 }
 
 @end

@@ -14,7 +14,6 @@
 @interface SNTwitter()
 
 @property (strong, nonatomic) UIViewController* parentViewController;
-@property (nonatomic, readonly) BOOL nativeSupport;
 @property (strong, nonatomic) SNWebInterface* webInterface;
 
 @end
@@ -29,54 +28,57 @@
     if (self)
     {
         _parentViewController = parentViewController;
-        _nativeSupport = ([SLComposeViewController class] && [SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter]);
     }
     return self;
 }
 
 #pragma mark - SNServiceProtocol
 
-- (BOOL)isTextSupported
++ (BOOL)isAvailable
 {
     return true;
 }
 
-- (BOOL)isUrlSupported
++ (BOOL)canShareLocalImage
 {
     return true;
 }
 
-- (BOOL)isImageSupported
+- (void)shareWithTitle:(NSString*)title
+                  text:(NSString*)text
+                   url:(NSString*)url
+                 image:(UIImage*)image
+     completionHandler:(void (^)(SNShareResult, NSString *))handler
 {
-    return self.nativeSupport;
-}
-
-- (void)shareText:(NSString*)text
-              url:(NSString*)url
-            image:(UIImage*)image
-{
-    if (self.nativeSupport)
+    if ([SLComposeViewController class] && [SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
     {
-        NSString* body = text;
-        if (url)
-        {
-            body = [body stringByAppendingString:@"\r\n"];
-            body = [body stringByAppendingString:url];
-        }
         UIViewController* composer = [SNSocialFramework composeViewControllerForService:SLServiceTypeTwitter
-                                                                                   text:body
-                                                                                    url:nil
-                                                                                  image:image];
+                                                                                   text:text
+                                                                                    url:url
+                                                                                  image:image
+                                                                      completionHandler:handler];
+        
         [self.parentViewController presentViewController:composer animated:YES completion:nil];
     }
     else
     {
         self.webInterface = [[SNWebInterface alloc] initWithServiceName:@"Twitter"
                                                             urlTemplate:@"http://twitter.com/share?text=%@&url=%@"
-                                                   parentViewController:self.parentViewController];
+                                                   parentViewController:self.parentViewController
+                                                      completionHandler:handler];
+        
         [self.webInterface shareText:text
                                  url:url];
     }
 }
+
+- (void)shareWithTitle:(NSString*)title
+                  text:(NSString*)text
+                   url:(NSString*)url
+              imageUrl:(NSString*)imageUrl
+     completionHandler:(void (^)(SNShareResult, NSString *))handler
+{
+}
+
 
 @end

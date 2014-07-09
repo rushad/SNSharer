@@ -119,6 +119,16 @@
                                     <action selector="shareViaLinkedIn:" destination="dq8-Dw-6BP" eventType="touchUpInside" id="Iei-GQ-RpM"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oxH-9U-zaA">
+                                <rect key="frame" x="166" y="171" width="140" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Share via Pinterest">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="shareViaPinterest:" destination="dq8-Dw-6BP" eventType="touchUpInside" id="0ou-XC-wKf"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -129,6 +139,7 @@
                         <outlet property="shareViaGooglePlus" destination="yEs-fs-jPo" id="2Lf-Of-ruB"/>
                         <outlet property="shareViaInstagram" destination="Yo4-TU-2xD" id="eZA-pV-NCX"/>
                         <outlet property="shareViaLinkedIn" destination="qEn-Sr-SDi" id="Qom-1o-DaQ"/>
+                        <outlet property="shareViaPinterest" destination="oxH-9U-zaA" id="Ail-bs-cAg"/>
                         <outlet property="shareViaSMS" destination="T9Z-7g-cAh" id="Vyj-d3-wJL"/>
                         <outlet property="shareViaTwitter" destination="mto-g9-scN" id="wby-4r-q30"/>
                         <outlet property="textView" destination="XgB-Zb-p6x" id="xvZ-Br-mrW"/>

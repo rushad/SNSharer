@@ -14,6 +14,8 @@
 @property (strong, nonatomic) NSString* urlTemplate;
 @property (weak, nonatomic) UIViewController* parentViewController;
 
+@property (nonatomic, copy) void (^completionHandler)(SNShareResult result, NSString* error);
+
 @end
 
 @implementation SNWebInterface
@@ -23,10 +25,12 @@
 - (instancetype)initWithServiceName:(NSString*)serviceName
                         urlTemplate:(NSString*)urlTemplate
                parentViewController:(UIViewController *)parentViewController
+                  completionHandler:(void (^)(SNShareResult, NSString *))handler
 {
     self = [super init];
     if (self)
     {
+        _completionHandler = handler;
         _serviceName = serviceName;
         _urlTemplate = urlTemplate;
         _parentViewController = parentViewController;
@@ -66,6 +70,7 @@
     if (![viewController.view isKindOfClass:[UIWebView class]])
     {
         [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
+        self.completionHandler(SNShareResultUnknown, nil);
     }
 }
 
