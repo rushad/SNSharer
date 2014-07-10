@@ -14,6 +14,9 @@
 
 #import "Services/SNEmail.h"
 #import "Services/SNFacebook.h"
+#import "Services/SNGooglePlus.h"
+#import "Services/SNInstagram.h"
+#import "Services/SNLinkedIn.h"
 #import "Services/SNSms.h"
 #import "Services/SNTwitter.h"
 
@@ -23,9 +26,9 @@
 @property (strong, nonatomic) id<SNServiceProtocol2> sharerSMS;
 @property (strong, nonatomic) id<SNServiceProtocol2> sharerFacebook;
 @property (strong, nonatomic) id<SNServiceProtocol2> sharerTwitter;
-@property (strong, nonatomic) SNSharer* sharerInstagram;
-@property (strong, nonatomic) SNSharer* sharerGooglePlus;
-@property (strong, nonatomic) SNSharer* sharerLinkedIn;
+@property (strong, nonatomic) id<SNServiceProtocol2> sharerInstagram;
+@property (strong, nonatomic) id<SNServiceProtocol2> sharerGooglePlus;
+@property (strong, nonatomic) id<SNServiceProtocol2> sharerLinkedIn;
 @property (strong, nonatomic) SNSharer* sharerPinterest;
 
 @property (weak, nonatomic) IBOutlet UITextField *urlView;
@@ -47,6 +50,12 @@
 
 @implementation SNViewController
 
+static NSString* const googlePlusClientID = @"11030147974-93rf3gj3vapmr7k5nhssm9evb1ud3ris.apps.googleusercontent.com";
+
+static NSString* const linkedInApiKey = @"77o77yemk1co4x";
+static NSString* const linkedInSecretKey = @"UKLNKYM7kslt9STZ";
+static NSString* const linkedInRedirectUrl = @"http://helpbook.com";
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -55,20 +64,23 @@
     self.shareViaSMS.enabled = [SNSms isAvailable];
     self.shareViaFacebook.enabled = [SNFacebook isAvailable];
     self.shareViaTwitter.enabled = [SNTwitter isAvailable];
+    self.shareViaInstagram.enabled = [SNInstagram isAvailable];
+    self.shareViaGooglePlus.enabled = [SNGooglePlus isAvailable];
+    self.shareViaLinkedIn.enabled = [SNLinkedIn isAvailable];
 
     self.sharerEmail = [[SNEmail alloc] initWithParentViewController:self];
     self.sharerSMS = [[SNSms alloc] initWithParentViewController:self];
     self.sharerFacebook = [[SNFacebook alloc] initWithParentViewController:self];
     self.sharerTwitter = [[SNTwitter alloc] initWithParentViewController:self];
+    self.sharerInstagram = [[SNInstagram alloc] initWithParentViewController:self];
+    self.sharerGooglePlus = [[SNGooglePlus alloc] initWithParentViewController:self clientID:googlePlusClientID];
+    self.sharerLinkedIn = [[SNLinkedIn alloc] initWithParentViewController:self
+                                                                    apiKey:linkedInApiKey
+                                                                 secretKey:linkedInSecretKey
+                                                               redirectUrl:linkedInRedirectUrl];
 
-    self.sharerInstagram = [[SNSharer alloc] initWithService:SERVICE_INSTAGRAM parentViewController:self];
-    self.sharerGooglePlus = [[SNSharer alloc] initWithService:SERVICE_GOOGLEPLUS parentViewController:self];
-    self.sharerLinkedIn = [[SNSharer alloc] initWithService:SERVICE_LINKEDIN parentViewController:self];
     self.sharerPinterest = [[SNSharer alloc] initWithService:SERVICE_PINTEREST parentViewController:self];
     
-    self.shareViaInstagram.enabled = (self.sharerInstagram != nil);
-    self.shareViaGooglePlus.enabled = (self.sharerGooglePlus != nil);
-    self.shareViaLinkedIn.enabled = (self.sharerLinkedIn != nil);
     self.shareViaPinterest.enabled = (self.sharerPinterest != nil);
 
     self.completionHandler = ^(SNShareResult result, NSString* error)
@@ -145,25 +157,37 @@
 - (IBAction)shareViaTwitter:(id)sender
 {
     [self.sharerTwitter shareWithTitle:nil
-                                   text:self.textView.text
-                                    url:self.urlView.text
-                                  image:self.imageView.image
-                      completionHandler:self.completionHandler];
+                                  text:self.textView.text
+                                   url:self.urlView.text
+                                 image:self.imageView.image
+                     completionHandler:self.completionHandler];
 }
 
 - (IBAction)shareViaInstagram:(id)sender
 {
-    [self share:self.sharerInstagram];
+    [self.sharerInstagram shareWithTitle:nil
+                                    text:self.textView.text
+                                     url:self.urlView.text
+                                   image:self.imageView.image
+                       completionHandler:self.completionHandler];
 }
 
 - (IBAction)shareViaGooglePlus:(id)sender
 {
-    [self share:self.sharerGooglePlus];
+    [self.sharerGooglePlus shareWithTitle:nil
+                                     text:self.textView.text
+                                      url:self.urlView.text
+                                    image:self.imageView.image
+                        completionHandler:self.completionHandler];
 }
 
 - (IBAction)shareViaLinkedIn:(id)sender
 {
-    [self share:self.sharerLinkedIn];
+    [self.sharerLinkedIn shareWithTitle:nil
+                                   text:self.textView.text
+                                    url:self.urlView.text
+                               imageUrl:@"http://www.helpbook.com/images/logo_header.png"
+                      completionHandler:self.completionHandler];
 }
 
 - (IBAction)shareViaPinterest:(id)sender

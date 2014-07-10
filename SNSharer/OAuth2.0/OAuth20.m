@@ -220,7 +220,7 @@
 
 - (void)getResourceByQuery:(NSString*)urlQuery
                 parameters:(NSDictionary*)requestParameters
-                 onSuccess:(void (^)(NSString* body))onSuccessBlock
+         completionHandler:(void (^)(NSURLResponse *, NSData *, NSError *))completionHandler
 {
     if (![self.accessToken length])
         return;
@@ -237,19 +237,13 @@
                        urlQuery, [self.class stringOfParameters:parameters]];
     
     [self getQuery:query
-        completion:^(NSURLResponse* response, NSData* body, NSError* error)
-     {
-         if (onSuccessBlock)
-         {
-             onSuccessBlock([[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding]);
-         }
-     }];
+        completion:completionHandler];
 }
 
 - (void)postResourceByQuery:(NSString*)urlQuery
            headerParameters:(NSDictionary*)headerParameters
                        body:(NSString*)body
-                  onSuccess:(void (^)(NSString* body))onSuccessBlock
+          completionHandler:(void (^)(NSURLResponse *, NSData *, NSError *))completionHandler
 {
     if (![self.accessToken length])
         return;
@@ -263,13 +257,7 @@
     [self postQuery:query
    headerParameters:headerParameters
                body:body
-         completion:^(NSURLResponse* response, NSData* body, NSError* error)
-     {
-         if (onSuccessBlock)
-         {
-             onSuccessBlock([[NSString alloc] initWithData:body encoding:NSUTF8StringEncoding]);
-         }
-     }];
+         completion:completionHandler];
 }
 
 #pragma mark - UIWebViewDelegate

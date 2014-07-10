@@ -10,6 +10,11 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SNLinkedIn : NSObject<SNServiceProtocol>
+@interface SNLinkedIn : NSObject<SNServiceProtocol2>
+
+- (instancetype)initWithParentViewController:(UIViewController*)parentViewController
+                                      apiKey:(NSString*)apiKey
+                                   secretKey:(NSString*)secretKey
+                                 redirectUrl:(NSString*)redirectUrl;
 
 @end

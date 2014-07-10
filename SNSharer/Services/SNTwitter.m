@@ -36,18 +36,19 @@
 
 + (BOOL)isAvailable
 {
-    return true;
+    return YES;
 }
 
 + (BOOL)canShareLocalImage
 {
-    return true;
+    return YES;
 }
 
 - (void)shareWithTitle:(NSString*)title
                   text:(NSString*)text
                    url:(NSString*)url
                  image:(UIImage*)image
+              imageUrl:(NSString*)imageUrl
      completionHandler:(void (^)(SNShareResult, NSString *))handler
 {
     if ([SLComposeViewController class] && [SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
@@ -75,10 +76,29 @@
 - (void)shareWithTitle:(NSString*)title
                   text:(NSString*)text
                    url:(NSString*)url
+                 image:(UIImage*)image
+     completionHandler:(void (^)(SNShareResult, NSString *))handler
+{
+    [self shareWithTitle:title
+                    text:text
+                     url:url
+                   image:image
+                imageUrl:nil
+       completionHandler:handler];
+}
+
+- (void)shareWithTitle:(NSString*)title
+                  text:(NSString*)text
+                   url:(NSString*)url
               imageUrl:(NSString*)imageUrl
      completionHandler:(void (^)(SNShareResult, NSString *))handler
 {
+    [self shareWithTitle:title
+                    text:text
+                     url:url
+                   image:nil
+                imageUrl:imageUrl
+       completionHandler:handler];
 }
-
 
 @end

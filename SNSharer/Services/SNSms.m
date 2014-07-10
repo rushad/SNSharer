@@ -44,13 +44,44 @@
 
 + (BOOL)canShareLocalImage
 {
-    return true;
+    return YES;
 }
 
 - (void)shareWithTitle:(NSString*)title
                   text:(NSString*)text
                    url:(NSString*)url
                  image:(UIImage*)image
+     completionHandler:(void (^)(SNShareResult result, NSString* error))handler
+{
+    [self shareWithTitle:title
+                    text:text
+                     url:url
+                   image:image
+                imageUrl:nil
+       completionHandler:handler];
+}
+
+- (void)shareWithTitle:(NSString*)title
+                  text:(NSString*)text
+                   url:(NSString*)url
+              imageUrl:(NSString*)imageUrl
+     completionHandler:(void (^)(SNShareResult, NSString *))handler
+{
+    [self shareWithTitle:title
+                    text:text
+                     url:url
+                   image:nil
+                imageUrl:imageUrl
+       completionHandler:handler];
+}
+
+#pragma mark - Private methods
+
+- (void)shareWithTitle:(NSString*)title
+                  text:(NSString*)text
+                   url:(NSString*)url
+                 image:(UIImage*)image
+              imageUrl:(NSString*)imageUrl
      completionHandler:(void (^)(SNShareResult result, NSString* error))handler
 {
     self.shareCompletionHandler = handler;
@@ -71,15 +102,7 @@
     [self.parentViewController presentViewController:smsComposer animated:YES completion:nil];
 }
 
-- (void)shareWithTitle:(NSString*)title
-                  text:(NSString*)text
-                   url:(NSString*)url
-              imageUrl:(NSString*)imageUrl
-     completionHandler:(void (^)(SNShareResult, NSString *))handler
-{
-}
-
-#pragma mark - Delegates
+#pragma mark - MFMessageComposeViewControllerDelegate
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller
                  didFinishWithResult:(MessageComposeResult)result

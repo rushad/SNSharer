@@ -14,61 +14,99 @@
 @interface SNGooglePlus()<GPPSignInDelegate>
 
 @property (strong, nonatomic) UIViewController* parentViewController;
+@property (strong, nonatomic) NSString* clientID;
+
 @property (strong, nonatomic) NSString* text;
 @property (strong, nonatomic) NSString* url;
+@property (strong, nonatomic) UIImage* image;
+
+@property (strong, nonatomic) GPPSignIn* signIn;
+
+@property (nonatomic, copy) void (^shareCompletionHandler)(SNShareResult result, NSString* error);
 
 @end
 
 @implementation SNGooglePlus
 
-static NSString* const clientID = @"11030147974-93rf3gj3vapmr7k5nhssm9evb1ud3ris.apps.googleusercontent.com";
-
 #pragma mark - Initializer
 
 - (instancetype)initWithParentViewController:(UIViewController*)parentViewController
+                                    clientID:(NSString *)clientID
 {
     self = [super init];
     if (self)
     {
         _parentViewController = parentViewController;
-        GPPSignIn *signIn = [GPPSignIn sharedInstance];
-        signIn.shouldFetchGoogleUserID = YES;
-        signIn.shouldFetchGoogleUserEmail = YES;
-        signIn.clientID = clientID;
-        signIn.scopes = @[ kGTLAuthScopePlusLogin ];
-        signIn.delegate = self;
+        _clientID = clientID;
+        
+        _signIn = [GPPSignIn sharedInstance];
+        _signIn.shouldFetchGoogleUserID = YES;
+        _signIn.shouldFetchGoogleUserEmail = YES;
+        _signIn.clientID = clientID;
+        _signIn.scopes = @[ kGTLAuthScopePlusLogin ];
+        _signIn.delegate = self;
     }
     return self;
 }
 
 #pragma mark - SNServiceProtocol
 
-- (BOOL)isTextSupported
++ (BOOL)isAvailable
 {
-    return true;
+    return YES;
 }
 
-- (BOOL)isUrlSupported
++ (BOOL)canShareLocalImage
 {
-    return true;
+    return NO;
 }
 
-- (BOOL)isImageSupported
+- (void)shareWithTitle:(NSString*)title
+                  text:(NSString*)text
+                   url:(NSString*)url
+                 image:(UIImage*)image
+     completionHandler:(void (^)(SNShareResult, NSString *))handler
 {
-    return false;
+    [self shareWithTitle:title
+                    text:text
+                     url:url
+                   image:image
+                imageUrl:nil
+       completionHandler:handler];
 }
 
-- (void)shareText:(NSString*)text
-              url:(NSString*)url
-            image:(UIImage*)image
+- (void)shareWithTitle:(NSString*)title
+                  text:(NSString*)text
+                   url:(NSString*)url
+              imageUrl:(NSString*)imageUrl
+     completionHandler:(void (^)(SNShareResult, NSString *))handler
 {
+    [self shareWithTitle:title
+                    text:text
+                     url:url
+                   image:nil
+                imageUrl:imageUrl
+       completionHandler:handler];
+}
+
+#pragma mark - Private methods
+
+- (void)shareWithTitle:(NSString*)title
+                  text:(NSString*)text
+                   url:(NSString*)url
+                 image:(UIImage*)image
+              imageUrl:(NSString*)imageUrl
+     completionHandler:(void (^)(SNShareResult, NSString *))handler
+{
+    self.shareCompletionHandler = handler;
+    
     self.text = text;
     self.url = url;
+    self.image = image;
     
-    GPPSignIn *signIn = [GPPSignIn sharedInstance];
-    if (!signIn.authentication)
+    if (!self.signIn.authentication)
     {
-        [signIn authenticate];
+        [self.signIn authenticate];
     }
     else
     {
@@ -81,7 +119,9 @@ static NSString* const clientID = @"11030147974-93rf3gj3vapmr7k5nhssm9evb1ud3ris
     id<GPPNativeShareBuilder> shareBuilder = [[GPPShare sharedInstance] nativeShareDialog];
     [shareBuilder setPrefillText:self.text];
     [shareBuilder setURLToShare:[NSURL URLWithString:self.url]];
+//    [shareBuilder attachImage:self.image];
     [shareBuilder open];
+    self.shareCompletionHandler(SNShareResultUnknown, nil);
 }
 
 #pragma mark - GPPSignInDelegate
@@ -91,6 +131,8 @@ static NSString* const clientID = @"11030147974-93rf3gj3vapmr7k5nhssm9evb1ud3ris
 {
     if (!error)
         [self share];
+    else
+        self.shareCompletionHandler(SNShareResultFailed, nil);
 }
 
 @end

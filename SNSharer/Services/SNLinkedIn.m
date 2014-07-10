@@ -13,10 +13,18 @@
 @interface SNLinkedIn()<OAuth20Delegate>
 
 @property (strong, nonatomic) UIViewController* parentViewController;
+
+@property (strong, nonatomic) NSString* apiKey;
+@property (strong, nonatomic) NSString* secretKey;
+@property (strong, nonatomic) NSString* redirectUrl;
+
 @property (strong, nonatomic) OAuth20* oauth;
 
 @property (strong, nonatomic) NSString* text;
 @property (strong, nonatomic) NSString* url;
+@property (strong, nonatomic) NSString* imageUrl;
+
+@property (nonatomic, copy) void (^shareCompletionHandler)(SNShareResult result, NSString* error);
 
 @end
 
@@ -24,56 +32,89 @@
 
 static NSString* const urlAuthorization = @"https://www.linkedin.com/uas/oauth2/authorization";
 static NSString* const urlAccessToken = @"https://www.linkedin.com/uas/oauth2/accessToken";
-static NSString* const urlRedirect = @"http://helpbook.com";
-
-static NSString* const APIKey = @"77o77yemk1co4x";
-static NSString* const secretKey = @"UKLNKYM7kslt9STZ";
 
 #pragma mark - Initializer
 
 - (instancetype)initWithParentViewController:(UIViewController*)parentViewController
+                                      apiKey:(NSString*)apiKey
+                                   secretKey:(NSString*)secretKey
+                                 redirectUrl:(NSString*)redirectUrl
 {
     self = [super init];
     if (self)
     {
         _parentViewController = parentViewController;
+        _apiKey = apiKey;
+        _secretKey = secretKey;
+        _redirectUrl = redirectUrl;
     }
     return self;
 }
 
 #pragma mark - SNServiceProtocol
 
-- (BOOL)isTextSupported
++ (BOOL)isAvailable
 {
-    return true;
+    return YES;
 }
 
-- (BOOL)isUrlSupported
++ (BOOL)canShareLocalImage
 {
-    return true;
+    return NO;
 }
 
-- (BOOL)isImageSupported
+- (void)shareWithTitle:(NSString*)title
+                  text:(NSString*)text
+                   url:(NSString*)url
+                 image:(UIImage*)image
+     completionHandler:(void (^)(SNShareResult, NSString *))handler
 {
-    return false;
+    [self shareWithTitle:title
+                    text:text
+                     url:url
+                   image:image
+                imageUrl:nil
+       completionHandler:handler];
 }
 
-- (void)shareText:(NSString*)text
-              url:(NSString*)url
-            image:(UIImage*)image
+- (void)shareWithTitle:(NSString*)title
+                  text:(NSString*)text
+                   url:(NSString*)url
+              imageUrl:(NSString*)imageUrl
+     completionHandler:(void (^)(SNShareResult, NSString *))handler
 {
+    [self shareWithTitle:title
+                    text:text
+                     url:url
+                   image:nil
+                imageUrl:imageUrl
+       completionHandler:handler];
+}
+
+#pragma mark - Private methods
+
+- (void)shareWithTitle:(NSString*)title
+                  text:(NSString*)text
+                   url:(NSString*)url
+                 image:(UIImage*)image
+              imageUrl:(NSString*)imageUrl
+     completionHandler:(void (^)(SNShareResult, NSString *))handler
+{
+    self.shareCompletionHandler = handler;
+    
     self.oauth = [[OAuth20 alloc] initWithAuthorizationURL:urlAuthorization
                                             accessTokenURL:urlAccessToken
-                                               redirectURL:urlRedirect
-                                                    apiKey:APIKey
-                                                 secretKey:secretKey
+                                               redirectURL:self.redirectUrl
+                                                    apiKey:self.apiKey
+                                                 secretKey:self.secretKey
                                       parentViewController:self.parentViewController];
     self.oauth.delegate = self;
     
     self.text = text;
     self.url = url;
-
-    [self.oauth authorizeWithScope:@"" state:@"1234"];
+    self.imageUrl = imageUrl;
+    
+    [self.oauth authorizeWithScope:@"" state:[NSString stringWithFormat:@"%ld", random()]];
 }
 
 - (void)share
@@ -85,46 +126,41 @@ static NSString* const secretKey = @"UKLNKYM7kslt9STZ";
                              "    <title></title>"
                              "    <description>%@</description>"
                              "    <submitted-url>%@</submitted-url>"
-                             "    <submitted-image-url></submitted-image-url>"
+                             "    <submitted-image-url>%@</submitted-image-url>"
                              "  </content>"
                              "  <visibility>"
                              "    <code>anyone</code>"
                              "  </visibility>"
                              "</share>",
-                            self.text, self.url];
+                            self.text, self.url, self.imageUrl];
 
     [self.oauth postResourceByQuery:@"https://api.linkedin.com/v1/people/~/shares"
                    headerParameters:@{ @"Content-Type" : @"text/xml" }
                                body:xmlShare
-                          onSuccess:^(NSString* body)
-                                          {
-                                              UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"LinkedIn"
-                                                                                              message:@"You shared info successfully!"
-                                                                                             delegate:nil
-                                                                                    cancelButtonTitle:@"OK"
-                                                                                    otherButtonTitles:nil];
-                                              [alert show];
-                                          }];
+                  completionHandler:^(NSURLResponse* response, NSData* data, NSError* error)
+                                     {
+                                         self.shareCompletionHandler(error ? SNShareResultFailed : SNShareResultDone, nil);
+                                     }];
 }
 
-#pragma mark - OAuthDelegate
+#pragma mark - OAuth20Delegate
 
 - (void)accessGranted
 {
 /*
     [self.oauth getResourceByQuery:@"https://api.linkedin.com/v1/people/~"
                         parameters:nil
-                         onSuccess:^(NSString* body)
+                 completionHandler:^(NSURLResponse* response, NSData* data, NSError* error)
                                     {
-                                        NSLog(@"Body:\r\n%@", body);
+                                        NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
                                     }];
 */
     [self share];
 }
-/*
+
 - (void)accessDenied
 {
-    NSLog(@"LinkedIn: access denied");
+    self.shareCompletionHandler(SNShareResultFailed, nil);
 }
-*/
+
 @end

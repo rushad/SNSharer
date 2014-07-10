@@ -33,22 +33,11 @@
     {
         switch (idService)
         {
-            case SERVICE_INSTAGRAM:
-                _service = [[SNInstagram alloc] initWithParentViewController:parentViewController];
-                break;
-            case SERVICE_GOOGLEPLUS:
-                _service = [[SNGooglePlus alloc] initWithParentViewController:parentViewController];
-                break;
-            case SERVICE_LINKEDIN:
-                _service = [[SNLinkedIn alloc] initWithParentViewController:parentViewController];
-                break;
             case SERVICE_PINTEREST:
                 _service = [[SNPinterest alloc] initWithParentViewController:parentViewController];
                 break;
             case SERVICE_VKONTAKTE:
                 _service = [[SNVKontakte alloc] initWithParentViewController:parentViewController];
-                break;
-            default:
                 break;
         }
         if (!_service)

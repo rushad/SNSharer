@@ -37,12 +37,12 @@
 
 - (void)getResourceByQuery:(NSString*)urlQuery
                 parameters:(NSDictionary*)parameters
-                 onSuccess:(void (^)(NSString* body))onSuccessBlock;
+         completionHandler:(void (^)(NSURLResponse*, NSData*, NSError*))completionHandler;
 
 - (void)postResourceByQuery:(NSString*)urlQuery
            headerParameters:(NSDictionary*)headerParameters
                        body:(NSString*)body
-                  onSuccess:(void (^)(NSString* body))onSuccessBlock;
+          completionHandler:(void (^)(NSURLResponse*, NSData*, NSError*))completionHandler;
 
 #pragma mark - Class methods (are public for unit testing)
 

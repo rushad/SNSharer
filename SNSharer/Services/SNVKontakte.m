@@ -45,17 +45,17 @@ static NSString* const secretKey = @"DWkpMeHUuy6gHOZDxxrb";
 
 - (BOOL)isTextSupported
 {
-    return true;
+    return YES;
 }
 
 - (BOOL)isUrlSupported
 {
-    return true;
+    return YES;
 }
 
 - (BOOL)isImageSupported
 {
-    return false;
+    return NO;
 }
 
 - (void)shareText:(NSString*)text

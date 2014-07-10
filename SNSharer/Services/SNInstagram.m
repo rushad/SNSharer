@@ -8,10 +8,12 @@
 
 #import "SNInstagram.h"
 
-@interface SNInstagram()
+@interface SNInstagram()<UIDocumentInteractionControllerDelegate>
 
 @property (strong, nonatomic) UIViewController* parentViewController;
 @property (strong, nonatomic) UIDocumentInteractionController* instagramController;
+
+@property (nonatomic, copy) void (^shareCompletionHandler)(SNShareResult result, NSString* error);
 
 @end
 
@@ -33,29 +35,60 @@
 
 #pragma mark - SNServiceProtocol
 
-- (BOOL)isTextSupported
++ (BOOL)isAvailable
 {
-    return true;
+    return [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"instagram://"]];
 }
 
-- (BOOL)isUrlSupported
++ (BOOL)canShareLocalImage
 {
-    return true;
+    return YES;
 }
 
-- (BOOL)isImageSupported
+- (void)shareWithTitle:(NSString*)title
+                  text:(NSString*)text
+                   url:(NSString*)url
+                 image:(UIImage*)image
+     completionHandler:(void (^)(SNShareResult, NSString *))handler
 {
-    return true;
+    [self shareWithTitle:title
+                    text:text
+                     url:url
+                   image:image
+                imageUrl:nil
+       completionHandler:handler];
 }
 
-- (void)shareText:(NSString*)text
-              url:(NSString*)url
-            image:(UIImage*)image
+- (void)shareWithTitle:(NSString*)title
+                  text:(NSString*)text
+                   url:(NSString*)url
+              imageUrl:(NSString*)imageUrl
+     completionHandler:(void (^)(SNShareResult, NSString *))handler
 {
+    [self shareWithTitle:title
+                    text:text
+                     url:url
+                   image:nil
+                imageUrl:imageUrl
+       completionHandler:handler];
+}
+
+#pragma mark - Private methods
+
+- (void)shareWithTitle:(NSString*)title
+                  text:(NSString*)text
+                   url:(NSString*)url
+                 image:(UIImage*)image
+              imageUrl:(NSString*)imageUrl
+     completionHandler:(void (^)(SNShareResult, NSString *))handler
+{
+    self.shareCompletionHandler = handler;
+    
     NSString* tempFileName = [[NSString alloc] initWithFormat:@"%@%@", NSTemporaryDirectory(), @"temp.igo"];
     [UIImagePNGRepresentation(image) writeToFile:tempFileName atomically:YES];
 
     self.instagramController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:tempFileName]];
+    self.instagramController.delegate = self;
     self.instagramController.UTI = @"com.instagram.exclusivegram";
     
     NSString* body = text;
@@ -68,6 +101,13 @@
     self.instagramController.annotation = @{@"InstagramCaption": body};
     
     [self.instagramController presentOpenInMenuFromRect:self.parentViewController.view.frame inView:self.parentViewController.view animated:YES];
+}
+
+#pragma mark - UIDocumentIteractionControllerDelegate
+
+- (void)documentInteractionControllerDidDismissOpenInMenu:(UIDocumentInteractionController *)controller
+{
+    self.shareCompletionHandler(SNShareResultUnknown, nil);
 }
 
 @end
