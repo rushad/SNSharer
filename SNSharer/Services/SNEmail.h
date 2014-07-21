@@ -10,7 +10,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SNEmail : NSObject<SNServiceProtocol2>
+@interface SNEmail : NSObject<SNServiceProtocol>
 
 - (instancetype)initWithParentViewController:(UIViewController*)parentViewController;
 

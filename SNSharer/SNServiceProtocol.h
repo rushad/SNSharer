@@ -8,19 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol SNServiceProtocol
-
-- (instancetype)init __attribute__((unavailable("Must use initWithParentViewController: instead.")));
-- (instancetype)initWithParentViewController:(UIViewController*)parentViewController;
-
-- (BOOL)isTextSupported;
-- (BOOL)isUrlSupported;
-- (BOOL)isImageSupported;
-
-- (void)shareText:(NSString*)text url:(NSString*)url image:(UIImage*)image;
-
-@end
-
 typedef NS_ENUM(NSUInteger, SNShareResult)
 {
     SNShareResultDone,
@@ -29,7 +16,7 @@ typedef NS_ENUM(NSUInteger, SNShareResult)
     SNShareResultUnknown
 };
 
-@protocol SNServiceProtocol2
+@protocol SNServiceProtocol
 
 - (instancetype)init __attribute__((unavailable("Default initializer is deprecated.")));
 

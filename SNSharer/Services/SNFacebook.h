@@ -10,7 +10,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SNFacebook : NSObject<SNServiceProtocol2>
+@interface SNFacebook : NSObject<SNServiceProtocol>
 
 - (instancetype)initWithParentViewController:(UIViewController*)parentViewController;
 

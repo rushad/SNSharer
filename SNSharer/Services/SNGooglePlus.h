@@ -10,7 +10,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SNGooglePlus : NSObject<SNServiceProtocol2>
+@interface SNGooglePlus : NSObject<SNServiceProtocol>
 
 - (instancetype)initWithParentViewController:(UIViewController*)parentViewController
                                     clientID:(NSString*)clientID;

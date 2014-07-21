@@ -48,6 +48,36 @@
                   text:(NSString*)text
                    url:(NSString*)url
                  image:(UIImage*)image
+     completionHandler:(void (^)(SNShareResult, NSString *))handler
+{
+    [self shareWithTitle:title
+                    text:text
+                     url:url
+                   image:image
+                imageUrl:nil
+       completionHandler:handler];
+}
+
+- (void)shareWithTitle:(NSString*)title
+                  text:(NSString*)text
+                   url:(NSString*)url
+              imageUrl:(NSString*)imageUrl
+     completionHandler:(void (^)(SNShareResult, NSString *))handler
+{
+    [self shareWithTitle:title
+                    text:text
+                     url:url
+                   image:nil
+                imageUrl:imageUrl
+       completionHandler:handler];
+}
+
+#pragma mark - Private methods
+
+- (void)shareWithTitle:(NSString*)title
+                  text:(NSString*)text
+                   url:(NSString*)url
+                 image:(UIImage*)image
               imageUrl:(NSString*)imageUrl
      completionHandler:(void (^)(SNShareResult, NSString *))handler
 {
@@ -71,34 +101,6 @@
         [self.webInterface shareText:text
                                  url:url];
     }
-}
-
-- (void)shareWithTitle:(NSString*)title
-                  text:(NSString*)text
-                   url:(NSString*)url
-                 image:(UIImage*)image
-     completionHandler:(void (^)(SNShareResult, NSString *))handler
-{
-    [self shareWithTitle:title
-                    text:text
-                     url:url
-                   image:image
-                imageUrl:nil
-       completionHandler:handler];
-}
-
-- (void)shareWithTitle:(NSString*)title
-                  text:(NSString*)text
-                   url:(NSString*)url
-              imageUrl:(NSString*)imageUrl
-     completionHandler:(void (^)(SNShareResult, NSString *))handler
-{
-    [self shareWithTitle:title
-                    text:text
-                     url:url
-                   image:nil
-                imageUrl:imageUrl
-       completionHandler:handler];
 }
 
 @end

@@ -10,7 +10,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SNTwitter : NSObject<SNServiceProtocol2>
+@interface SNTwitter : NSObject<SNServiceProtocol>
 
 - (instancetype)initWithParentViewController:(UIViewController*)parentViewController;
 

@@ -10,7 +10,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SNSms : NSObject<SNServiceProtocol2>
+@interface SNSms : NSObject<SNServiceProtocol>
 
 - (instancetype)initWithParentViewController:(UIViewController*)parentViewController;
 

@@ -10,7 +10,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SNInstagram : NSObject<SNServiceProtocol2>
+@interface SNInstagram : NSObject<SNServiceProtocol>
 
 - (instancetype)initWithParentViewController:(UIViewController*)parentViewController;
 

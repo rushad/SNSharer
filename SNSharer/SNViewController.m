@@ -10,26 +10,25 @@
 
 #import "SNServiceProtocol.h"
 
-#import "SNSharer.h"
-
 #import "Services/SNEmail.h"
 #import "Services/SNFacebook.h"
 #import "Services/SNGooglePlus.h"
 #import "Services/SNInstagram.h"
 #import "Services/SNLinkedIn.h"
+#import "Services/SNPinterest.h"
 #import "Services/SNSms.h"
 #import "Services/SNTwitter.h"
 
 @interface SNViewController ()
 
-@property (strong, nonatomic) id<SNServiceProtocol2> sharerEmail;
-@property (strong, nonatomic) id<SNServiceProtocol2> sharerSMS;
-@property (strong, nonatomic) id<SNServiceProtocol2> sharerFacebook;
-@property (strong, nonatomic) id<SNServiceProtocol2> sharerTwitter;
-@property (strong, nonatomic) id<SNServiceProtocol2> sharerInstagram;
-@property (strong, nonatomic) id<SNServiceProtocol2> sharerGooglePlus;
-@property (strong, nonatomic) id<SNServiceProtocol2> sharerLinkedIn;
-@property (strong, nonatomic) SNSharer* sharerPinterest;
+@property (strong, nonatomic) id<SNServiceProtocol> sharerEmail;
+@property (strong, nonatomic) id<SNServiceProtocol> sharerSMS;
+@property (strong, nonatomic) id<SNServiceProtocol> sharerFacebook;
+@property (strong, nonatomic) id<SNServiceProtocol> sharerTwitter;
+@property (strong, nonatomic) id<SNServiceProtocol> sharerInstagram;
+@property (strong, nonatomic) id<SNServiceProtocol> sharerGooglePlus;
+@property (strong, nonatomic) id<SNServiceProtocol> sharerLinkedIn;
+@property (strong, nonatomic) id<SNServiceProtocol> sharerPinterest;
 
 @property (weak, nonatomic) IBOutlet UITextField *urlView;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
@@ -56,6 +55,8 @@ static NSString* const linkedInApiKey = @"77o77yemk1co4x";
 static NSString* const linkedInSecretKey = @"UKLNKYM7kslt9STZ";
 static NSString* const linkedInRedirectUrl = @"http://helpbook.com";
 
+static NSString* const pinterestClientId = @"1438963";
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -67,6 +68,7 @@ static NSString* const linkedInRedirectUrl = @"http://helpbook.com";
     self.shareViaInstagram.enabled = [SNInstagram isAvailable];
     self.shareViaGooglePlus.enabled = [SNGooglePlus isAvailable];
     self.shareViaLinkedIn.enabled = [SNLinkedIn isAvailable];
+    self.shareViaPinterest.enabled = [SNPinterest isAvailable];
 
     self.sharerEmail = [[SNEmail alloc] initWithParentViewController:self];
     self.sharerSMS = [[SNSms alloc] initWithParentViewController:self];
@@ -78,10 +80,9 @@ static NSString* const linkedInRedirectUrl = @"http://helpbook.com";
                                                                     apiKey:linkedInApiKey
                                                                  secretKey:linkedInSecretKey
                                                                redirectUrl:linkedInRedirectUrl];
-
-    self.sharerPinterest = [[SNSharer alloc] initWithService:SERVICE_PINTEREST parentViewController:self];
+    self.sharerPinterest = [[SNPinterest alloc] initWithParentViewController:self
+                                                                    clientId:pinterestClientId];
     
-    self.shareViaPinterest.enabled = (self.sharerPinterest != nil);
 
     self.completionHandler = ^(SNShareResult result, NSString* error)
     {
@@ -120,11 +121,6 @@ static NSString* const linkedInRedirectUrl = @"http://helpbook.com";
                 break;
         }
     };
-}
-
-- (void)share:(SNSharer*)sharer
-{
-    [sharer shareText:self.textView.text url:self.urlView.text image:self.imageView.image];
 }
 
 - (IBAction)shareViaEmail:(id)sender
@@ -192,7 +188,11 @@ static NSString* const linkedInRedirectUrl = @"http://helpbook.com";
 
 - (IBAction)shareViaPinterest:(id)sender
 {
-    [self share:self.sharerPinterest];
+    [self.sharerPinterest shareWithTitle:nil
+                                    text:self.textView.text
+                                     url:self.urlView.text
+                                imageUrl:@"http://www.helpbook.com/images/logo_header.png"
+                       completionHandler:self.completionHandler];
 }
 
 @end

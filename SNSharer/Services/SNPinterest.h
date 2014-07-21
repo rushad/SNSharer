@@ -12,4 +12,7 @@
 
 @interface SNPinterest : NSObject<SNServiceProtocol>
 
+- (instancetype)initWithParentViewController:(UIViewController*)parentViewController
+                                    clientId:(NSString*)clientId;
+
 @end

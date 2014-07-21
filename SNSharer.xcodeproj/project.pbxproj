@@ -25,7 +25,6 @@
 		5E30FF61195C613B0032A96F /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5E30FF60195C613B0032A96F /* GooglePlus.bundle */; };
 		5E30FF63195C61640032A96F /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E30FF62195C61640032A96F /* GooglePlus.framework */; };
 		5E30FF65195C618A0032A96F /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E30FF64195C618A0032A96F /* GoogleOpenSource.framework */; };
-		5E812FDD1952C02A00823A89 /* SNSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E812FDC1952C02A00823A89 /* SNSharer.m */; };
 		5E83402C1962B49B00F9D9B9 /* OAuth10.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E83402B1962B49B00F9D9B9 /* OAuth10.m */; };
 		5E8340561962B5D800F9D9B9 /* SNEmail.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E8340491962B5D800F9D9B9 /* SNEmail.m */; };
 		5E8340571962B5D800F9D9B9 /* SNFacebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E83404B1962B5D800F9D9B9 /* SNFacebook.m */; };
@@ -35,7 +34,6 @@
 		5E83405B1962B5D800F9D9B9 /* SNSms.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E8340531962B5D800F9D9B9 /* SNSms.m */; };
 		5E83405C1962B5D800F9D9B9 /* SNTwitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E8340551962B5D800F9D9B9 /* SNTwitter.m */; };
 		5E8340601962F9C500F9D9B9 /* Base64Transcoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E83405E1962F9C500F9D9B9 /* Base64Transcoder.c */; };
-		5E8455CD196C0FE100F11DD5 /* SNVKontakte.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E8455CC196C0FE100F11DD5 /* SNVKontakte.m */; };
 		5E849E021958245E0009011C /* SNSocialFramework.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E849E011958245E0009011C /* SNSocialFramework.m */; };
 		5E849E0619582A040009011C /* SNWebInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E849E0519582A040009011C /* SNWebInterface.m */; };
 		5E86283D196AA0AD00AD5FBF /* OAuth20.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E86283C196AA0AD00AD5FBF /* OAuth20.m */; };
@@ -87,8 +85,6 @@
 		5E30FF60195C613B0032A96F /* GooglePlus.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GooglePlus.bundle; path = Frameworks/GooglePlus/GooglePlus.bundle; sourceTree = "<group>"; };
 		5E30FF62195C61640032A96F /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GooglePlus.framework; path = Frameworks/GooglePlus/GooglePlus.framework; sourceTree = "<group>"; };
 		5E30FF64195C618A0032A96F /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleOpenSource.framework; path = Frameworks/GooglePlus/GoogleOpenSource.framework; sourceTree = "<group>"; };
-		5E812FDB1952C02A00823A89 /* SNSharer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNSharer.h; sourceTree = "<group>"; };
-		5E812FDC1952C02A00823A89 /* SNSharer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNSharer.m; sourceTree = "<group>"; };
 		5E83402A1962B49B00F9D9B9 /* OAuth10.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OAuth10.h; path = SNSharer/OAuth1.0/OAuth10.h; sourceTree = "<group>"; };
 		5E83402B1962B49B00F9D9B9 /* OAuth10.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OAuth10.m; path = SNSharer/OAuth1.0/OAuth10.m; sourceTree = "<group>"; };
 		5E8340481962B5D800F9D9B9 /* SNEmail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNEmail.h; sourceTree = "<group>"; };
@@ -107,8 +103,6 @@
 		5E8340551962B5D800F9D9B9 /* SNTwitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNTwitter.m; sourceTree = "<group>"; };
 		5E83405E1962F9C500F9D9B9 /* Base64Transcoder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Base64Transcoder.c; sourceTree = "<group>"; };
 		5E83405F1962F9C500F9D9B9 /* Base64Transcoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64Transcoder.h; sourceTree = "<group>"; };
-		5E8455CB196C0FE100F11DD5 /* SNVKontakte.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNVKontakte.h; sourceTree = "<group>"; };
-		5E8455CC196C0FE100F11DD5 /* SNVKontakte.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNVKontakte.m; sourceTree = "<group>"; };
 		5E849E001958245E0009011C /* SNSocialFramework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNSocialFramework.h; sourceTree = "<group>"; };
 		5E849E011958245E0009011C /* SNSocialFramework.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNSocialFramework.m; sourceTree = "<group>"; };
 		5E849E0419582A040009011C /* SNWebInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNWebInterface.h; sourceTree = "<group>"; };
@@ -214,8 +208,6 @@
 			isa = PBXGroup;
 			children = (
 				5E29425A19509374003554FC /* Main.storyboard */,
-				5E812FDB1952C02A00823A89 /* SNSharer.h */,
-				5E812FDC1952C02A00823A89 /* SNSharer.m */,
 				5E849E001958245E0009011C /* SNSocialFramework.h */,
 				5E849E011958245E0009011C /* SNSocialFramework.m */,
 				5E849E0419582A040009011C /* SNWebInterface.h */,
@@ -297,8 +289,6 @@
 				5E8340531962B5D800F9D9B9 /* SNSms.m */,
 				5E8340541962B5D800F9D9B9 /* SNTwitter.h */,
 				5E8340551962B5D800F9D9B9 /* SNTwitter.m */,
-				5E8455CB196C0FE100F11DD5 /* SNVKontakte.h */,
-				5E8455CC196C0FE100F11DD5 /* SNVKontakte.m */,
 				5E87B3FE196D241D001BCB55 /* SNPinterest.h */,
 				5E87B3FF196D241D001BCB55 /* SNPinterest.m */,
 			);
@@ -469,10 +459,8 @@
 				5E87B400196D241D001BCB55 /* SNPinterest.m in Sources */,
 				5E8340561962B5D800F9D9B9 /* SNEmail.m in Sources */,
 				5E8340581962B5D800F9D9B9 /* SNGooglePlus.m in Sources */,
-				5E8455CD196C0FE100F11DD5 /* SNVKontakte.m in Sources */,
 				5E83402C1962B49B00F9D9B9 /* OAuth10.m in Sources */,
 				5E8340601962F9C500F9D9B9 /* Base64Transcoder.c in Sources */,
-				5E812FDD1952C02A00823A89 /* SNSharer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
