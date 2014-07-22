@@ -34,13 +34,14 @@
 		5E83405B1962B5D800F9D9B9 /* SNSms.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E8340531962B5D800F9D9B9 /* SNSms.m */; };
 		5E83405C1962B5D800F9D9B9 /* SNTwitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E8340551962B5D800F9D9B9 /* SNTwitter.m */; };
 		5E8340601962F9C500F9D9B9 /* Base64Transcoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 5E83405E1962F9C500F9D9B9 /* Base64Transcoder.c */; };
+		5E837FA3197E4AB300505D9F /* Pinterest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E837FA0197E4AB300505D9F /* Pinterest.framework */; };
+		5E837FA4197E4AB300505D9F /* PinterestSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5E837FA2197E4AB300505D9F /* PinterestSDKResources.bundle */; };
+		5E837FA7197E5FB300505D9F /* SNGooglePlusAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E837FA6197E5FB300505D9F /* SNGooglePlusAPI.m */; };
 		5E849E021958245E0009011C /* SNSocialFramework.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E849E011958245E0009011C /* SNSocialFramework.m */; };
 		5E849E0619582A040009011C /* SNWebInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E849E0519582A040009011C /* SNWebInterface.m */; };
 		5E86283D196AA0AD00AD5FBF /* OAuth20.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E86283C196AA0AD00AD5FBF /* OAuth20.m */; };
 		5E862840196AA5A100AD5FBF /* TestOAuth20.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E86283F196AA5A100AD5FBF /* TestOAuth20.m */; };
 		5E87B400196D241D001BCB55 /* SNPinterest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E87B3FF196D241D001BCB55 /* SNPinterest.m */; };
-		5E87B405196D265F001BCB55 /* Pinterest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E87B402196D265F001BCB55 /* Pinterest.framework */; };
-		5E87B406196D265F001BCB55 /* PinterestSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5E87B404196D265F001BCB55 /* PinterestSDKResources.bundle */; };
 		5E884D04195C354800D21661 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E884D03195C354800D21661 /* AddressBook.framework */; };
 		5E884D06195C357700D21661 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E884D05195C357700D21661 /* MediaPlayer.framework */; };
 		5E884D08195C358400D21661 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E884D07195C358400D21661 /* AssetsLibrary.framework */; };
@@ -103,6 +104,10 @@
 		5E8340551962B5D800F9D9B9 /* SNTwitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNTwitter.m; sourceTree = "<group>"; };
 		5E83405E1962F9C500F9D9B9 /* Base64Transcoder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Base64Transcoder.c; sourceTree = "<group>"; };
 		5E83405F1962F9C500F9D9B9 /* Base64Transcoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64Transcoder.h; sourceTree = "<group>"; };
+		5E837FA0197E4AB300505D9F /* Pinterest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Pinterest.framework; sourceTree = "<group>"; };
+		5E837FA2197E4AB300505D9F /* PinterestSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PinterestSDKResources.bundle; sourceTree = "<group>"; };
+		5E837FA5197E5FB300505D9F /* SNGooglePlusAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNGooglePlusAPI.h; sourceTree = "<group>"; };
+		5E837FA6197E5FB300505D9F /* SNGooglePlusAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNGooglePlusAPI.m; sourceTree = "<group>"; };
 		5E849E001958245E0009011C /* SNSocialFramework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNSocialFramework.h; sourceTree = "<group>"; };
 		5E849E011958245E0009011C /* SNSocialFramework.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNSocialFramework.m; sourceTree = "<group>"; };
 		5E849E0419582A040009011C /* SNWebInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNWebInterface.h; sourceTree = "<group>"; };
@@ -113,8 +118,6 @@
 		5E86283F196AA5A100AD5FBF /* TestOAuth20.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestOAuth20.m; path = SNSharer/OAuth2.0/TestOAuth20.m; sourceTree = "<group>"; };
 		5E87B3FE196D241D001BCB55 /* SNPinterest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNPinterest.h; sourceTree = "<group>"; };
 		5E87B3FF196D241D001BCB55 /* SNPinterest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNPinterest.m; sourceTree = "<group>"; };
-		5E87B402196D265F001BCB55 /* Pinterest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Pinterest.framework; sourceTree = "<group>"; };
-		5E87B404196D265F001BCB55 /* PinterestSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PinterestSDKResources.bundle; sourceTree = "<group>"; };
 		5E884D03195C354800D21661 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		5E884D05195C357700D21661 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		5E884D07195C358400D21661 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
@@ -139,7 +142,7 @@
 				5E30FF63195C61640032A96F /* GooglePlus.framework in Frameworks */,
 				5E884D06195C357700D21661 /* MediaPlayer.framework in Frameworks */,
 				5E884D04195C354800D21661 /* AddressBook.framework in Frameworks */,
-				5E87B405196D265F001BCB55 /* Pinterest.framework in Frameworks */,
+				5E837FA3197E4AB300505D9F /* Pinterest.framework in Frameworks */,
 				5E2942601950980D003554FC /* Social.framework in Frameworks */,
 				5E29422C195092FB003554FC /* CoreGraphics.framework in Frameworks */,
 				5E29422E195092FB003554FC /* UIKit.framework in Frameworks */,
@@ -163,7 +166,6 @@
 		5E29421D195092FB003554FC = {
 			isa = PBXGroup;
 			children = (
-				5E87B401196D265F001BCB55 /* Pinterest.embeddedframework */,
 				5E83402D1962B4A100F9D9B9 /* OAuth10 */,
 				5E86283E196AA0B500AD5FBF /* OAuth20 */,
 				5E849E03195824770009011C /* Protocols */,
@@ -187,6 +189,7 @@
 		5E294228195092FB003554FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5E837F9F197E4AB300505D9F /* Pinterest.embeddedframework */,
 				5E30FF5F195C611E0032A96F /* GooglePlus */,
 				5E884D0F195C361A00D21661 /* SystemConfiguration.framework */,
 				5E884D0D195C360A00D21661 /* Security.framework */,
@@ -281,16 +284,18 @@
 				5E83404B1962B5D800F9D9B9 /* SNFacebook.m */,
 				5E83404C1962B5D800F9D9B9 /* SNGooglePlus.h */,
 				5E83404D1962B5D800F9D9B9 /* SNGooglePlus.m */,
+				5E837FA5197E5FB300505D9F /* SNGooglePlusAPI.h */,
+				5E837FA6197E5FB300505D9F /* SNGooglePlusAPI.m */,
 				5E83404E1962B5D800F9D9B9 /* SNInstagram.h */,
 				5E83404F1962B5D800F9D9B9 /* SNInstagram.m */,
 				5E8340501962B5D800F9D9B9 /* SNLinkedIn.h */,
 				5E8340511962B5D800F9D9B9 /* SNLinkedIn.m */,
+				5E87B3FE196D241D001BCB55 /* SNPinterest.h */,
+				5E87B3FF196D241D001BCB55 /* SNPinterest.m */,
 				5E8340521962B5D800F9D9B9 /* SNSms.h */,
 				5E8340531962B5D800F9D9B9 /* SNSms.m */,
 				5E8340541962B5D800F9D9B9 /* SNTwitter.h */,
 				5E8340551962B5D800F9D9B9 /* SNTwitter.m */,
-				5E87B3FE196D241D001BCB55 /* SNPinterest.h */,
-				5E87B3FF196D241D001BCB55 /* SNPinterest.m */,
 			);
 			name = Services;
 			path = SNSharer/Services;
@@ -304,6 +309,24 @@
 			);
 			name = Base64;
 			path = SNSharer/OAuth1.0/Base64;
+			sourceTree = "<group>";
+		};
+		5E837F9F197E4AB300505D9F /* Pinterest.embeddedframework */ = {
+			isa = PBXGroup;
+			children = (
+				5E837FA0197E4AB300505D9F /* Pinterest.framework */,
+				5E837FA1197E4AB300505D9F /* Resources */,
+			);
+			name = Pinterest.embeddedframework;
+			path = Frameworks/Pinterest.embeddedframework;
+			sourceTree = "<group>";
+		};
+		5E837FA1197E4AB300505D9F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				5E837FA2197E4AB300505D9F /* PinterestSDKResources.bundle */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		5E849E03195824770009011C /* Protocols */ = {
@@ -322,24 +345,6 @@
 				5E86283F196AA5A100AD5FBF /* TestOAuth20.m */,
 			);
 			name = OAuth20;
-			sourceTree = "<group>";
-		};
-		5E87B401196D265F001BCB55 /* Pinterest.embeddedframework */ = {
-			isa = PBXGroup;
-			children = (
-				5E87B402196D265F001BCB55 /* Pinterest.framework */,
-				5E87B403196D265F001BCB55 /* Resources */,
-			);
-			name = Pinterest.embeddedframework;
-			path = SNSharer/Pinterest.embeddedframework;
-			sourceTree = "<group>";
-		};
-		5E87B403196D265F001BCB55 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				5E87B404196D265F001BCB55 /* PinterestSDKResources.bundle */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -423,7 +428,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E29425B19509374003554FC /* Main.storyboard in Resources */,
-				5E87B406196D265F001BCB55 /* PinterestSDKResources.bundle in Resources */,
+				5E837FA4197E4AB300505D9F /* PinterestSDKResources.bundle in Resources */,
 				5E294234195092FB003554FC /* InfoPlist.strings in Resources */,
 				5E30FF61195C613B0032A96F /* GooglePlus.bundle in Resources */,
 				5E29423C195092FB003554FC /* Images.xcassets in Resources */,
@@ -451,6 +456,7 @@
 				5E294236195092FB003554FC /* main.m in Sources */,
 				5E83405B1962B5D800F9D9B9 /* SNSms.m in Sources */,
 				5E29425E195093CD003554FC /* SNViewController.m in Sources */,
+				5E837FA7197E5FB300505D9F /* SNGooglePlusAPI.m in Sources */,
 				5E8340591962B5D800F9D9B9 /* SNInstagram.m in Sources */,
 				5E86283D196AA0AD00AD5FBF /* OAuth20.m in Sources */,
 				5E29423A195092FB003554FC /* SNSAppDelegate.m in Sources */,
@@ -587,6 +593,7 @@
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks/GooglePlus",
 					"$(PROJECT_DIR)/SNSharer/Pinterest.embeddedframework",
+					"$(PROJECT_DIR)/Frameworks/Pinterest.embeddedframework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SNSharer/SNSharer-Prefix.pch";
@@ -612,6 +619,7 @@
 					"$(PROJECT_DIR)/Frameworks",
 					"$(PROJECT_DIR)/Frameworks/GooglePlus",
 					"$(PROJECT_DIR)/SNSharer/Pinterest.embeddedframework",
+					"$(PROJECT_DIR)/Frameworks/Pinterest.embeddedframework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SNSharer/SNSharer-Prefix.pch";

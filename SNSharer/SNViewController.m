@@ -13,6 +13,7 @@
 #import "Services/SNEmail.h"
 #import "Services/SNFacebook.h"
 #import "Services/SNGooglePlus.h"
+#import "Services/SNGooglePlusAPI.h"
 #import "Services/SNInstagram.h"
 #import "Services/SNLinkedIn.h"
 #import "Services/SNPinterest.h"
@@ -29,6 +30,7 @@
 @property (strong, nonatomic) id<SNServiceProtocol> sharerGooglePlus;
 @property (strong, nonatomic) id<SNServiceProtocol> sharerLinkedIn;
 @property (strong, nonatomic) id<SNServiceProtocol> sharerPinterest;
+@property (strong, nonatomic) id<SNServiceProtocol> sharerGooglePlusAPI;
 
 @property (weak, nonatomic) IBOutlet UITextField *urlView;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
@@ -42,6 +44,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *shareViaGooglePlus;
 @property (weak, nonatomic) IBOutlet UIButton *shareViaLinkedIn;
 @property (weak, nonatomic) IBOutlet UIButton *shareViaPinterest;
+@property (weak, nonatomic) IBOutlet UIButton *shareViaGooglePlusAPI;
 
 @property (nonatomic, copy) void (^completionHandler)(SNShareResult result, NSString* error);
 
@@ -50,6 +53,8 @@
 @implementation SNViewController
 
 static NSString* const googlePlusClientID = @"11030147974-93rf3gj3vapmr7k5nhssm9evb1ud3ris.apps.googleusercontent.com";
+static NSString* const googlePlusClientSecret = @"5R4bRoYZFiGtpZyChbS-j0YV";
+static NSString* const googlePlusRedirectUri = @"http://localhost";
 
 static NSString* const linkedInApiKey = @"77o77yemk1co4x";
 static NSString* const linkedInSecretKey = @"UKLNKYM7kslt9STZ";
@@ -69,6 +74,7 @@ static NSString* const pinterestClientId = @"1438963";
     self.shareViaGooglePlus.enabled = [SNGooglePlus isAvailable];
     self.shareViaLinkedIn.enabled = [SNLinkedIn isAvailable];
     self.shareViaPinterest.enabled = [SNPinterest isAvailable];
+    self.shareViaGooglePlusAPI.enabled = [SNGooglePlusAPI isAvailable];
 
     self.sharerEmail = [[SNEmail alloc] initWithParentViewController:self];
     self.sharerSMS = [[SNSms alloc] initWithParentViewController:self];
@@ -82,6 +88,10 @@ static NSString* const pinterestClientId = @"1438963";
                                                                redirectUrl:linkedInRedirectUrl];
     self.sharerPinterest = [[SNPinterest alloc] initWithParentViewController:self
                                                                     clientId:pinterestClientId];
+    self.sharerGooglePlusAPI = [[SNGooglePlusAPI alloc] initWithParentViewControlller:self
+                                                                             clientId:googlePlusClientID
+                                                                         clientSecret:googlePlusClientSecret
+                                                                          redirectUri:googlePlusRedirectUri];
     
 
     self.completionHandler = ^(SNShareResult result, NSString* error)
@@ -193,6 +203,15 @@ static NSString* const pinterestClientId = @"1438963";
                                      url:self.urlView.text
                                 imageUrl:@"http://www.helpbook.com/images/logo_header.png"
                        completionHandler:self.completionHandler];
+}
+
+- (IBAction)shareViewGooglePlusAPI:(id)sender
+{
+    [self.sharerGooglePlusAPI shareWithTitle:nil
+                                        text:self.textView.text
+                                         url:self.urlView.text
+                                    imageUrl:nil
+                           completionHandler:self.completionHandler];
 }
 
 @end

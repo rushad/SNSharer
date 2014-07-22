@@ -100,7 +100,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yEs-fs-jPo">
-                                <rect key="frame" x="166" y="96" width="140" height="30"/>
+                                <rect key="frame" x="161" y="96" width="140" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Share via Google+">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -110,7 +110,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qEn-Sr-SDi">
-                                <rect key="frame" x="166" y="134" width="140" height="30"/>
+                                <rect key="frame" x="161" y="134" width="140" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Share via LinkedIn">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -120,13 +120,23 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oxH-9U-zaA">
-                                <rect key="frame" x="166" y="171" width="140" height="30"/>
+                                <rect key="frame" x="161" y="172" width="140" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Share via Pinterest">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="shareViaPinterest:" destination="dq8-Dw-6BP" eventType="touchUpInside" id="0ou-XC-wKf"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GFF-Su-SvD">
+                                <rect key="frame" x="154" y="210" width="155" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Share via Google+ API">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="shareViewGooglePlusAPI:" destination="dq8-Dw-6BP" eventType="touchUpInside" id="jUk-df-MCD"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -137,6 +147,7 @@
                         <outlet property="shareViaEmail" destination="7j8-Fz-tdE" id="hvV-UO-TJD"/>
                         <outlet property="shareViaFacebook" destination="gCr-ZE-5QB" id="o1T-eW-JSV"/>
                         <outlet property="shareViaGooglePlus" destination="yEs-fs-jPo" id="2Lf-Of-ruB"/>
+                        <outlet property="shareViaGooglePlusAPI" destination="GFF-Su-SvD" id="iSS-kK-L0z"/>
                         <outlet property="shareViaInstagram" destination="Yo4-TU-2xD" id="eZA-pV-NCX"/>
                         <outlet property="shareViaLinkedIn" destination="qEn-Sr-SDi" id="Qom-1o-DaQ"/>
                         <outlet property="shareViaPinterest" destination="oxH-9U-zaA" id="Ail-bs-cAg"/>

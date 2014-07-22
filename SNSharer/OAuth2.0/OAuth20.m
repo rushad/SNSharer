@@ -128,6 +128,23 @@
 
 - (void)postQuery:(NSString*)query
  headerParameters:(NSDictionary*)headerParameters
+   bodyParameters:(NSDictionary*)bodyParameters
+       completion:(void (^)(NSURLResponse*, NSData*, NSError*))handler
+{
+    NSMutableString* postBody = [[NSMutableString alloc] init];
+    for (NSString* key in bodyParameters)
+    {
+        [postBody appendString:[NSString stringWithFormat:@"%@=%@&", key, [bodyParameters valueForKey:key]]];
+    }
+
+    [self postQuery:query
+   headerParameters:headerParameters
+               body:postBody
+         completion:handler];
+}
+
+- (void)postQuery:(NSString*)query
+ headerParameters:(NSDictionary*)headerParameters
              body:(NSString*)body
        completion:(void (^)(NSURLResponse*, NSData*, NSError*))handler
 {
@@ -179,24 +196,23 @@
                                   @"redirect_uri" : [OAuth20 URLEncodeString:self.urlRedirect],
                                   @"client_id" : [OAuth20 URLEncodeString:self.apiKey],
                                   @"client_secret" : [OAuth20 URLEncodeString:self.secretKey] };
-
-    NSString* query = [NSString stringWithFormat:@"%@?%@",
-                       self.urlAccessToken, [self.class stringOfParameters:parameters]];
-
-    [self getQuery:query
-        completion:^(NSURLResponse* response, NSData* body, NSError* error)
-                    {
-                        NSDictionary* json = [NSJSONSerialization JSONObjectWithData:body options:0 error:nil];
-                        self.accessToken = [json valueForKey:@"access_token"];
-                        if ([self.accessToken length])
-                        {
-                            [self.delegate accessGranted];
-                        }
-                        else
-                        {
-                            [self accessDenied];
-                        }
-                    }];
+    
+    [self postQuery:self.urlAccessToken
+   headerParameters:nil
+     bodyParameters:parameters
+         completion:^(NSURLResponse* response, NSData* body, NSError* error)
+                     {
+                         NSDictionary* json = [NSJSONSerialization JSONObjectWithData:body options:0 error:nil];
+                         self.accessToken = [json valueForKey:@"access_token"];
+                         if ([self.accessToken length])
+                         {
+                             [self.delegate accessGranted];
+                         }
+                         else
+                         {
+                             [self accessDenied];
+                         }
+                     }];
 }
 
 - (void)accessDenied
@@ -265,7 +281,6 @@
 - (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     NSString* url = request.URL.absoluteString;
-
     if ([[self.class getPathOfUrl:url] isEqualToString:[self.class getPathOfUrl:self.urlRedirect]])
     {
         [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
