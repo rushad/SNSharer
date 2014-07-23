@@ -131,15 +131,9 @@
    bodyParameters:(NSDictionary*)bodyParameters
        completion:(void (^)(NSURLResponse*, NSData*, NSError*))handler
 {
-    NSMutableString* postBody = [[NSMutableString alloc] init];
-    for (NSString* key in bodyParameters)
-    {
-        [postBody appendString:[NSString stringWithFormat:@"%@=%@&", key, [bodyParameters valueForKey:key]]];
-    }
-
     [self postQuery:query
    headerParameters:headerParameters
-               body:postBody
+               body:[self.class stringOfParameters:bodyParameters]
          completion:handler];
 }
 
