@@ -13,6 +13,7 @@ typedef NS_ENUM(NSUInteger, SNShareResult)
     SNShareResultDone,
     SNShareResultCancelled,
     SNShareResultFailed,
+    SNShareResultNotSupported,
     SNShareResultUnknown
 };
 
@@ -34,5 +35,7 @@ typedef NS_ENUM(NSUInteger, SNShareResult)
                    url:(NSString*)url
                  image:(UIImage*)image
      completionHandler:(void (^)(SNShareResult result, NSString* error))handler;
+
+- (void)retrieveProfileWithCompletionHandler:(void (^)(SNShareResult result, NSDictionary* profile, NSString* error))handler;
 
 @end

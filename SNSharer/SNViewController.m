@@ -10,17 +10,17 @@
 
 #import "SNServiceProtocol.h"
 
-#import "Services/SNEmail.h"
-#import "Services/SNFacebook.h"
-#import "Services/SNGooglePlus.h"
-#import "Services/SNGooglePlusAPI.h"
-#import "Services/SNInstagram.h"
-#import "Services/SNLinkedIn.h"
-#import "Services/SNPinterest.h"
-#import "Services/SNSms.h"
-#import "Services/SNTwitter.h"
+#import "SNEmail.h"
+#import "SNFacebook.h"
+#import "SNGooglePlus.h"
+#import "SNGooglePlusAPI.h"
+#import "SNInstagram.h"
+#import "SNLinkedIn.h"
+#import "SNPinterest.h"
+#import "SNSms.h"
+#import "SNTwitter.h"
 
-@interface SNViewController ()
+@interface SNViewController()<UITextFieldDelegate, UITextViewDelegate>
 
 @property (strong, nonatomic) id<SNServiceProtocol> sharerEmail;
 @property (strong, nonatomic) id<SNServiceProtocol> sharerSMS;
@@ -46,7 +46,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *shareViaPinterest;
 @property (weak, nonatomic) IBOutlet UIButton *shareViaGooglePlusAPI;
 
-@property (nonatomic, copy) void (^completionHandler)(SNShareResult result, NSString* error);
+@property (nonatomic, copy) void (^shareCompletionHandler)(SNShareResult result, NSString* error);
+@property (nonatomic, copy) void (^profileCompletionHandler)(SNShareResult result, NSDictionary* profile, NSString* error);
 
 @end
 
@@ -66,6 +67,9 @@ static NSString* const pinterestClientId = @"1438963";
 {
     [super viewDidLoad];
 
+    self.urlView.delegate = self;
+    self.textView.delegate = self;
+    
     self.shareViaEmail.enabled = [SNEmail isAvailable];
     self.shareViaSMS.enabled = [SNSms isAvailable];
     self.shareViaFacebook.enabled = [SNFacebook isAvailable];
@@ -94,13 +98,13 @@ static NSString* const pinterestClientId = @"1438963";
                                                                           redirectUri:googlePlusRedirectUri];
     
 
-    self.completionHandler = ^(SNShareResult result, NSString* error)
+    self.shareCompletionHandler = ^(SNShareResult result, NSString* error)
     {
         switch(result)
         {
             case SNShareResultDone:
             {
-                [[[UIAlertView alloc] initWithTitle:@"Done"
+                [[[UIAlertView alloc] initWithTitle:@"Sharing done"
                                             message:@"You shared info successfully"
                                            delegate:nil
                                   cancelButtonTitle:@"OK"
@@ -109,7 +113,7 @@ static NSString* const pinterestClientId = @"1438963";
             }
             case SNShareResultCancelled:
             {
-                [[[UIAlertView alloc] initWithTitle:@"Cancelled"
+                [[[UIAlertView alloc] initWithTitle:@"Sharing cancelled"
                                             message:@"You cancelled sharing"
                                            delegate:nil
                                   cancelButtonTitle:@"OK"
@@ -118,12 +122,57 @@ static NSString* const pinterestClientId = @"1438963";
             }
             case SNShareResultFailed:
             {
-                [[[UIAlertView alloc] initWithTitle:@"Failed"
-                                            message:@"Sharing failed"
+                [[[UIAlertView alloc] initWithTitle:@"Sharing failed"
+                                            message:error
                                            delegate:nil
                                   cancelButtonTitle:@"OK"
                                   otherButtonTitles:nil] show];
-                
+                break;
+            }
+            default:
+                NSLog(@"Unknown sharing result");
+                break;
+        }
+    };
+    
+    self.profileCompletionHandler = ^(SNShareResult result, NSDictionary* profile, NSString* error)
+    {
+        switch(result)
+        {
+            case SNShareResultDone:
+            {
+                [[[UIAlertView alloc] initWithTitle:@"Profile retrieved"
+                                            message:[profile description]
+                                           delegate:nil
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil] show];
+                break;
+            }
+            case SNShareResultCancelled:
+            {
+                [[[UIAlertView alloc] initWithTitle:@"Profile retrieving cancelled"
+                                            message:error
+                                           delegate:nil
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil] show];
+                break;
+            }
+            case SNShareResultFailed:
+            {
+                [[[UIAlertView alloc] initWithTitle:@"Profile retrieving failed"
+                                            message:error
+                                           delegate:nil
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil] show];
+                break;
+            }
+            case SNShareResultNotSupported:
+            {
+                [[[UIAlertView alloc] initWithTitle:@"Profile retrieving not supported"
+                                            message:error
+                                           delegate:nil
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil] show];
                 break;
             }
             default:
@@ -139,7 +188,8 @@ static NSString* const pinterestClientId = @"1438963";
                                 text:self.textView.text
                                  url:self.urlView.text
                                image:self.imageView.image
-                   completionHandler:self.completionHandler];
+                   completionHandler:self.shareCompletionHandler];
+    [self.sharerEmail retrieveProfileWithCompletionHandler:self.profileCompletionHandler];
 }
 
 - (IBAction)shareViaSMS:(id)sender
@@ -148,7 +198,8 @@ static NSString* const pinterestClientId = @"1438963";
                               text:self.textView.text
                                url:self.urlView.text
                              image:self.imageView.image
-                 completionHandler:self.completionHandler];
+                 completionHandler:self.shareCompletionHandler];
+    [self.sharerSMS retrieveProfileWithCompletionHandler:self.profileCompletionHandler];
 }
 
 - (IBAction)shareViaFacebook:(id)sender
@@ -157,7 +208,8 @@ static NSString* const pinterestClientId = @"1438963";
                                    text:self.textView.text
                                     url:self.urlView.text
                                   image:self.imageView.image
-                      completionHandler:self.completionHandler];
+                      completionHandler:self.shareCompletionHandler];
+    [self.sharerFacebook retrieveProfileWithCompletionHandler:self.profileCompletionHandler];
 }
 
 - (IBAction)shareViaTwitter:(id)sender
@@ -166,7 +218,8 @@ static NSString* const pinterestClientId = @"1438963";
                                   text:self.textView.text
                                    url:self.urlView.text
                                  image:self.imageView.image
-                     completionHandler:self.completionHandler];
+                     completionHandler:self.shareCompletionHandler];
+    [self.sharerTwitter retrieveProfileWithCompletionHandler:self.profileCompletionHandler];
 }
 
 - (IBAction)shareViaInstagram:(id)sender
@@ -175,7 +228,8 @@ static NSString* const pinterestClientId = @"1438963";
                                     text:self.textView.text
                                      url:self.urlView.text
                                    image:self.imageView.image
-                       completionHandler:self.completionHandler];
+                       completionHandler:self.shareCompletionHandler];
+    [self.sharerInstagram retrieveProfileWithCompletionHandler:self.profileCompletionHandler];
 }
 
 - (IBAction)shareViaGooglePlus:(id)sender
@@ -184,7 +238,8 @@ static NSString* const pinterestClientId = @"1438963";
                                      text:self.textView.text
                                       url:self.urlView.text
                                     image:self.imageView.image
-                        completionHandler:self.completionHandler];
+                        completionHandler:self.shareCompletionHandler];
+    [self.sharerGooglePlus retrieveProfileWithCompletionHandler:self.profileCompletionHandler];
 }
 
 - (IBAction)shareViaLinkedIn:(id)sender
@@ -193,7 +248,8 @@ static NSString* const pinterestClientId = @"1438963";
                                    text:self.textView.text
                                     url:self.urlView.text
                                imageUrl:@"http://www.helpbook.com/images/logo_header.png"
-                      completionHandler:self.completionHandler];
+                      completionHandler:self.shareCompletionHandler];
+    [self.sharerLinkedIn retrieveProfileWithCompletionHandler:self.profileCompletionHandler];
 }
 
 - (IBAction)shareViaPinterest:(id)sender
@@ -202,16 +258,38 @@ static NSString* const pinterestClientId = @"1438963";
                                     text:self.textView.text
                                      url:self.urlView.text
                                 imageUrl:@"http://www.helpbook.com/images/logo_header.png"
-                       completionHandler:self.completionHandler];
+                       completionHandler:self.shareCompletionHandler];
+    [self.sharerPinterest retrieveProfileWithCompletionHandler:self.profileCompletionHandler];
 }
 
-- (IBAction)shareViewGooglePlusAPI:(id)sender
+- (IBAction)shareViaGooglePlusAPI:(id)sender
 {
     [self.sharerGooglePlusAPI shareWithTitle:nil
                                         text:self.textView.text
                                          url:self.urlView.text
-                                    imageUrl:nil
-                           completionHandler:self.completionHandler];
+                                    imageUrl:@"http://www.helpbook.com/images/logo_header.png"
+                           completionHandler:self.shareCompletionHandler];
+    [self.sharerGooglePlusAPI retrieveProfileWithCompletionHandler:self.profileCompletionHandler];
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField*)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+#pragma mark - UITextViewDelegate
+
+- (BOOL)textView:(UITextView*)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString*)text
+{
+    if ([text isEqual:@"\n"])
+    {
+        [textView resignFirstResponder];
+        return NO;
+    }
+    return YES;
 }
 
 @end

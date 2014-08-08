@@ -1,35 +1,33 @@
 //
-//  SNSms.m
+//  SNInstagram.m
 //  SNSharer
 //
-//  Created by Rushad on 6/20/14.
+//  Created by Rushad on 6/23/14.
 //  Copyright (c) 2014 Rushad. All rights reserved.
 //
 
-#import "SNSms.h"
+#import "SNInstagram.h"
 
-#import <MessageUI/MessageUI.h>
-
-@interface SNSms()<MFMessageComposeViewControllerDelegate>
+@interface SNInstagram()<UIDocumentInteractionControllerDelegate>
 
 @property (strong, nonatomic) UIViewController* parentViewController;
+@property (strong, nonatomic) UIDocumentInteractionController* instagramController;
 
 @property (nonatomic, copy) void (^shareCompletionHandler)(SNShareResult result, NSString* error);
 
 @end
 
-@implementation SNSms
+@implementation SNInstagram
 
 #pragma mark - Initializer
 
 - (instancetype)initWithParentViewController:(UIViewController*)parentViewController
 {
-    if (![MFMessageComposeViewController canSendText])
-        return nil;
-    
     self = [super init];
     if (self)
     {
+        if (![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"instagram://"]])
+            return nil;
         _parentViewController = parentViewController;
     }
     return self;
@@ -39,7 +37,7 @@
 
 + (BOOL)isAvailable
 {
-    return [MFMessageComposeViewController canSendText];
+    return [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"instagram://"]];
 }
 
 + (BOOL)canShareLocalImage
@@ -51,7 +49,7 @@
                   text:(NSString*)text
                    url:(NSString*)url
                  image:(UIImage*)image
-     completionHandler:(void (^)(SNShareResult result, NSString* error))handler
+     completionHandler:(void (^)(SNShareResult, NSString *))handler
 {
     [self shareWithTitle:title
                     text:text
@@ -75,6 +73,11 @@
        completionHandler:handler];
 }
 
+- (void)retrieveProfileWithCompletionHandler:(void (^)(SNShareResult result, NSDictionary* profile, NSString* error))handler
+{
+    handler(SNShareResultNotSupported, nil, @"Service doesn't support retrieving profile data");
+}
+
 #pragma mark - Private methods
 
 - (void)shareWithTitle:(NSString*)title
@@ -82,12 +85,16 @@
                    url:(NSString*)url
                  image:(UIImage*)image
               imageUrl:(NSString*)imageUrl
-     completionHandler:(void (^)(SNShareResult result, NSString* error))handler
+     completionHandler:(void (^)(SNShareResult, NSString *))handler
 {
     self.shareCompletionHandler = handler;
     
-    MFMessageComposeViewController* smsComposer = [[MFMessageComposeViewController alloc] init];
-    smsComposer.messageComposeDelegate = self;
+    NSString* tempFileName = [[NSString alloc] initWithFormat:@"%@%@", NSTemporaryDirectory(), @"temp.igo"];
+    [UIImagePNGRepresentation(image) writeToFile:tempFileName atomically:YES];
+
+    self.instagramController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:tempFileName]];
+    self.instagramController.delegate = self;
+    self.instagramController.UTI = @"com.instagram.exclusivegram";
     
     NSString* body = text;
     if (url)
@@ -95,31 +102,17 @@
         body = [body stringByAppendingString:@"\r\n"];
         body = [body stringByAppendingString:url];
     }
+
+    self.instagramController.annotation = @{@"InstagramCaption": body};
     
-    [smsComposer setBody:body];
-    [smsComposer addAttachmentData:UIImagePNGRepresentation(image) typeIdentifier:@"public.png" filename:@"attachment.png"];
-    
-    [self.parentViewController presentViewController:smsComposer animated:YES completion:nil];
+    [self.instagramController presentOpenInMenuFromRect:self.parentViewController.view.frame inView:self.parentViewController.view animated:YES];
 }
 
-#pragma mark - MFMessageComposeViewControllerDelegate
+#pragma mark - UIDocumentIteractionControllerDelegate
 
-- (void)messageComposeViewController:(MFMessageComposeViewController *)controller
-                 didFinishWithResult:(MessageComposeResult)result
+- (void)documentInteractionControllerDidDismissOpenInMenu:(UIDocumentInteractionController *)controller
 {
-    [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
-    switch(result)
-    {
-        case MessageComposeResultSent:
-            self.shareCompletionHandler(SNShareResultDone, nil);
-            break;
-        case MessageComposeResultCancelled:
-            self.shareCompletionHandler(SNShareResultCancelled, nil);
-            break;
-        case MessageComposeResultFailed:
-            self.shareCompletionHandler(SNShareResultFailed, nil);
-            break;
-    }
+    self.shareCompletionHandler(SNShareResultUnknown, nil);
 }
 
 @end

@@ -8,6 +8,8 @@
 
 #import "OAuth20.h"
 
+#define WebKitErrorFrameLoadInterruptedByPolicyChange 102
+
 @interface OAuth20()<UIWebViewDelegate, UINavigationControllerDelegate>
 
 @property (strong, nonatomic) NSString* urlAuthorization;
@@ -23,12 +25,29 @@
 
 @property (strong, nonatomic) NSString* scope;
 @property (strong, nonatomic) NSString* state;
+@property (nonatomic, copy) void (^authorizeCompletionHandler)(BOOL accessGranted, NSString* error, NSString* errorDescription);
 
 @property (strong, nonatomic) UINavigationController* navigationController;
 
 @end
 
 @implementation OAuth20
+
+static NSString* const GET = @"GET";
+static NSString* const POST = @"POST";
+static NSString* const response_type = @"response_type";
+static NSString* const code = @"code";
+static NSString* const client_id = @"client_id";
+static NSString* const scope = @"scope";
+static NSString* const state = @"state";
+static NSString* const redirect_uri = @"redirect_uri";
+static NSString* const grant_type = @"grant_type";
+static NSString* const authorization_code = @"authorization_code";
+static NSString* const client_secret = @"client_secret";
+static NSString* const access_token = @"access_token";
+static NSString* const error = @"error";
+static NSString* const error_description = @"error_description";
+static NSString* const oauth2_access_token = @"oauth2_access_token";
 
 #pragma mark - Initializer
 
@@ -121,7 +140,7 @@
       completion:(void (^)(NSURLResponse*, NSData*, NSError*))handler
 {
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:query]];
-    request.HTTPMethod = @"GET";
+    request.HTTPMethod = GET;
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:handler];
 }
@@ -143,7 +162,7 @@
        completion:(void (^)(NSURLResponse*, NSData*, NSError*))handler
 {
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:query]];
-    request.HTTPMethod = @"POST";
+    request.HTTPMethod = POST;
     request.HTTPBody = [body dataUsingEncoding:NSUTF8StringEncoding];
     
     for (NSString* key in headerParameters)
@@ -156,16 +175,16 @@
 
 - (void)startRetrievingAuthCode
 {
-    NSDictionary* parameters = @{ @"response_type" : @"code",
-                                  @"client_id" : [OAuth20 URLEncodeString:self.apiKey],
-                                  @"scope" : [OAuth20 URLEncodeString:self.scope],
-                                  @"state" : [OAuth20 URLEncodeString:self.state],
-                                  @"redirect_uri" : [OAuth20 URLEncodeString:self.urlRedirect] };
+    NSDictionary* parameters = @{ response_type : code,
+                                  client_id : [OAuth20 URLEncodeString:self.apiKey],
+                                  scope : [OAuth20 URLEncodeString:self.scope],
+                                  state : [OAuth20 URLEncodeString:self.state],
+                                  redirect_uri : [OAuth20 URLEncodeString:self.urlRedirect] };
     
     NSString* query = [NSString stringWithFormat:@"%@?%@",
                        self.urlAuthorization, [self.class stringOfParameters:parameters]];
     
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
     [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:query]]];
     webView.delegate = self;
     
@@ -185,45 +204,48 @@
 
 - (void)startRetrievingAccessTokenWithAuthCode:(NSString*)authCode
 {
-    NSDictionary* parameters = @{ @"grant_type" : @"authorization_code",
-                                  @"code" : authCode,
-                                  @"redirect_uri" : [OAuth20 URLEncodeString:self.urlRedirect],
-                                  @"client_id" : [OAuth20 URLEncodeString:self.apiKey],
-                                  @"client_secret" : [OAuth20 URLEncodeString:self.secretKey] };
+    NSDictionary* parameters = @{ grant_type : authorization_code,
+                                  code : authCode,
+                                  redirect_uri : [OAuth20 URLEncodeString:self.urlRedirect],
+                                  client_id : [OAuth20 URLEncodeString:self.apiKey],
+                                  client_secret : [OAuth20 URLEncodeString:self.secretKey] };
     
     [self postQuery:self.urlAccessToken
    headerParameters:nil
      bodyParameters:parameters
-         completion:^(NSURLResponse* response, NSData* body, NSError* error)
+         completion:^(NSURLResponse* response, NSData* body, NSError* errorObj)
                      {
                          NSDictionary* json = [NSJSONSerialization JSONObjectWithData:body options:0 error:nil];
-                         self.accessToken = [json valueForKey:@"access_token"];
-                         if ([self.accessToken length])
+                         if (errorObj)
                          {
-                             [self.delegate accessGranted];
+                             self.authorizeCompletionHandler(NO,
+                                                             [NSString stringWithFormat:@"%d", errorObj.code],
+                                                             errorObj.description);
                          }
                          else
                          {
-                             [self accessDenied];
+                             self.accessToken = [json valueForKey:access_token];
+                             self.authorizeCompletionHandler([self.accessToken length],
+                                                             [json valueForKey:error],
+                                                             [json valueForKey:error_description]);
                          }
                      }];
 }
 
-- (void)accessDenied
-{
-    if ([self.delegate respondsToSelector:@selector(accessDenied)])
-    {
-        [self.delegate accessDenied];
-    }
-}
-
 #pragma mark - Public methods
 
+- (BOOL)isAuthorized
+{
+    return [self.accessToken length];
+}
+
 - (void)authorizeWithScope:(NSString*)scope
-                     state:(NSString*)state
+                     state:(NSString *)state
+         completionHandler:(void (^)(BOOL, NSString*, NSString*))completionHandler
 {
     self.scope = scope;
     self.state = state;
+    self.authorizeCompletionHandler = completionHandler;
     
     [self startRetrievingAuthCode];
 }
@@ -236,7 +258,7 @@
         return;
     
     NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithDictionary:
-                                       @{ @"oauth2_access_token" : self.accessToken }];
+                                       @{ oauth2_access_token : self.accessToken }];
     
     for (NSString* key in requestParameters)
     {
@@ -259,7 +281,7 @@
         return;
     
     NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithDictionary:
-                                       @{ @"oauth2_access_token" : self.accessToken }];
+                                       @{ oauth2_access_token : self.accessToken }];
     
     NSString* query = [NSString stringWithFormat:@"%@?%@",
                        urlQuery, [self.class stringOfParameters:parameters]];
@@ -280,16 +302,18 @@
         [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
         
         NSDictionary* parameters = [self.class getParametersOfUrl:url];
-        NSString* state = [parameters valueForKey:@"state"];
-        NSString* authCode = [parameters valueForKey:@"code"];
+        NSString* stateValue = [parameters valueForKey:state];
+        NSString* authCode = [parameters valueForKey:code];
         
-        if ([state isEqualToString:self.state] && [authCode length])
+        if ([stateValue isEqualToString:self.state] && [authCode length])
         {
             [self startRetrievingAccessTokenWithAuthCode:authCode];
         }
         else
         {
-            [self accessDenied];
+            self.authorizeCompletionHandler(NO,
+                                            [parameters valueForKey:error],
+                                            [parameters valueForKey:error_description]);
         }
         return NO;
     }
@@ -302,6 +326,14 @@
     self.navigationController.view.hidden = NO;
 }
 
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    if (error.code  == WebKitErrorFrameLoadInterruptedByPolicyChange)
+        return;
+    [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
+    self.authorizeCompletionHandler(NO, [NSString stringWithFormat:@"%d", error.code], error.description);
+}
+
 #pragma mark - UINavigationControllerDelegate
 
 - (void)navigationController:(UINavigationController*)navigationController
@@ -311,6 +343,7 @@
     if (![viewController.view isKindOfClass:[UIWebView class]])
     {
         [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
+        self.authorizeCompletionHandler(NO, nil, @"Authorization cancelled by user");
     }
 }
 

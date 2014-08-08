@@ -89,6 +89,11 @@
        completionHandler:handler];
 }
 
+- (void)retrieveProfileWithCompletionHandler:(void (^)(SNShareResult result, NSDictionary* profile, NSString* error))handler
+{
+    handler(SNShareResultNotSupported, nil, @"Service doesn't support retrieving profile data");
+}
+
 #pragma mark - Private methods
 
 - (void)shareWithTitle:(NSString*)title

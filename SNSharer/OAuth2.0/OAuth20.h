@@ -8,18 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol OAuth20Delegate<NSObject>
-
-- (void)accessGranted;
-
-@optional
-- (void)accessDenied;
-
-@end
-
 @interface OAuth20 : NSObject
-
-@property (weak, nonatomic) id<OAuth20Delegate> delegate;
 
 #pragma mark - Initializer
 
@@ -32,8 +21,11 @@
 
 #pragma mark - Public interface
 
+- (BOOL)isAuthorized;
+
 - (void)authorizeWithScope:(NSString*)scope
-                     state:(NSString*)state;
+                     state:(NSString*)state
+         completionHandler:(void (^)(BOOL accessGranted, NSString* error, NSString* errorDescription))completionHandler;
 
 - (void)getResourceByQuery:(NSString*)urlQuery
                 parameters:(NSDictionary*)parameters

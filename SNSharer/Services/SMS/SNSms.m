@@ -1,17 +1,16 @@
 //
-//  SNEmail.m
+//  SNSms.m
 //  SNSharer
 //
 //  Created by Rushad on 6/20/14.
 //  Copyright (c) 2014 Rushad. All rights reserved.
 //
 
-#import "SNEmail.h"
+#import "SNSms.h"
 
-#import <AddressBook/AddressBook.h>
 #import <MessageUI/MessageUI.h>
 
-@interface SNEmail()<MFMailComposeViewControllerDelegate>
+@interface SNSms()<MFMessageComposeViewControllerDelegate>
 
 @property (strong, nonatomic) UIViewController* parentViewController;
 
@@ -19,13 +18,13 @@
 
 @end
 
-@implementation SNEmail
+@implementation SNSms
 
 #pragma mark - Initializer
 
 - (instancetype)initWithParentViewController:(UIViewController*)parentViewController
 {
-    if (![MFMailComposeViewController canSendMail])
+    if (![MFMessageComposeViewController canSendText])
         return nil;
     
     self = [super init];
@@ -40,7 +39,7 @@
 
 + (BOOL)isAvailable
 {
-    return [MFMailComposeViewController canSendMail];
+    return [MFMessageComposeViewController canSendText];
 }
 
 + (BOOL)canShareLocalImage
@@ -76,6 +75,11 @@
        completionHandler:handler];
 }
 
+- (void)retrieveProfileWithCompletionHandler:(void (^)(SNShareResult result, NSDictionary* profile, NSString* error))handler
+{
+    handler(SNShareResultNotSupported, nil, @"Service doesn't support retrieving profile data");
+}
+
 #pragma mark - Private methods
 
 - (void)shareWithTitle:(NSString*)title
@@ -87,8 +91,8 @@
 {
     self.shareCompletionHandler = handler;
     
-    MFMailComposeViewController* mailComposer = [[MFMailComposeViewController alloc] init];
-    mailComposer.mailComposeDelegate = self;
+    MFMessageComposeViewController* smsComposer = [[MFMessageComposeViewController alloc] init];
+    smsComposer.messageComposeDelegate = self;
     
     NSString* body = text;
     if (url)
@@ -96,31 +100,29 @@
         body = [body stringByAppendingString:@"\r\n"];
         body = [body stringByAppendingString:url];
     }
-    [mailComposer setSubject:title];
-    [mailComposer setMessageBody:body isHTML:NO];
-    [mailComposer addAttachmentData:UIImagePNGRepresentation(image) mimeType:@"image/png" fileName:@"attachment.png"];
     
-    [self.parentViewController presentViewController:mailComposer animated:YES completion:nil];
+    [smsComposer setBody:body];
+    [smsComposer addAttachmentData:UIImagePNGRepresentation(image) typeIdentifier:@"public.png" filename:@"attachment.png"];
+    
+    [self.parentViewController presentViewController:smsComposer animated:YES completion:nil];
 }
 
-#pragma mark - MFMailComposeViewControllerDelegate
+#pragma mark - MFMessageComposeViewControllerDelegate
 
-- (void)mailComposeController:(MFMailComposeViewController*)controller
-          didFinishWithResult:(MFMailComposeResult)result
-                        error:(NSError*)error
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller
+                 didFinishWithResult:(MessageComposeResult)result
 {
     [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
     switch(result)
     {
-        case MFMailComposeResultSent:
+        case MessageComposeResultSent:
             self.shareCompletionHandler(SNShareResultDone, nil);
             break;
-        case MFMailComposeResultSaved:
-        case MFMailComposeResultCancelled:
-            self.shareCompletionHandler(SNShareResultCancelled, error.description);
+        case MessageComposeResultCancelled:
+            self.shareCompletionHandler(SNShareResultCancelled, nil);
             break;
-        case MFMailComposeResultFailed:
-            self.shareCompletionHandler(SNShareResultFailed, error.description);
+        case MessageComposeResultFailed:
+            self.shareCompletionHandler(SNShareResultFailed, nil);
             break;
     }
 }

@@ -10,7 +10,7 @@
 
 #import "OAuth20.h"
 
-@interface SNGooglePlusAPI()<OAuth20Delegate>
+@interface SNGooglePlusAPI()
 
 @property (strong, nonatomic) UIViewController* parentViewController;
 
@@ -24,7 +24,7 @@
 @property (strong, nonatomic) NSString* url;
 //@property (strong, nonatomic) NSString* imageUrl;
 
-@property (nonatomic, copy) void (^shareCompletionHandler)(SNShareResult result, NSString* error);
+@property (nonatomic, copy) void (^profileCompletionHandler)(SNShareResult result, NSDictionary* profile, NSString* error);
 
 @end
 
@@ -92,6 +92,34 @@ static NSString* const urlAccessToken = @"https://accounts.google.com/o/oauth2/t
        completionHandler:handler];
 }
 
+- (void)retrieveProfileWithCompletionHandler:(void (^)(SNShareResult result, NSDictionary* profile, NSString* error))handler
+{
+//    handler(SNShareResultNotSupported, nil, @"Service doesn't support retrieving profile data");
+
+    self.profileCompletionHandler = handler;
+    
+    self.oauth = [[OAuth20 alloc] initWithAuthorizationURL:urlAuthorization
+                                            accessTokenURL:urlAccessToken
+                                               redirectURL:self.redirectUri
+                                                    apiKey:self.clientId
+                                                 secretKey:self.clientSecret
+                                      parentViewController:self.parentViewController];
+    
+    [self.oauth authorizeWithScope:@"https://www.googleapis.com/auth/plus.login"
+                             state:[NSString stringWithFormat:@"%ld", random()]
+                 completionHandler:^(BOOL accessGranted, NSString *error, NSString *errorDescription)
+     {
+         if (accessGranted)
+         {
+             [self getProfile];
+         }
+         else
+         {
+             self.profileCompletionHandler(SNShareResultFailed, nil, [NSString stringWithFormat:@"%@: %@", error, errorDescription]);
+         }
+     }];
+}
+
 #pragma mark - Private methods
 
 - (void)shareWithTitle:(NSString*)title
@@ -101,67 +129,18 @@ static NSString* const urlAccessToken = @"https://accounts.google.com/o/oauth2/t
               imageUrl:(NSString*)imageUrl
      completionHandler:(void (^)(SNShareResult, NSString *))handler
 {
-    self.shareCompletionHandler = handler;
-    
-    self.oauth = [[OAuth20 alloc] initWithAuthorizationURL:urlAuthorization
-                                            accessTokenURL:urlAccessToken
-                                               redirectURL:self.redirectUri
-                                                    apiKey:self.clientId
-                                                 secretKey:self.clientSecret
-                                      parentViewController:self.parentViewController];
-    self.oauth.delegate = self;
-    
-    self.text = text;
-    self.url = url;
-    
-    [self.oauth authorizeWithScope:@"https://www.googleapis.com/auth/plus.login" state:[NSString stringWithFormat:@"%ld", random()]];
+    handler(SNShareResultFailed, @"Service doesn't support sharing");
 }
 
-- (void)share
+- (void)getProfile
 {
-/*    NSString* xmlShare = [NSString stringWithFormat:
-                          @"<share>"
-                          "  <comment></comment>"
-                          "  <content>"
-                          "    <title></title>"
-                          "    <description>%@</description>"
-                          "    <submitted-url>%@</submitted-url>"
-                          "    <submitted-image-url>%@</submitted-image-url>"
-                          "  </content>"
-                          "  <visibility>"
-                          "    <code>anyone</code>"
-                          "  </visibility>"
-                          "</share>",
-                          self.text, self.url, self.imageUrl];
-    
-    [self.oauth postResourceByQuery:@"https://api.linkedin.com/v1/people/~/shares"
-                   headerParameters:@{ @"Content-Type" : @"text/xml" }
-                               body:xmlShare
-                  completionHandler:^(NSURLResponse* response, NSData* data, NSError* error)
-     {
-         self.shareCompletionHandler(error ? SNShareResultFailed : SNShareResultDone, nil);
-     }];*/
-    NSLog(@"Access granted");
-}
-
-#pragma mark - OAuth20Delegate
-
-- (void)accessGranted
-{
-    /*
-     [self.oauth getResourceByQuery:@"https://api.linkedin.com/v1/people/~"
-     parameters:nil
-     completionHandler:^(NSURLResponse* response, NSData* data, NSError* error)
-     {
-     NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-     }];
-     */
-    [self share];
-}
-
-- (void)accessDenied
-{
-    self.shareCompletionHandler(SNShareResultFailed, nil);
+    [self.oauth getResourceByQuery:@"https://www.googleapis.com/plusDomains/v1/people/me"
+                        parameters:@{ @"Content-Type" : @"application/json" }
+                 completionHandler:^(NSURLResponse* response, NSData* data, NSError* error)
+                                    {
+                                        NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                                        self.profileCompletionHandler(error ? SNShareResultFailed : SNShareResultDone, json, [NSString stringWithFormat:@"%d: %@", error.code, error.description]);
+                                    }];
 }
 
 @end
